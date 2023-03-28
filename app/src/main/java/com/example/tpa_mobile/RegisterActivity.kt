@@ -39,6 +39,7 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     override fun onAction() {
         regisButton.setOnClickListener{
             var msg:String = ""
+            var check = 0
             if(usernameField.text.isEmpty()){
                 msg = "Username can't be empty"
             }else if(emailField.text.isEmpty()){
@@ -50,6 +51,7 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
             }else if(!confirmField.text.toString().equals(passField.text.toString())){
                 msg = "Password doesn't match"
             }else{
+                check = 1
                 FirebaseController.createAccount(
                     usernameField.text.toString(),
                     emailField.text.toString(),
@@ -57,13 +59,17 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
                 ) { result ->
                     // Handle the result of the createAccount() function here
                     msg = result ?: ""
+                    if(msg.equals("Success")){
+                        finish()
+                        ActivtyHelper.changeToLogin(this)
+                    }
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 }
+
             }
-            if(!msg.equals("Sucess")){
+            if(check == 0){
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
-
         }
         loginRedirect.setOnClickListener{
             finish()

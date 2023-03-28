@@ -1,5 +1,6 @@
 package com.example.tpa_mobile
 
+import Controller.FirebaseController
 import Util.ActivityTemplate
 import Util.ActivtyHelper
 import android.graphics.Paint
@@ -38,7 +39,10 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
             }else if (password.isEmpty()){
                 Toast.makeText(this, "Password Can't be empty", Toast.LENGTH_SHORT).show()
             }else{
-
+                FirebaseController.login(email,password){ result ->
+                    var msg = result ?: ""
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         regisRedirect.setOnClickListener{

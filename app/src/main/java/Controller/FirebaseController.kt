@@ -4,7 +4,6 @@ import Model.User
 import Util.FirebaseInterface
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 
@@ -31,6 +30,17 @@ object FirebaseController : FirebaseInterface {
                 }else {
                     Log.e("createAccount", res.exception?.message ?: "Unknown error")
                     completion(res.exception?.message)
+                }
+            }
+    }
+
+    override fun login(email: String, password: String, completion: (String?) -> Unit) {
+        auth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener{res ->
+                if(res.isSuccessful){
+                    completion("Sucess")
+                }else{
+                    completion("Login Error")
                 }
             }
     }
