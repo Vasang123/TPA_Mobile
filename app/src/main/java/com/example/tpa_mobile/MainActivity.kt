@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
         }
         regisRedirect.setOnClickListener{
             finish()
-            ActivtyHelper.changeToRegis(this)
+            ActivtyHelper.changePage(this,RegisterActivity::class.java)
         }
     }
 }

@@ -61,7 +61,7 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
                     msg = result ?: ""
                     if(msg.equals("Success")){
                         finish()
-                        ActivtyHelper.changeToLogin(this)
+                        ActivtyHelper.changePage(this,MainActivity::class.java)
                     }
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 }
@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
         }
         loginRedirect.setOnClickListener{
             finish()
-            ActivtyHelper.changeToLogin(this)
+            ActivtyHelper.changePage(this,MainActivity::class.java)
         }
     }
 }
