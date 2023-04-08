@@ -1,7 +1,9 @@
 package Controller
 
 import Model.User
+import Util.ActivtiyHelper
 import Util.FirebaseInterface
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -9,18 +11,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack22_2.BeeTech.HomeActivity
 import java.util.UUID
 
 object FirebaseController : FirebaseInterface {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
+    val db = FirebaseFirestore.getInstance()
     override fun createAccount(username: String, email: String, password: String, completion: (String?) -> Unit) {
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { res ->
                 if (res.isSuccessful) {
                     val uid = UUID.randomUUID().toString()
-                    val db = FirebaseFirestore.getInstance()
                     val userRef = db.collection("users").document(uid)
                     val userData = User(uid, username, email)
                     userRef.set(userData)
@@ -48,41 +50,49 @@ object FirebaseController : FirebaseInterface {
                 }
             }
     }
-    override fun createAccountWIthGoogle(context:Context) {
-        val signInAccount = GoogleSignIn.getLastSignedInAccount(context)
-        if (signInAccount != null) {
-            val credential = GoogleAuthProvider.getCredential(signInAccount.idToken, null)
-            FirebaseController.auth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val user = FirebaseController.auth.currentUser
-                        if (user != null) {
-                            val email = user.email
-                            val usernameField:String = ""
-                            createAccount(
-                                usernameField.toString(),
-                                email ?: "",
-                                ""
-                            ) { result ->
-                                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Google sign in failed: ${task.exception?.localizedMessage}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-        } else {
-            Toast.makeText(context, "Please sign in with Google first", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun signOut() {
         auth.signOut()
     }
 
-
+    fun firebaseWithGoogleAuth(idToken:String, context: Context, activity: Activity){
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = UUID.randomUUID().toString()
+                    val userRef = db.collection("users").document(uid)
+                    val user = auth.currentUser
+                    val email = user?.email.toString()
+                    val username: String = email?.substringBefore("@") ?: ""
+                    val query = db.collection("users").whereEqualTo("email", email)
+                    query.get()
+                        .addOnSuccessListener { documents ->
+                            if (documents.isEmpty) {
+                                // The email is unique, insert the user data into Firestore
+                                val uid = UUID.randomUUID().toString()
+                                val userRef = db.collection("users").document(uid)
+                                val userData = User(uid, username, email)
+                                userRef.set(userData)
+                                    .addOnSuccessListener {
+                                        ActivtiyHelper.changePage(context,HomeActivity::class.java)
+                                        activity.finish()
+                                    }
+                                    .addOnFailureListener {
+                                        Log.e("createAccount", it.message.toString())
+                                    }
+                            } else {
+                                ActivtiyHelper.changePage(context,HomeActivity::class.java)
+                                activity.finish()
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.e("createAccount", it.message.toString())
+                        }
+                } else {
+                    Toast.makeText(context, task.exception?.message.toString(), Toast.LENGTH_SHORT).show()
+                    Log.e("signup error",task.exception?.message.toString());
+                }
+            }
+    }
 }

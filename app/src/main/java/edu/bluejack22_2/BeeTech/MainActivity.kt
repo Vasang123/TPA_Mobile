@@ -16,8 +16,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import edu.bluejack22_2.BeeTech.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 class MainActivity : AppCompatActivity(), ActivityTemplate {
     lateinit var emailField: EditText
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
     lateinit var gsc: GoogleSignInClient
     lateinit var loginGoogle:Button
     lateinit var signInLauncher : ActivityResultLauncher<Intent>
+    var RC_SIGN_IN = 2
     val PERMISSIONS_REQUEST_INTERNET = 100
     val INTERNET = android.Manifest.permission.INTERNET
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,20 +52,21 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
         regisRedirect.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         forgotPassword.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         gsc = GoogleSignIn.getClient(this,gso)
         signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                // Result is OK
                 val data: Intent? = result.data
                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                // Handle the intent data here
+                ActivtiyHelper.changePage(this,HomeActivity::class.java)
+                finish()
+
             } else {
                 val error = GoogleSignIn.getSignedInAccountFromIntent(result.data).exception
                 Log.e("123",error.toString())
                 Toast.makeText(this, "Failed: ${error?.localizedMessage}", Toast.LENGTH_SHORT).show()
-                // Result is not OK
             }
         }
     }
@@ -91,10 +96,27 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
         }
         loginGoogle.setOnClickListener{
             signInGoogle()
+
         }
     }
     fun signInGoogle(){
         val signInIntent:Intent =  gsc.signInIntent
-        signInLauncher.launch(signInIntent)
+        startActivityForResult(signInIntent,RC_SIGN_IN)
+
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == RC_SIGN_IN){
+            var task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val idToken = account.idToken!!
+                FirebaseController.firebaseWithGoogleAuth(idToken,this, this)
+
+            }catch (e: ApiException){
+                Toast.makeText(this,e.localizedMessage,Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

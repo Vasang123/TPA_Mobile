@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -15,8 +16,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import edu.bluejack22_2.BeeTech.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.GoogleAuthProvider
 
 class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     lateinit var loginRedirect:TextView
@@ -29,7 +34,7 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     lateinit var gso:GoogleSignInOptions
     lateinit var gsc: GoogleSignInClient
     lateinit var signInLauncher : ActivityResultLauncher<Intent>
-
+    var RC_SIGN_IN = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -47,17 +52,10 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
         regisGoogle = findViewById(R.id.googleSiginup)
         loginRedirect.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         gsc = GoogleSignIn.getClient(this,gso)
-        signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                FirebaseController.createAccountWIthGoogle(this)
-            } else {
-                val error = GoogleSignIn.getSignedInAccountFromIntent(result.data).exception
-                Toast.makeText(this, "Failed: ${error?.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onAction() {
@@ -74,8 +72,25 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     }
     fun signUpGoogle(){
         val signInIntent:Intent =  gsc.signInIntent
-        signInLauncher.launch(signInIntent)
+        startActivityForResult(signInIntent,RC_SIGN_IN)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == RC_SIGN_IN){
+            var task:Task<GoogleSignInAccount>  = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val idToken = account.idToken!!
+                FirebaseController.firebaseWithGoogleAuth(idToken,this, this)
+
+            }catch (e:ApiException){
+                Toast.makeText(this,e.localizedMessage,Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     fun validateRegis(){
         var msg:String = ""
         var check = 0
