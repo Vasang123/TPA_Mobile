@@ -34,6 +34,14 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate {
     var RC_SIGN_IN = 2
     val PERMISSIONS_REQUEST_INTERNET = 100
     val INTERNET = android.Manifest.permission.INTERNET
+    override fun onStart() {
+        super.onStart()
+        val currentUser = FirebaseController.auth.currentUser
+        if (currentUser != null) {
+            finish()
+            ActivtiyHelper.changePage(this,MainActivity::class.java)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
