@@ -1,17 +1,16 @@
 package Controller
 
-import Model.User
+import edu.Model.User
 import Util.ActivtiyHelper
 import Util.FirebaseInterface
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.bluejack22_2.BeeTech.HomeActivity
+import edu.bluejack22_2.BeeTech.MainActivity
 import java.util.UUID
 
 object FirebaseController : FirebaseInterface {
@@ -75,14 +74,14 @@ object FirebaseController : FirebaseInterface {
                                 val userData = User(uid, username, email)
                                 userRef.set(userData)
                                     .addOnSuccessListener {
-                                        ActivtiyHelper.changePage(context,HomeActivity::class.java)
+                                        ActivtiyHelper.changePage(context,MainActivity::class.java)
                                         activity.finish()
                                     }
                                     .addOnFailureListener {
                                         Log.e("createAccount", it.message.toString())
                                     }
                             } else {
-                                ActivtiyHelper.changePage(context,HomeActivity::class.java)
+                                ActivtiyHelper.changePage(context,MainActivity::class.java)
                                 activity.finish()
                             }
                         }

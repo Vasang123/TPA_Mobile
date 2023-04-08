@@ -1,4 +1,4 @@
-package Model
+package edu.Model
 
 data class User(val uid: String, val username: String, val email: String) {
     constructor() : this("", "", "")
