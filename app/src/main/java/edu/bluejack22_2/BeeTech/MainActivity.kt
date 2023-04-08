@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
                 FirebaseController.login(email,password){ result ->
                     var msg = result ?: ""
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                    if(msg.toString() == "Success"){
+                        ActivtiyHelper.changePage(this,HomeActivity::class.java);
+                        finish()
+                    }
                 }
             }
         }

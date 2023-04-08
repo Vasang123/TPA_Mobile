@@ -1,6 +1,8 @@
 package edu.bluejack22_2.BeeTech
 
+import Controller.FirebaseController
 import Util.ActivityTemplate
+import Util.ActivtiyHelper
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -11,6 +13,8 @@ class HomeActivity : AppCompatActivity(), ActivityTemplate {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        init()
+        onAction()
     }
 
     override fun init() {
@@ -19,6 +23,9 @@ class HomeActivity : AppCompatActivity(), ActivityTemplate {
 
     override fun onAction() {
         logout.setOnClickListener{
+            FirebaseController.signOut()
+            finish()
+            ActivtiyHelper.changePage(this,MainActivity::class.java)
 
         }
     }

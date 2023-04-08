@@ -42,7 +42,7 @@ object FirebaseController : FirebaseInterface {
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener{res ->
                 if(res.isSuccessful){
-                    completion("Sucess")
+                    completion("Success")
                 }else{
                     completion("Login Error")
                 }
@@ -80,6 +80,9 @@ object FirebaseController : FirebaseInterface {
         }
     }
 
+    override fun signOut() {
+        auth.signOut()
+    }
 
 
 }
