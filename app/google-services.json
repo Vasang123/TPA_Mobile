@@ -1,20 +1,29 @@
 {
   "project_info": {
     "project_number": "88571560770",
+    "firebase_url": "https://tpamobile-97c24-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "tpamobile-97c24",
     "storage_bucket": "tpamobile-97c24.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:88571560770:android:fa496e6841d8e07e31fedb",
+        "mobilesdk_app_id": "1:88571560770:android:8df2601b46d0048131fedb",
         "android_client_info": {
           "package_name": "com.example.tpa_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "88571560770-nusm85fq87m7ge0pnhqv8u3qv49mftar.apps.googleusercontent.com",
+          "client_id": "88571560770-382pqg07pa94q2hed9eqdffm3269ec7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tpa_mobile",
+            "certificate_hash": "71bab284b03d577a770df751c522f84d71d40f44"
+          }
+        },
+        {
+          "client_id": "88571560770-g2jgcd2hamo5m1ttnhapusrp8g9l5aq8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "88571560770-nusm85fq87m7ge0pnhqv8u3qv49mftar.apps.googleusercontent.com",
+              "client_id": "88571560770-g2jgcd2hamo5m1ttnhapusrp8g9l5aq8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

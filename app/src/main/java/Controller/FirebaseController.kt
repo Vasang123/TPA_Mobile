@@ -2,13 +2,17 @@ package Controller
 
 import Model.User
 import Util.FirebaseInterface
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 
 object FirebaseController : FirebaseInterface {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun createAccount(username: String, email: String, password: String, completion: (String?) -> Unit) {
 
@@ -44,6 +48,38 @@ object FirebaseController : FirebaseInterface {
                 }
             }
     }
+    override fun createAccountWIthGoogle(context:Context) {
+        val signInAccount = GoogleSignIn.getLastSignedInAccount(context)
+        if (signInAccount != null) {
+            val credential = GoogleAuthProvider.getCredential(signInAccount.idToken, null)
+            FirebaseController.auth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = FirebaseController.auth.currentUser
+                        if (user != null) {
+                            val email = user.email
+                            val usernameField:String = ""
+                            createAccount(
+                                usernameField.toString(),
+                                email ?: "",
+                                ""
+                            ) { result ->
+                                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Google sign in failed: ${task.exception?.localizedMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        } else {
+            Toast.makeText(context, "Please sign in with Google first", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
 
 }
