@@ -94,4 +94,15 @@ object FirebaseController : FirebaseInterface {
                 }
             }
     }
+
+    fun resetPassword(email:String, completion: (String?) -> Unit){
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    completion("Email Successfuly Sent")
+                } else {
+                    completion("Error Sending Email")
+                }
+            }
+    }
 }

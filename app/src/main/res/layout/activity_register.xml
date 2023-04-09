@@ -131,7 +131,7 @@
         android:id="@+id/regisButton"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_rounded"
+        android:background="@drawable/primary_button_rounded"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/register"
         android:textColor="@color/white"

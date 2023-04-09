@@ -24,7 +24,7 @@
 
     <EditText
         android:id="@+id/emailField"
-        android:layout_width="367dp"
+        android:layout_width="368dp"
         android:layout_height="51dp"
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawablePadding="12dp"
@@ -112,7 +112,7 @@
         android:id="@+id/loginButton"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_rounded"
+        android:background="@drawable/primary_button_rounded"
         android:backgroundTintMode="screen"
         android:elevation="10dp"
         android:fontFamily="@font/poppins_semibold"

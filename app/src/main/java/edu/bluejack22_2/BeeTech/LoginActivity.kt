@@ -8,12 +8,14 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -105,6 +107,10 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate {
             signInGoogle()
 
         }
+        forgotPassword.setOnClickListener {
+            showEmailPopup();
+        }
+
     }
     fun signInGoogle(){
         val signInIntent:Intent =  gsc.signInIntent
@@ -126,4 +132,31 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate {
             }
         }
     }
+    private fun showEmailPopup() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.popup_email, null)
+        val cancelButton = dialogView.findViewById<Button>(R.id.cancelButton)
+        val sendButton = dialogView.findViewById<Button>(R.id.resetButton)
+        val emailResetField = dialogView.findViewById<EditText>(R.id.emailSendField)
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+        val dialog = builder.show()
+        sendButton.setOnClickListener {
+            val email = emailResetField.text.toString()
+            if (email.isNotEmpty()) {
+                FirebaseController.resetPassword(email){ result ->
+                    var msg = result ?: ""
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            } else {
+                Toast.makeText(this, "Please enter an email", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
 }
