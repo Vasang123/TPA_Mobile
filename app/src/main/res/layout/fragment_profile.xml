@@ -11,47 +11,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/my_profile"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.023" />
+
         <EditText
             android:id="@+id/currEmail"
-            android:layout_width="0dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/input_rounded"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blank_input"
+            android:drawableStart="@drawable/ic_baseline_email_24_black"
             android:drawablePadding="12dp"
             android:ems="10"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="center_vertical"
             android:inputType="textPersonName"
-            android:paddingVertical="0dp"
+            android:paddingRight="12dp"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.361" />
+            app:layout_constraintVertical_bias="0.344" />
 
         <EditText
             android:id="@+id/currUsername"
-            android:layout_width="0dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/input_rounded"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blank_input"
+            android:drawableStart="@drawable/ic_baseline_person_24_black"
             android:drawablePadding="12dp"
             android:ems="10"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="center_vertical"
             android:inputType="textPersonName"
-            android:paddingVertical="0dp"
+            android:paddingRight="12dp"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.222" />
+            app:layout_constraintVertical_bias="0.145" />
 
         <Button
             android:id="@+id/logout_button"
@@ -62,12 +75,44 @@
             android:background="@drawable/cancel_button_rounded"
             android:text="@string/logout"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
+            app:layout_constraintVertical_bias="0.575" />
+
+        <TextView
+            android:id="@+id/changePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/change_password"
+            android:textColor="@color/button_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.934"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.456" />
+
+        <TextView
+            android:id="@+id/changeUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/change_username"
+            android:textColor="@color/button_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.933"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.243" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

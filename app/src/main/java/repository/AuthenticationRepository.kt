@@ -5,9 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack22_2.BeeTech.MainActivity
 import model.User
 import util.ActivtiyHelper
@@ -24,6 +26,29 @@ object AuthenticationRepository {
                     completion("Login Error")
                 }
             }
+    }
+    fun checkUserPassword(newPass:String, completion: (Boolean?) -> Unit){
+        val  user = auth.currentUser
+        val credential = EmailAuthProvider.getCredential(user?.email.toString(), newPass)
+        user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+    fun updatePassword(newPass: String, completion: (String?) -> Unit){
+        val  user = auth.currentUser
+        user?.updatePassword(newPass)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    completion("Success")
+                } else {
+                    completion("Failed to update password")
+                }
+            }
+
     }
     fun firebaseWithGoogleAuth(idToken:String, context: Context, activity: Activity){
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -70,8 +95,10 @@ object AuthenticationRepository {
                 }
             }
     }
-    fun signOut() {
+    fun signOut(activity: Activity) {
         auth.signOut()
+        val gsc = GoogleSignIn.getClient(activity, GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gsc.signOut()
     }
     fun resetPassword(email:String, completion: (String?) -> Unit){
         auth.sendPasswordResetEmail(email)
@@ -82,6 +109,11 @@ object AuthenticationRepository {
                     completion("Error Sending Email")
                 }
             }
+    }
+    fun checkSignInMethod(): Boolean {
+        val currentUser = auth.currentUser
+        return currentUser?.providerData?.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }
+            ?: false
     }
 
 }

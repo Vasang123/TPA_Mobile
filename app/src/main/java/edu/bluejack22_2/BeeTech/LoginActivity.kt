@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dialogfragment.EmailResetDialogFragment
 import repository.AuthenticationRepository
+import repository.UserRepository
 import viewmodel.ForgotPassViewModel
 import viewmodel.EmailLoginViewModel
 import viewmodel.GoogleLoginViewModel
@@ -76,6 +77,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialogFrag
         }
         emailLoginViewModel.signInSuccess.observe(this, Observer { success ->
             if (success) {
+
                 ActivtiyHelper.changePage(this, MainActivity::class.java);
                 finish()
             }
