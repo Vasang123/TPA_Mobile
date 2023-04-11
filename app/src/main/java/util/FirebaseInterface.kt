@@ -1,6 +1,4 @@
-package Util
-
-import android.content.Context
+package util
 
 
 interface FirebaseInterface {

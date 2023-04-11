@@ -1,11 +1,8 @@
 package edu.bluejack22_2.BeeTech
 
-import Controller.FirebaseController
-import Util.ActivityTemplate
-import Util.ActivtiyHelper
+import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 
@@ -19,13 +16,11 @@ class MainActivity : AppCompatActivity(), ActivityTemplate {
     }
 
     override fun init() {
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         replaceFragment(HomeFragment())
     }
 
     override fun onAction() {
-
         binding.bottomNavigationView.setOnItemSelectedListener{item ->
             when(item.itemId){
                 R.id.home_btn -> {

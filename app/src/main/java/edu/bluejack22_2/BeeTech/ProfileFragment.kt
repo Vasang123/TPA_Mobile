@@ -1,16 +1,14 @@
 package edu.bluejack22_2.BeeTech
 
-import Controller.FirebaseController
-import Util.ActivityTemplate
-import Util.ActivtiyHelper
+import util.ActivityTemplate
+import util.ActivtiyHelper
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-
-
+import repository.AuthenticationRepository
 
 
 class ProfileFragment : Fragment(),ActivityTemplate {
@@ -35,10 +33,9 @@ class ProfileFragment : Fragment(),ActivityTemplate {
 
     override fun onAction() {
         logout.setOnClickListener{
-            FirebaseController.signOut()
+            AuthenticationRepository.signOut()
             requireActivity().finish()
             ActivtiyHelper.changePage(requireContext(),LoginActivity::class.java)
-
         }
     }
 
