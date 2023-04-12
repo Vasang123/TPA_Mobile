@@ -58,6 +58,7 @@ class CreateReviewViewModel : ViewModel(){
                 review.imageURL= imageUrl
                 review.title= title
                 review.description= description
+                review.status = user.status
                 ItemRepository.insertReview(review){res->
                     if(res !=  null){
                         completion(res)
