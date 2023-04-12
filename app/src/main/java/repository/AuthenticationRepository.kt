@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import edu.bluejack22_2.BeeTech.MainActivity
 import model.User
-import util.ActivtiyHelper
+import util.ActivityHelper
 import java.util.*
 
 object AuthenticationRepository {
@@ -68,7 +68,7 @@ object AuthenticationRepository {
                                     Toast.makeText(context,res,Toast.LENGTH_SHORT).show()
                                 }
                             } else {
-                                ActivtiyHelper.changePage(context, MainActivity::class.java)
+                                ActivityHelper.changePage(context, MainActivity::class.java)
                                 activity.finish()
                             }
                         }

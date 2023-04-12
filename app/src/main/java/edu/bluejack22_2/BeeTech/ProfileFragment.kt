@@ -1,7 +1,7 @@
 package edu.bluejack22_2.BeeTech
 
 import util.ActivityTemplate
-import util.ActivtiyHelper
+import util.ActivityHelper
 import android.os.Bundle
 import android.text.Editable
 import androidx.fragment.app.Fragment
@@ -53,7 +53,7 @@ class ProfileFragment : Fragment(),ActivityTemplate {
         logout.setOnClickListener{
             AuthenticationRepository.signOut(requireActivity())
             requireActivity().finish()
-            ActivtiyHelper.changePage(requireContext(),LoginActivity::class.java)
+            ActivityHelper.changePage(requireContext(),LoginActivity::class.java)
         }
         userViewModel.currentUser.observe(requireActivity(), Observer{user->
             val email = user.email.toString()

@@ -2,7 +2,7 @@ package edu.bluejack22_2.BeeTech
 
 
 import util.ActivityTemplate
-import util.ActivtiyHelper
+import util.ActivityHelper
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
         val currentUser = AuthenticationRepository.auth.currentUser
         if (currentUser != null) {
             finish()
-            ActivtiyHelper.changePage(this,MainActivity::class.java)
+            ActivityHelper.changePage(this,MainActivity::class.java)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
         }
         regisRedirect.setOnClickListener{
             finish()
-            ActivtiyHelper.changePage(this, RegisterActivity::class.java)
+            ActivityHelper.changePage(this, RegisterActivity::class.java)
         }
         loginGoogle.setOnClickListener{
             googleLoginViewModel.signInGoogle(this)
@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
         }
         emailLoginViewModel.signInSuccess.observe(this, Observer { success ->
             if (success) {
-                ActivtiyHelper.changePage(this, MainActivity::class.java);
+                ActivityHelper.changePage(this, MainActivity::class.java);
                 finish()
             }
         })

@@ -2,7 +2,7 @@ package edu.bluejack22_2.BeeTech
 
 
 import util.ActivityTemplate
-import util.ActivtiyHelper
+import util.ActivityHelper
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
@@ -57,12 +57,12 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
         emailRegisterViewModel.signUpSuccess.observe(this, Observer {success->
             if(success){
                 finish()
-                ActivtiyHelper.changePage(this, LoginActivity::class.java)
+                ActivityHelper.changePage(this, LoginActivity::class.java)
             }
         })
         loginRedirect.setOnClickListener{
             finish()
-            ActivtiyHelper.changePage(this, LoginActivity::class.java)
+            ActivityHelper.changePage(this, LoginActivity::class.java)
         }
         regisGoogle.setOnClickListener{
             googleLoginViewModel.signInGoogle(this)
