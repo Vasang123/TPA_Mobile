@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
+import navigation_strategy.NavigationMap
+import util.FragmentHelper
 import view_model.UpdatePasswordViewModel
 import view_model.UpdateUsernameViewModel
 import view_model.UserViewModel
@@ -33,46 +35,20 @@ class MainActivity : AppCompatActivity(),
         updateUsernameViewModel = ViewModelProvider(this)[UpdateUsernameViewModel::class.java]
         updatePasswordViewModel = ViewModelProvider(this)[UpdatePasswordViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
-        replaceFragment(HomeFragment())
+        FragmentHelper.replaceFragment(HomeFragment(),supportFragmentManager)
     }
 
     override fun onAction() {
         binding.bottomNavigationView.setOnItemSelectedListener{item ->
-            when(item.itemId){
-                R.id.home_btn -> {
-                    replaceFragment(HomeFragment())
-                    true
-                }
-                R.id.search_btn -> {
-                    replaceFragment(SearchFragment())
-                    true
-                }
-                R.id.add_btn -> {
-                    replaceFragment(CreateFragment())
-                    true
-                }
-                R.id.list_btn -> {
-                    replaceFragment(ListFragment())
-                    true
-                }
-                R.id.profile_btn -> {
-                    replaceFragment(ProfileFragment())
-                    true
-                }
-                else -> false
-            }
+            val strategy = NavigationMap.map[item.itemId]
+            strategy?.navigate(supportFragmentManager)
+            true
         }
         updateUsernameViewModel.updateResult.observe(this, Observer { result->
             if (result) {
-                replaceFragment(ProfileFragment())
+                FragmentHelper.replaceFragment(ProfileFragment(),supportFragmentManager)
             }
         })
-    }
-    fun replaceFragment(fragment:Fragment){
-        var fragmentManager = supportFragmentManager
-        var fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout,fragment)
-        fragmentTransaction.commit()
     }
     fun showChangeUsernamePopup() {
         val updateUserDialog = ChangeUsernameDialog()
