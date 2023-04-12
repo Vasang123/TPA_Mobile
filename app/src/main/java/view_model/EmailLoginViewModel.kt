@@ -12,17 +12,20 @@ class EmailLoginViewModel : ViewModel(){
     private val _signInSuccess = MutableLiveData<Boolean>()
     val signInSuccess: LiveData<Boolean> = _signInSuccess
     fun validateEmailLogin(email:String,password:String, context: Context){
-        if (email.isEmpty()){
-            Toast.makeText(context, "Email Can't be empty", Toast.LENGTH_SHORT).show()
-        }else if (password.isEmpty()){
-            Toast.makeText(context, "Password Can't be empty", Toast.LENGTH_SHORT).show()
-        }else{
-            AuthenticationRepository.login(email,password){ result ->
-                var msg = result ?: ""
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                if(msg.toString() == "Success"){
-                    _signInSuccess.postValue(true)
-                }
+        var msg : String? = when {
+            email.isEmpty() -> "Email Can't be empty"
+            password.isEmpty() -> "Password Can't be empty"
+            else -> null
+        }
+        if(msg != null){
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            return
+        }
+        AuthenticationRepository.login(email,password){ result ->
+            var msg = result ?: ""
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            if(msg.toString() == "Success"){
+                _signInSuccess.postValue(true)
             }
         }
     }

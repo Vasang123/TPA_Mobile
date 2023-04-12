@@ -76,7 +76,6 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
         }
         emailLoginViewModel.signInSuccess.observe(this, Observer { success ->
             if (success) {
-
                 ActivtiyHelper.changePage(this, MainActivity::class.java);
                 finish()
             }

@@ -12,21 +12,19 @@ class UpdateUsernameViewModel : ViewModel() {
     val updateResult: LiveData<Boolean> = _updateResult
 
     fun validateUpdateUser(username:String, email:String,field: String, context:Context){
-        var msg:String = ""
-        var check = 0
-        if (username.isEmpty()){
-            msg = "Username can't be empty"
-        }else{
-            check = 1
-            UserRepository.updateUser(username,email,field){result ->
-                msg = result ?: ""
-                if(msg.equals("Success")){
-                    _updateResult.postValue(true)
-                }
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            }
+        var msg:String? = when {
+            username.isEmpty() -> "Username can't be empty"
+            else -> null
         }
-        if(check == 0){
+        if(msg != null){
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            return
+        }
+        UserRepository.updateUser(username,email,field){result ->
+            msg = result ?: ""
+            if(msg.equals("Success")){
+                _updateResult.postValue(true)
+            }
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
     }

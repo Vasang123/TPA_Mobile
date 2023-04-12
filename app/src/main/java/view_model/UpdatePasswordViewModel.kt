@@ -11,21 +11,17 @@ class UpdatePasswordViewModel : ViewModel() {
     private val _updateResult = MutableLiveData<Boolean>()
     val updateResult: LiveData<Boolean> = _updateResult
     fun validateUpdatePassword(oldPass:String, newPass:String, context:Context){
-        var msg:String = ""
-        var check = 0
-        if(oldPass.isEmpty()){
-            msg = "Old Password can't be empty"
-        }else if (newPass.isEmpty()){
-            msg = "New Password can't be empty"
-        }else if (newPass.length < 6){
-            msg = "New Password must be at least 6 characters"
-        }else{
-            check = 1;
-            checkOldPass(oldPass,newPass,context)
+        var msg:String? = when {
+            oldPass.isEmpty() -> "Old Password can't be empty"
+            newPass.isEmpty() -> "New Password can't be empty"
+            newPass.length < 6 -> "New Password must be at least 6 characters"
+            else -> null
         }
-        if(check == 0){
+        if(msg != null){
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            return
         }
+        checkOldPass(oldPass,newPass,context)
     }
     fun checkOldPass(oldPass: String,newPass: String,context: Context){
         AuthenticationRepository.checkUserPassword(oldPass){ res->

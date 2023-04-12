@@ -12,34 +12,29 @@ class EmailRegisterViewModel : ViewModel(){
     private val _signUpSuccess = MutableLiveData<Boolean>()
     val signUpSuccess: LiveData<Boolean> = _signUpSuccess
     fun validateRegis(username:String,email:String,password:String,confirm:String,context: Context){
-        var msg:String = ""
-        var check = 0
-        if(username.isEmpty()){
-            msg = "Username can't be empty"
-        }else if(email.isEmpty()){
-            msg = "Email can't be empty"
-        }else if(password.isEmpty()){
-            msg = "Password can't be empty"
-        }else if(confirm.isEmpty()){
-            msg = "Confirm Password can't be empty"
-        }else if(confirm.toString() != password.toString()){
-            msg = "Password doesn't match"
-        }else{
-            check = 1
-            AuthenticationRepository.createAccount(
-                username,
-                email,
-                password
-            ) { result ->
-                msg = result ?: ""
-                if(msg.equals("Success")){
-                    _signUpSuccess.postValue(true)
-                }
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            }
+        var msg: String? = when {
+            username.isEmpty() -> "Username can't be empty"
+            email.isEmpty() -> "Email can't be empty"
+            password.isEmpty() -> "Password can't be empty"
+            confirm.isEmpty() -> "Confirm Password can't be empty"
+            confirm.toString() != password.toString() -> "Password doesn't match"
+            else -> null
         }
-        if(check == 0){
+        if(msg != null){
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            return
+        }
+        AuthenticationRepository.createAccount(
+            username,
+            email,
+            password
+        ) { result ->
+            msg = result ?: ""
+            if(msg == "Success"){
+                _signUpSuccess.postValue(true)
+            }
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
+
     }
 }
