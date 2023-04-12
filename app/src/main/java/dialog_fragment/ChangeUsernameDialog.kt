@@ -1,8 +1,6 @@
-package dialogfragment
+package dialog_fragment
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -10,26 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import edu.bluejack22_2.BeeTech.R
-import viewmodel.UserViewModel
+import view_model.UserViewModel
 
-class ChangeUsernameDialogFragment: DialogFragment() {
+class ChangeUsernameDialog: BaseDialogFragment() {
     interface UpdateUserListener {
         fun onUserUpdate(username: String, email:String)
     }
     lateinit var userViewModel: UserViewModel
     lateinit var email:String
     lateinit var updateUserListener: UpdateUserListener
-    override fun onStart() {
-        super.onStart()
-        val window = dialog?.window
-        dialog?.setCancelable(false)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -61,7 +51,7 @@ class ChangeUsernameDialogFragment: DialogFragment() {
 
             updateUserListener = context as UpdateUserListener
         } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement ChangeUsernameDialogFragment")
+            throw ClassCastException("$context must implement ChangeUsernameDialog")
         }
     }
 }

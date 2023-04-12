@@ -1,4 +1,4 @@
-package viewmodel
+package view_model
 
 
 import android.content.Context
@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import repository.AuthenticationRepository
-import repository.UserRepository
 
 class EmailRegisterViewModel : ViewModel(){
     private val _signUpSuccess = MutableLiveData<Boolean>()

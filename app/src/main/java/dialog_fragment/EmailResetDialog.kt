@@ -1,30 +1,20 @@
-package dialogfragment
+package dialog_fragment
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.fragment.app.DialogFragment
 import edu.bluejack22_2.BeeTech.R
 
-class EmailResetDialogFragment : DialogFragment(){
+class EmailResetDialog : BaseDialogFragment() {
     interface EmailResetDialogListener {
         fun onEmailReset(email: String)
     }
 
     lateinit var emailResetDialogListener: EmailResetDialogListener
-    override fun onStart() {
-        super.onStart()
-        val window = dialog?.window
-        dialog?.setCancelable(false)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -48,7 +38,7 @@ class EmailResetDialogFragment : DialogFragment(){
         try {
             emailResetDialogListener = context as EmailResetDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement EmailResetDialogListener")
+            throw ClassCastException("$context must implement EmailResetDialog")
         }
     }
 }

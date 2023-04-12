@@ -1,4 +1,4 @@
-package viewmodel
+package view_model
 
 import android.content.Context
 import android.widget.Toast

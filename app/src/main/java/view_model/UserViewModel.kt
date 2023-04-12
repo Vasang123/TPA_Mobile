@@ -1,6 +1,5 @@
-package viewmodel
+package view_model
 
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

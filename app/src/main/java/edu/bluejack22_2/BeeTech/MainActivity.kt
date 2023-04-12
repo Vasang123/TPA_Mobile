@@ -3,21 +3,20 @@ package edu.bluejack22_2.BeeTech
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import dialogfragment.ChangePasswordDialogFragment
-import dialogfragment.ChangeUsernameDialogFragment
+import dialog_fragment.ChangePasswordDialog
+import dialog_fragment.ChangeUsernameDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
-import viewmodel.UpdatePasswordViewModel
-import viewmodel.UpdateUsernameViewModel
-import viewmodel.UserViewModel
+import view_model.UpdatePasswordViewModel
+import view_model.UpdateUsernameViewModel
+import view_model.UserViewModel
 
 class MainActivity : AppCompatActivity(),
     ActivityTemplate,
-    ChangeUsernameDialogFragment.UpdateUserListener,
-    ChangePasswordDialogFragment.UpdatePasswordListener {
+    ChangeUsernameDialog.UpdateUserListener,
+    ChangePasswordDialog.UpdatePasswordListener {
     lateinit var binding:ActivityMainBinding
     lateinit var userViewModel: UserViewModel
     lateinit var updateUsernameViewModel: UpdateUsernameViewModel
@@ -76,11 +75,11 @@ class MainActivity : AppCompatActivity(),
         fragmentTransaction.commit()
     }
     fun showChangeUsernamePopup() {
-        val updateUserDialog = ChangeUsernameDialogFragment()
+        val updateUserDialog = ChangeUsernameDialog()
         updateUserDialog.show(supportFragmentManager, "ChangeUsernameDialogFragment")
     }
     fun showChangePasswordPopup(){
-        val updateUserPassDialog = ChangePasswordDialogFragment()
+        val updateUserPassDialog = ChangePasswordDialog()
         updateUserPassDialog.show(supportFragmentManager, "ChangePasswordDialogFragment")
     }
     override fun onUserUpdate(username: String, email:String) {

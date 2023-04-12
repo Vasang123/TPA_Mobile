@@ -13,11 +13,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import dialogfragment.ChangeUsernameDialogFragment
-import dialogfragment.EmailResetDialogFragment
 import repository.AuthenticationRepository
-import repository.UserRepository
-import viewmodel.UserViewModel
+import view_model.UserViewModel
 
 
 class ProfileFragment : Fragment(),ActivityTemplate {

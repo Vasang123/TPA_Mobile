@@ -1,15 +1,12 @@
-package viewmodel
+package view_model
 
 
-import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import edu.bluejack22_2.BeeTech.MainActivity
 import repository.AuthenticationRepository
-import util.ActivtiyHelper
 
 class EmailLoginViewModel : ViewModel(){
     private val _signInSuccess = MutableLiveData<Boolean>()

@@ -1,36 +1,21 @@
-package dialogfragment
+package dialog_fragment
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import edu.bluejack22_2.BeeTech.R
-import viewmodel.UserViewModel
 
-class ChangePasswordDialogFragment: DialogFragment() {
+class ChangePasswordDialog: BaseDialogFragment() {
     interface UpdatePasswordListener {
         fun onPasswordUpdate(oldPass:String, newPassword : String)
     }
 
     lateinit var email:String
     lateinit var updatePasswordListener: UpdatePasswordListener
-    override fun onStart() {
-        super.onStart()
-        val window = dialog?.window
-        dialog?.setCancelable(false)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,7 +40,7 @@ class ChangePasswordDialogFragment: DialogFragment() {
         try {
             updatePasswordListener = context as UpdatePasswordListener
         } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement ChangePasswordDialogFragment")
+            throw ClassCastException("$context must implement ChangePasswordDialog")
         }
     }
 }

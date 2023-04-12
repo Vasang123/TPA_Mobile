@@ -1,7 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
 
-import android.app.Activity
 import util.ActivityTemplate
 import util.ActivtiyHelper
 import android.content.Intent
@@ -11,18 +10,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import viewmodel.EmailRegisterViewModel
-import viewmodel.GoogleLoginViewModel
+import view_model.EmailRegisterViewModel
+import view_model.GoogleLoginViewModel
 
 class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     lateinit var loginRedirect:TextView

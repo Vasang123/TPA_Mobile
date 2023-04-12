@@ -12,14 +12,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import dialogfragment.EmailResetDialogFragment
+import dialog_fragment.EmailResetDialog
 import repository.AuthenticationRepository
-import repository.UserRepository
-import viewmodel.ForgotPassViewModel
-import viewmodel.EmailLoginViewModel
-import viewmodel.GoogleLoginViewModel
+import view_model.ForgotPassViewModel
+import view_model.EmailLoginViewModel
+import view_model.GoogleLoginViewModel
 
-class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialogFragment.EmailResetDialogListener {
+class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.EmailResetDialogListener {
     lateinit var emailField: EditText
     lateinit var passwordField:EditText
     lateinit var regisRedirect:TextView
@@ -88,7 +87,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialogFrag
        googleLoginViewModel.handleGoogleSignInResult(requestCode,resultCode,data,this)
     }
     private fun showEmailPopup() {
-        val emailResetDialog = EmailResetDialogFragment()
+        val emailResetDialog = EmailResetDialog()
         emailResetDialog.show(supportFragmentManager, "EmailResetDialogFragment")
     }
     override fun onEmailReset(email: String) {
