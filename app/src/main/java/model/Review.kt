@@ -11,7 +11,7 @@ data class Review(
     var createdAt:Date,
     var updatedAt:Date,
     var status:String,
-    val totalFavorites:Number = 0) {
+    val totalFavorites:Long = 0) {
     var id: String = ""
     constructor() : this("", "", "", "", "", Date(), Date(),"", 0)
 }
