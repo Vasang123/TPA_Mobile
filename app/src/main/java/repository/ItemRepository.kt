@@ -11,12 +11,12 @@ import java.util.*
 
 
 object ItemRepository {
-    var storage = FirebaseStorage.getInstance()
-    var db = FirebaseFirestore.getInstance()
-    private var lastDocumentSnapshot: DocumentSnapshot? = null
+    private val storage = FirebaseStorage.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+
     fun insertImage(file:Uri?, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
-        var storageRef = storage.getReference("images/$uid")
+        val storageRef = storage.getReference("images/$uid")
         val uploadTask = file?.let { storageRef.putFile(it) }
         if (uploadTask != null) {
             uploadTask.addOnCompleteListener { task ->
@@ -49,32 +49,47 @@ object ItemRepository {
 
     }
 
-    fun getReviews(onSuccess: (List<Review>) -> Unit, onFailure: (String) -> Unit) {
-        val reviewsRef = db.collection("reviews")
+    fun getReviews(onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
+                   onFailure: (String) -> Unit,
+                   lastDocumentSnapshot: DocumentSnapshot? = null) {
+        val pageSize : Long = 5
+
+        var reviewsRef = db.collection("reviews")
             .whereEqualTo("status", "active")
             .orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(10)
+            .limit(pageSize)
+
 
         if (lastDocumentSnapshot != null) {
-            reviewsRef.startAfter(lastDocumentSnapshot!!)
+            Log.e("doc", lastDocumentSnapshot.toString())
+            reviewsRef = reviewsRef.startAfter(lastDocumentSnapshot)
         }
 
-        reviewsRef.addSnapshotListener { value, error ->
-            if (error != null) {
-                onFailure(error.message!!)
-                return@addSnapshotListener
+        // Limit the query to the given page size.
+        reviewsRef.limit(pageSize).get()
+            .addOnSuccessListener { querySnapshot ->
+                val reviews = mutableListOf<Review>()
+
+                for (doc in querySnapshot.documents) {
+                    val review = doc.toObject(Review::class.java)!!
+                    reviews.add(review)
+                }
+
+                Log.e("Fetched reviews", reviews.toString())
+
+                // If the number of results is less than the page size, it means we have reached the end of the results.
+                val newLastDocumentSnapshot = if (reviews.size < pageSize) {
+                    null
+                } else {
+                    querySnapshot.documents.last()
+                }
+
+                val isEndOfList = reviews.size < pageSize
+                onSuccess(reviews, newLastDocumentSnapshot,isEndOfList)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching reviews")
             }
 
-            val reviews = mutableListOf<Review>()
-
-            for (doc in value!!.documents) {
-                val review = doc.toObject(Review::class.java)!!
-                reviews.add(review)
-            }
-            if (reviews.isNotEmpty()) {
-                lastDocumentSnapshot = value.documents[value.size() - 1]
-            }
-            onSuccess(reviews)
-        }
     }
 }

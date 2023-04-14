@@ -47,25 +47,12 @@ class HomeAdapter(private val context: Context) :
     }
 
     fun submitList(lists:List<Review>){
-//        for(data in lists){
-//            val newReview = Review(
-//                userId = data.userId,
-//                username = data.username,
-//                imageURL = data.imageURL,
-//                title = data.title,
-//                description = data.description,
-//                createdAt = data.createdAt,
-//                updatedAt = data.updatedAt,
-//                status = data.status,
-//                totalFavorites = 0
-//            )
-//            Log.e("data", newReview.title)
-//            Log.e("loop list",reviewList.toString())
-//        }
+        Log.e("submit list", reviewList.toString())
+        if(lists.isEmpty()) return
 
-            reviewList = reviewList.plus(lists.toMutableList())
-            Log.e("isi", reviewList.toString())
-            notifyDataSetChanged()
+        val oldSize = reviewList.size
+        reviewList = lists.toMutableList()
+        notifyItemRangeInserted(oldSize,lists.size)
     }
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
