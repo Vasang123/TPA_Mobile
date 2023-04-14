@@ -11,12 +11,13 @@ import java.util.*
 
 
 object ItemRepository {
-    var storage = FirebaseStorage.getInstance()
-    var db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+
     private var lastDocumentSnapshot: DocumentSnapshot? = null
     fun insertImage(file:Uri?, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
-        var storageRef = storage.getReference("images/$uid")
+        val storageRef = storage.getReference("images/$uid")
         val uploadTask = file?.let { storageRef.putFile(it) }
         if (uploadTask != null) {
             uploadTask.addOnCompleteListener { task ->
@@ -50,10 +51,13 @@ object ItemRepository {
     }
 
     fun getReviews(onSuccess: (List<Review>) -> Unit, onFailure: (String) -> Unit) {
+        val pageSize : Long = 10
+
         val reviewsRef = db.collection("reviews")
             .whereEqualTo("status", "active")
             .orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(10)
+            .limit(pageSize)
+
 
         if (lastDocumentSnapshot != null) {
             reviewsRef.startAfter(lastDocumentSnapshot!!)
