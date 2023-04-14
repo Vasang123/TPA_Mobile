@@ -47,9 +47,12 @@ class HomeAdapter(private val context: Context) :
     }
 
     fun submitList(lists:List<Review>){
-            val oldSize = reviewList.size
-            reviewList = reviewList.plus(lists.toMutableList())
-            notifyItemRangeInserted(oldSize,lists.size)
+        Log.e("submit list", reviewList.toString())
+        if(lists.isEmpty()) return
+
+        val oldSize = reviewList.size
+        reviewList = lists.toMutableList()
+        notifyItemRangeInserted(oldSize,lists.size)
     }
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
