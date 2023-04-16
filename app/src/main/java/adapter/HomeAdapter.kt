@@ -1,13 +1,13 @@
 package adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 
@@ -26,12 +26,9 @@ class HomeAdapter(private val context: Context) :
         holder.title.text = currentItem.title
         holder.createdAt.text = currentItem.createdAt.toString()
         holder.author.text = currentItem.username
-        // Load image using Glide library
-//        Glide.with(context)
-//            .load(currentItem.imageURL)
-//            .placeholder(R.drawable.blank_image)
-//            .error(R.drawable.blank_image)
-//            .into(holder.imageView)
+        Glide.with(context)
+            .load(currentItem.imageURL)
+            .into(holder.imageView)
 //        if (currentItem.isFavorite) {
 //            holder.favoriteIcon.setImageResource(R.drawable.ic_favorite_filled)
 //        } else {
@@ -46,9 +43,7 @@ class HomeAdapter(private val context: Context) :
     }
 
     fun submitList(lists:List<Review>){
-        Log.e("submit list", reviewList.toString())
         if(lists.isEmpty()) return
-
         val oldSize = reviewList.size
         reviewList = lists.toMutableList()
         notifyItemRangeInserted(oldSize,lists.size)
