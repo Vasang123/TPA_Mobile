@@ -15,12 +15,12 @@ import view_model.UserViewModel
 
 class ChangeUsernameDialog: BaseDialogFragment() {
     interface UpdateUserListener {
-        fun onUserUpdate(username: String, email:String)
+        fun onUserUpdate(userId:String, username: String, email:String)
     }
     lateinit var userViewModel: UserViewModel
     lateinit var email:String
     lateinit var updateUserListener: UpdateUserListener
-
+    lateinit var userId:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -34,9 +34,10 @@ class ChangeUsernameDialog: BaseDialogFragment() {
             email = user.email
             val editableUsername = Editable.Factory.getInstance().newEditable(username)
             usernameField.text = editableUsername
+            userId = user.id
         })
         updateButton.setOnClickListener {
-            updateUserListener.onUserUpdate(usernameField.text.toString(),email )
+            updateUserListener.onUserUpdate(userId,usernameField.text.toString(),email )
             dismiss()
         }
         cancelButton.setOnClickListener {

@@ -39,7 +39,13 @@ object UserRepository {
             completion(null)
         }
     }
-    fun updateUser(data:String, email:String, field:String, completion: (String?) -> Unit){
+    fun updateUser(
+        userId:String,
+        data: String,
+        email: String,
+        field: String,
+        completion: (String?) -> Unit
+    ) {
         val query = db.collection("users").whereEqualTo("email", email)
         query.get().addOnSuccessListener { querySnapshot ->
             if (!querySnapshot.isEmpty) {
@@ -47,9 +53,12 @@ object UserRepository {
                 val documentId = document.id
                 userCollection.document(documentId).update(field, data)
                     .addOnSuccessListener {
-                        completion("Success")
+                        ReviewRepository.updateReviewUsername(userId,data){
+                            completion(it)
+                        }
                     }.addOnFailureListener { exception ->
                         completion(exception.localizedMessage)
+
                     }
             } else {
                 completion("Failed to Update Username")
@@ -58,5 +67,6 @@ object UserRepository {
             completion("Failed to Update Username")
         }
     }
+
 
 }

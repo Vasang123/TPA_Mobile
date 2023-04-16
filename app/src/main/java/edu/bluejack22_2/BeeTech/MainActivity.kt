@@ -58,8 +58,8 @@ class MainActivity : AppCompatActivity(),
         val updateUserPassDialog = ChangePasswordDialog()
         updateUserPassDialog.show(supportFragmentManager, "ChangePasswordDialogFragment")
     }
-    override fun onUserUpdate(username: String, email:String) {
-        updateUsernameViewModel.validateUpdateUser(username,email,"username",this)
+    override fun onUserUpdate(userId: String, username: String, email:String) {
+        updateUsernameViewModel.validateUpdateUser(userId, username,email,"username",this)
     }
 
     override fun onPasswordUpdate(oldPassword:String,newPassword: String) {
