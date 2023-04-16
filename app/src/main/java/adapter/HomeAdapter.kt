@@ -1,4 +1,4 @@
-package adapeter
+package adapter
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 
