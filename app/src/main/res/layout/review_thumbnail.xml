@@ -33,18 +33,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             ]]>
 
             <ImageView
                 android:id="@+id/favorite"
-                android:layout_width="30dp"
+                android:layout_width="40dp"
                 android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.958"
+                app:layout_constraintHorizontal_bias="0.956"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.818"
+                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
@@ -98,6 +118,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.648" />
+
+            <TextView
+                android:id="@+id/favCount"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="1000"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.956"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.68" />
 
             <ImageView
                 android:id="@+id/imageThumbnail"

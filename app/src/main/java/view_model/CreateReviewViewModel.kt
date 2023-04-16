@@ -1,18 +1,15 @@
 package view_model
 
 
-import android.content.ClipData.Item
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import model.Review
-import repository.ItemRepository
+import repository.ReviewRepository
 import repository.UserRepository
-import java.io.File
 import java.util.Date
 
 class CreateReviewViewModel : ViewModel(){
@@ -52,14 +49,14 @@ class CreateReviewViewModel : ViewModel(){
         UserRepository.getLoggedUser(){ user ->
             if(user != null){
                 review.userId = user.id
-                review.username = user.username
+                review.username = ""
                 review.createdAt= Date()
                 review.updatedAt= Date()
                 review.imageURL= imageUrl
                 review.title= title
                 review.description= description
                 review.status = user.status
-                ItemRepository.insertReview(review){res->
+                ReviewRepository.insertReview(review){ res->
                     if(res !=  null){
                         completion(res)
                     }
@@ -68,7 +65,7 @@ class CreateReviewViewModel : ViewModel(){
         }
     }
     private fun insertImage(file: Uri?, completion: (String?) -> Unit){
-        ItemRepository.insertImage(file){res->
+        ReviewRepository.insertImage(file){ res->
             if(res != null){
                 completion(res)
             }

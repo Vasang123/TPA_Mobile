@@ -1,22 +1,20 @@
 package adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 
-class HomeAdapter(private val context: Context) :
-    RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class ReviewAdapter(private val context: Context) :
+    RecyclerView.Adapter<ReviewAdapter.HomeViewHolder>() {
 
     private var reviewList = emptyList<Review>()
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.review_thumbnail, parent, false)
         return HomeViewHolder(itemView)
@@ -26,12 +24,10 @@ class HomeAdapter(private val context: Context) :
         holder.title.text = currentItem.title
         holder.createdAt.text = currentItem.createdAt.toString()
         holder.author.text = currentItem.username
-        // Load image using Glide library
-//        Glide.with(context)
-//            .load(currentItem.imageURL)
-//            .placeholder(R.drawable.blank_image)
-//            .error(R.drawable.blank_image)
-//            .into(holder.imageView)
+        holder.favCount.text = currentItem.totalFavorites.toString()
+        Glide.with(context)
+            .load(currentItem.imageURL)
+            .into(holder.imageView)
 //        if (currentItem.isFavorite) {
 //            holder.favoriteIcon.setImageResource(R.drawable.ic_favorite_filled)
 //        } else {
@@ -46,9 +42,7 @@ class HomeAdapter(private val context: Context) :
     }
 
     fun submitList(lists:List<Review>){
-        Log.e("submit list", reviewList.toString())
         if(lists.isEmpty()) return
-
         val oldSize = reviewList.size
         reviewList = lists.toMutableList()
         notifyItemRangeInserted(oldSize,lists.size)
@@ -59,6 +53,7 @@ class HomeAdapter(private val context: Context) :
         val title: TextView = itemView.findViewById(R.id.titleThumbnail)
         var createdAt: TextView = itemView.findViewById(R.id.dateThumbnail)
         var author: TextView = itemView.findViewById(R.id.authorThumbnail)
+        var favCount: TextView = itemView.findViewById(R.id.favCount)
         val favorite: ImageView = itemView.findViewById(R.id.favorite)
 
 //        init {

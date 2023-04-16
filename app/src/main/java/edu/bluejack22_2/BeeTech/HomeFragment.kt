@@ -1,15 +1,19 @@
 package edu.bluejack22_2.BeeTech
 
-import adapter.HomeAdapter
+import adapter.ReviewAdapter
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import navigation_strategy.SearchStrategy
 import util.ActivityTemplate
 import view_model.HomeViewModel
 
@@ -17,10 +21,13 @@ import view_model.HomeViewModel
 class HomeFragment : Fragment(),ActivityTemplate {
 
     lateinit var homeViewModel: HomeViewModel
-    lateinit var homeAdapter: HomeAdapter
+    lateinit var reviewAdapter: ReviewAdapter
     lateinit var recyclerView:RecyclerView
+    lateinit var searchView: SearchView
+    var onSearchQueryListener: OnSearchQueryListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        searchView = view?.findViewById(R.id.homeSearch) ?: SearchView(requireContext())
     }
 
     override fun onCreateView(
@@ -30,7 +37,7 @@ class HomeFragment : Fragment(),ActivityTemplate {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         recyclerView = view.findViewById(R.id.homeRecyclerView)
-        homeAdapter = HomeAdapter(requireContext())
+        reviewAdapter = ReviewAdapter(requireContext())
         setupRecyclerView()
         return view
     }
@@ -38,14 +45,16 @@ class HomeFragment : Fragment(),ActivityTemplate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        onAction()
     }
 
     override fun init() {
+        searchView = view?.findViewById(R.id.homeSearch) ?: SearchView(requireContext())
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.loadReviews(requireContext())
         homeViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
             if (list.isNotEmpty()) {
-                homeAdapter.submitList(list)
+                reviewAdapter.submitList(list)
             }
         })
 
@@ -61,13 +70,26 @@ class HomeFragment : Fragment(),ActivityTemplate {
     }
 
     override fun onAction() {
-        TODO("Not yet implemented")
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    onSearchQueryListener?.onSearchQuery(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                return false
+            }
+
+        })
     }
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager =  layoutManager
-        recyclerView.adapter = homeAdapter
+        recyclerView.adapter = reviewAdapter
 
     }
 
@@ -92,6 +114,27 @@ class HomeFragment : Fragment(),ActivityTemplate {
             }
         }
     }
+    interface OnSearchQueryListener {
+        fun onSearchQuery(query: String)
+    }
+    @JvmName("setOnSearchQueryListener1")
+    fun setOnSearchQueryListener(listener: OnSearchQueryListener) {
+        onSearchQueryListener = listener
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnSearchQueryListener) {
+            onSearchQueryListener = context
+        } else {
+            throw RuntimeException("$context must implement OnSearchQueryListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onSearchQueryListener = null
+    }
+
 
 
 }
