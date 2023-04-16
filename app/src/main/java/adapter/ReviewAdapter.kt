@@ -11,12 +11,10 @@ import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 
-class HomeAdapter(private val context: Context) :
-    RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class ReviewAdapter(private val context: Context) :
+    RecyclerView.Adapter<ReviewAdapter.HomeViewHolder>() {
 
     private var reviewList = emptyList<Review>()
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.review_thumbnail, parent, false)
         return HomeViewHolder(itemView)

@@ -1,15 +1,12 @@
 package repository
 
 import android.net.Uri
-import android.provider.Settings.Global
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import model.Review
 import model.User
@@ -49,7 +46,6 @@ object ReviewRepository {
                 completion("Success")
             }
             .addOnFailureListener {
-                Log.e("createReview", it.message.toString())
                 completion("Error creating review record in database")
             }
 
@@ -64,7 +60,6 @@ object ReviewRepository {
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(pageSize)
         if (lastDocumentSnapshot != null) {
-            Log.e("doc", lastDocumentSnapshot.toString())
             reviewsRef = reviewsRef.startAfter(lastDocumentSnapshot)
         }
         reviewsRef.limit(pageSize).get()
@@ -87,7 +82,54 @@ object ReviewRepository {
                 onFailure(e.message ?: "Error fetching reviews")
             }
     }
+    fun getAllReviews(
+        onSuccess: (List<Review>) -> Unit,
+        onFailure: (String) -> Unit) {
 
+        var reviewsRef = db.collection("reviews")
+            .whereEqualTo("status", "active")
+        reviewsRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val reviews = mutableListOf<Review>()
+                for (doc in querySnapshot.documents) {
+                    val review = doc.toObject(Review::class.java)
+                    if (review != null) {
+                        reviews.add(review)
+                    }
+                }
+                reviews.shuffle()
+                onSuccess(reviews)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching reviews")
+            }
+    }
+    fun getSearchReviews(
+        onSuccess: (List<Review>) -> Unit,
+        onFailure: (String) -> Unit,
+        searchQuery: String) {
+
+        var reviewsRef = db.collection("reviews")
+            .whereEqualTo("status", "active")
+            .whereGreaterThanOrEqualTo("title", searchQuery)
+            .whereLessThanOrEqualTo("title", searchQuery + "\uf8ff")
+        reviewsRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val reviews = mutableListOf<Review>()
+
+                for (doc in querySnapshot.documents) {
+                    val review = doc.toObject(Review::class.java)
+                    if (review != null) {
+                        reviews.add(review)
+                    }
+                }
+                onSuccess(reviews)
+            }
+            .addOnFailureListener { e ->
+                Log.e("123",e.message.toString())
+                onFailure(e.message ?: "Error fetching reviews")
+            }
+    }
     fun updateReviewUsername(userId: String, data: String, completion: (String?) -> Unit) {
         val reviewsRef = UserRepository.db.collection("reviews").whereEqualTo("userId", userId)
         reviewsRef.get().addOnSuccessListener { querySnapshot ->
