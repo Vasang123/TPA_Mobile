@@ -26,6 +26,7 @@ class HomeAdapter(private val context: Context) :
         holder.title.text = currentItem.title
         holder.createdAt.text = currentItem.createdAt.toString()
         holder.author.text = currentItem.username
+        holder.favCount.text = currentItem.totalFavorites.toString()
         Glide.with(context)
             .load(currentItem.imageURL)
             .into(holder.imageView)
@@ -54,6 +55,7 @@ class HomeAdapter(private val context: Context) :
         val title: TextView = itemView.findViewById(R.id.titleThumbnail)
         var createdAt: TextView = itemView.findViewById(R.id.dateThumbnail)
         var author: TextView = itemView.findViewById(R.id.authorThumbnail)
+        var favCount: TextView = itemView.findViewById(R.id.favCount)
         val favorite: ImageView = itemView.findViewById(R.id.favorite)
 
 //        init {
