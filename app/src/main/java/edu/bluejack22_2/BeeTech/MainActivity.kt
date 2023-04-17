@@ -1,11 +1,13 @@
 package edu.bluejack22_2.BeeTech
 
 
+import adapter.ListViewPagerAdapter
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
@@ -26,6 +28,8 @@ class MainActivity : AppCompatActivity(),
     lateinit var updateUsernameViewModel: UpdateUsernameViewModel
     lateinit var updatePasswordViewModel: UpdatePasswordViewModel
     lateinit var searchQuery: String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
