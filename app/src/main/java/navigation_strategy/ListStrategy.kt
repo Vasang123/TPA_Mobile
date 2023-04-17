@@ -1,7 +1,7 @@
 package navigation_strategy
 
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.ListFragment
+import edu.bluejack22_2.BeeTech.ListFragment
 import util.FragmentHelper
 
 class ListStrategy : Strategy {
