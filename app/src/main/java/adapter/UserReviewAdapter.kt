@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,10 +12,11 @@ import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 
-class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.review_thumbnail) {
+class UserReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
 
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
-
+        val updateButton: Button = itemView.findViewById(R.id.userUpdateReview)
+        val deleteButton: Button = itemView.findViewById(R.id.userDeleteReview)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -27,6 +29,7 @@ class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.revi
             Glide.with(context)
                 .load(currentItem.imageURL)
                 .into(holder.imageView)
+
         }
     }
 
