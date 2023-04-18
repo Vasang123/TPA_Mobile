@@ -4,14 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
-import model.Review
+import view_model.FavouriteViewModel
+import view_model.UserViewModel
 
 class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.review_thumbnail) {
+
+    lateinit var favouriteViewModel : FavouriteViewModel
 
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
@@ -28,10 +29,15 @@ class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.revi
                 .load(currentItem.imageURL)
                 .into(holder.imageView)
         }
+
+
+//        favouriteViewModel.isReviewFavorited()
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+
         return ReviewViewHolder(itemView)
     }
 }
