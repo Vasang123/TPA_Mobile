@@ -6,7 +6,7 @@
     tools:context=".UserFavouriteListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/FavoriteRecycleView"
+        android:id="@+id/userReviewRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>
