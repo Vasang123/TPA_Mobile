@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import edu.bluejack22_2.BeeTech.FavouriteListFragment
-import edu.bluejack22_2.BeeTech.UserFavouriteListFragment
+import edu.bluejack22_2.BeeTech.UserReviewsFragment
 
 class ListViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
@@ -16,7 +16,7 @@ class ListViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycl
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> FavouriteListFragment()
-            1 -> UserFavouriteListFragment()
+            1 -> UserReviewsFragment()
             else -> throw IllegalArgumentException("Invalid page position: $position")
         }
     }

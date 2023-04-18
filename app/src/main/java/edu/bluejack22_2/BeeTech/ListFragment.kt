@@ -42,7 +42,7 @@ class ListFragment : Fragment(), ActivityTemplate {
         TabLayoutMediator(tabLayout, listViewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Favorite List"
-                1 -> tab.text = "My Favorite List"
+                1 -> tab.text = "My Review List"
                 else -> throw IllegalArgumentException("Invalid page position: $position")
             }
         }.attach()
