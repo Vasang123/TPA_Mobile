@@ -9,12 +9,11 @@ import java.util.*
 
 object UserRepository {
     val db = FirebaseFirestore.getInstance()
-    val userCollection = UserRepository.db.collection("users")
+    private val userCollection = db.collection("users")
     fun insertUserData(user:User, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
         val userRef = db.collection("users").document(uid)
-        val userData = user
-        userRef.set(userData)
+        userRef.set(user)
             .addOnSuccessListener {
                 completion("Success")
             }

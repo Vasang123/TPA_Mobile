@@ -51,17 +51,21 @@ object ReviewRepository {
 
     }
 
-    fun getHomeReviews(onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
-                       onFailure: (String) -> Unit,
-                       lastDocumentSnapshot: DocumentSnapshot? = null) {
-        val pageSize : Long = 5
+    fun fetchReviews(
+        configureQuery: (Query) -> Query,
+        onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
+        onFailure: (String) -> Unit,
+        lastDocumentSnapshot: DocumentSnapshot? = null
+    ) {
+        val pageSize: Long = 5
         var reviewsRef = db.collection("reviews")
             .whereEqualTo("status", "active")
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(pageSize)
+        reviewsRef = configureQuery(reviewsRef)
+
         if (lastDocumentSnapshot != null) {
             reviewsRef = reviewsRef.startAfter(lastDocumentSnapshot)
         }
+
         reviewsRef.limit(pageSize).get()
             .addOnSuccessListener { querySnapshot ->
                 val reviews = mutableListOf<Review>()
@@ -76,43 +80,38 @@ object ReviewRepository {
                 }
 
                 val isEndOfList = reviews.size < pageSize
-                onSuccess(reviews, newLastDocumentSnapshot,isEndOfList)
+                onSuccess(reviews, newLastDocumentSnapshot, isEndOfList)
             }
             .addOnFailureListener { e ->
                 onFailure(e.message ?: "Error fetching reviews")
             }
     }
+
+    fun getHomeReviews(onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
+                       onFailure: (String) -> Unit,
+                       lastDocumentSnapshot: DocumentSnapshot? = null) {
+        fetchReviews(
+            configureQuery = { query ->
+                query.orderBy("createdAt", Query.Direction.DESCENDING)
+            },
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+            lastDocumentSnapshot = lastDocumentSnapshot
+        )
+    }
     fun getUserReviews(userId: String, onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
                        onFailure: (String) -> Unit,
                        lastDocumentSnapshot: DocumentSnapshot? = null, ) {
-        val pageSize : Long = 5
-        var reviewsRef = db.collection("reviews")
-            .whereEqualTo("status", "active")
-            .whereEqualTo("userId", userId)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(pageSize)
-        if (lastDocumentSnapshot != null) {
-            reviewsRef = reviewsRef.startAfter(lastDocumentSnapshot)
-        }
-        reviewsRef.limit(pageSize).get()
-            .addOnSuccessListener { querySnapshot ->
-                val reviews = mutableListOf<Review>()
-                for (doc in querySnapshot.documents) {
-                    val review = doc.toObject(Review::class.java)!!
-                    reviews.add(review)
-                }
-                val newLastDocumentSnapshot = if (reviews.size < pageSize) {
-                    null
-                } else {
-                    querySnapshot.documents.last()
-                }
-
-                val isEndOfList = reviews.size < pageSize
-                onSuccess(reviews, newLastDocumentSnapshot,isEndOfList)
-            }
-            .addOnFailureListener { e ->
-                onFailure(e.message ?: "Error fetching reviews")
-            }
+        fetchReviews(
+            configureQuery = { query ->
+                query
+                    .whereEqualTo("userId", userId)
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+            },
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+            lastDocumentSnapshot = lastDocumentSnapshot
+        )
     }
     fun getAllReviews(
         onSuccess: (List<Review>) -> Unit,
@@ -136,6 +135,9 @@ object ReviewRepository {
                 onFailure(e.message ?: "Error fetching reviews")
             }
     }
+
+
+
     fun getSearchReviews(
         onSuccess: (List<Review>) -> Unit,
         onFailure: (String) -> Unit,
