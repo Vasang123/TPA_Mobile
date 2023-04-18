@@ -55,7 +55,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
         recyclerView.addOnScrollListener(
             InfiniteScrollListener(
                 layoutManager,
-                { userReviewViewModel.loadMoreReviews(requireContext()) },
+                { userReviewViewModel.loadMoreUserReviews(requireContext()) },
                 { userReviewViewModel.isLoading.value == true }
             )
         )

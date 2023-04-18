@@ -62,7 +62,7 @@ class HomeFragment : Fragment(),ActivityTemplate {
         recyclerView.addOnScrollListener(
             InfiniteScrollListener(
                 layoutManager,
-                { homeViewModel.loadMoreReviews(requireContext()) },
+                { homeViewModel.loadMoreHomeReviews(requireContext()) },
                 { homeViewModel.isLoading.value == true }
             )
         )
