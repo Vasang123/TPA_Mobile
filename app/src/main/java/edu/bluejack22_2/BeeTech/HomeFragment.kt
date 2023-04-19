@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
+import edu.bluejack22_2.BeeTech.databinding.FragmentHomeBinding
 import navigation_strategy.SearchStrategy
 import util.ActivityTemplate
 import view_model.HomeViewModel
@@ -24,10 +26,10 @@ class HomeFragment : Fragment(),ActivityTemplate {
     lateinit var reviewAdapter: ReviewAdapter
     lateinit var recyclerView:RecyclerView
     lateinit var searchView: SearchView
+    lateinit var binding: FragmentHomeBinding
     var onSearchQueryListener: OnSearchQueryListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        searchView = view?.findViewById(R.id.homeSearch) ?: SearchView(requireContext())
     }
 
     override fun onCreateView(
@@ -35,11 +37,8 @@ class HomeFragment : Fragment(),ActivityTemplate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        recyclerView = view.findViewById(R.id.homeRecyclerView)
-        reviewAdapter = ReviewAdapter(requireContext())
-        setupRecyclerView()
-        return view
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +48,10 @@ class HomeFragment : Fragment(),ActivityTemplate {
     }
 
     override fun init() {
-        searchView = view?.findViewById(R.id.homeSearch) ?: SearchView(requireContext())
+        recyclerView = binding.homeRecyclerView
+        reviewAdapter = ReviewAdapter(requireContext())
+        setupRecyclerView()
+        searchView = binding.homeSearch ?: SearchView(requireContext())
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.loadReviews(requireContext())
         homeViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->

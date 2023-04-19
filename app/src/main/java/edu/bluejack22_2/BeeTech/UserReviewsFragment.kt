@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.bluejack22_2.BeeTech.databinding.FragmentUserReviewBinding
 import util.ActivityTemplate
 import view_model.UserReviewViewModel
 
@@ -19,6 +20,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
     lateinit var userReviewViewModel: UserReviewViewModel
     lateinit var userReviewAdapter: UserReviewAdapter
     lateinit var recyclerView: RecyclerView
+    lateinit var binding : FragmentUserReviewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -29,11 +31,8 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_user_review, container, false)
-        recyclerView = view.findViewById(R.id.userReviewRecycleView)
-        userReviewAdapter = UserReviewAdapter(requireContext())
-        setupRecyclerView()
-        return view
+        binding = FragmentUserReviewBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,6 +42,9 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
     }
 
     override fun init() {
+        recyclerView = binding.userReviewRecycleView
+        userReviewAdapter = UserReviewAdapter(requireContext())
+        setupRecyclerView()
         userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
         userReviewViewModel.loadReviews(requireContext())
         userReviewViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->

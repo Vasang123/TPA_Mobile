@@ -39,8 +39,6 @@ abstract class BaseReviewAdapter(val context: Context, val layoutId: Int) :
         var author: TextView = itemView.findViewById(R.id.authorThumbnail)
         var favCount: TextView = itemView.findViewById(R.id.favCount)
         val favorite: ImageView = itemView.findViewById(R.id.favorite)
-
-
         init {
 
         }

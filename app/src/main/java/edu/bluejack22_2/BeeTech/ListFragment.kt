@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import edu.bluejack22_2.BeeTech.databinding.FragmentListBinding
 import util.ActivityTemplate
 
 
@@ -16,6 +17,7 @@ class ListFragment : Fragment(), ActivityTemplate {
 
     lateinit var listViewPager: ViewPager2
     lateinit var listViewPagerAdapter: ListViewPagerAdapter
+    lateinit var binding: FragmentListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,15 +32,15 @@ class ListFragment : Fragment(), ActivityTemplate {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        binding = FragmentListBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun init() {
-        listViewPager =   requireView().findViewById(R.id.list_pager)
+        listViewPager =   binding.listPager
         listViewPagerAdapter = ListViewPagerAdapter(parentFragmentManager, this.lifecycle)
         listViewPager.adapter = listViewPagerAdapter
-        val tabLayout = requireView().findViewById<TabLayout>(R.id.tab_layout)
+        val tabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, listViewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Favorite List"

@@ -3,6 +3,7 @@ package edu.bluejack22_2.BeeTech
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import edu.bluejack22_2.BeeTech.databinding.FragmentCreateBinding
 import util.ActivityTemplate
 import util.ActivityHelper
 import view_model.CreateReviewViewModel
@@ -23,6 +25,7 @@ class CreateFragment : Fragment(), ActivityTemplate {
     lateinit var createButton:Button
     lateinit var titleEditText:EditText
     lateinit var descriptionEditText:EditText
+    lateinit var binding:FragmentCreateBinding
     var selectedImageUri: Uri? = null
     var SELECT_IMAGE_CODE = 1
     lateinit var createViewModel: CreateReviewViewModel
@@ -36,15 +39,16 @@ class CreateFragment : Fragment(), ActivityTemplate {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_create, container, false)
+        binding = FragmentCreateBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun init() {
-        selectedImage = requireView().findViewById(R.id.selectedImage)
-        chooseImage = requireView().findViewById(R.id.chooseImage)
-        createButton = requireView().findViewById(R.id.addReview)
-        titleEditText= requireView().findViewById(R.id.titleField)
-        descriptionEditText= requireView().findViewById(R.id.descField)
+        selectedImage = binding.selectedImage
+        chooseImage = binding.chooseImage
+        createButton = binding.addReview
+        titleEditText= binding.titleField
+        descriptionEditText= binding.descField
         selectedImage.setImageResource(R.drawable.blank_image)
         createViewModel = ViewModelProvider(this)[CreateReviewViewModel::class.java]
     }

@@ -1,18 +1,23 @@
 package edu.bluejack22_2.BeeTech
 
 
+import android.content.Context
 import util.ActivityTemplate
 import util.ActivityHelper
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dialog_fragment.EmailResetDialog
+import edu.bluejack22_2.BeeTech.databinding.ActivityLoginBinding
 import repository.AuthenticationRepository
 import view_model.ForgotPassViewModel
 import view_model.EmailLoginViewModel
@@ -28,6 +33,7 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
     lateinit var emailLoginViewModel: EmailLoginViewModel
     lateinit var googleLoginViewModel: GoogleLoginViewModel
     lateinit var forgotPassViewModel: ForgotPassViewModel
+    lateinit var binding: ActivityLoginBinding
     override fun onStart() {
         super.onStart()
         val currentUser = AuthenticationRepository.auth.currentUser
@@ -36,20 +42,22 @@ class LoginActivity : AppCompatActivity(), ActivityTemplate,EmailResetDialog.Ema
             ActivityHelper.changePage(this,MainActivity::class.java)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
         init()
         onAction()
+        setContentView(binding.root)
     }
 
     override fun init() {
-        emailField = findViewById(R.id.emailField)
-        passwordField = findViewById(R.id.passwordField)
-        loginButton = findViewById(R.id.loginButton)
-        regisRedirect = findViewById(R.id.regisRedirect)
-        forgotPassword = findViewById(R.id.forgotPassword)
-        loginGoogle = findViewById(R.id.googleSiginin)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        emailField = binding.emailField
+        passwordField = binding.passwordField
+        loginButton = binding.loginButton
+        regisRedirect = binding.regisRedirect
+        forgotPassword = binding.forgotPassword
+        loginGoogle = binding.googleSiginin
         regisRedirect.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         forgotPassword.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         emailLoginViewModel = ViewModelProvider(this)[EmailLoginViewModel::class.java]
