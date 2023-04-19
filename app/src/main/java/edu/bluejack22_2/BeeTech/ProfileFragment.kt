@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import edu.bluejack22_2.BeeTech.databinding.FragmentProfileBinding
 import repository.AuthenticationRepository
 import view_model.UserViewModel
 
@@ -24,12 +25,13 @@ class ProfileFragment : Fragment(),ActivityTemplate {
     lateinit var changePassword:TextView
     lateinit var changeUsername:TextView
     lateinit var userViewModel: UserViewModel
+    lateinit var binding : FragmentProfileBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,11 +40,11 @@ class ProfileFragment : Fragment(),ActivityTemplate {
     }
 
     override fun init() {
-        logout = requireView().findViewById(R.id.logout_button)
-        changeUsername = requireView().findViewById(R.id.changeUsername)
-        changePassword = requireView().findViewById(R.id.changePassword)
-        currUsername = requireView().findViewById(R.id.currUsername)
-        currEmail = requireView().findViewById(R.id.currEmail)
+        logout = binding.logoutButton
+        changeUsername = binding.changeUsername
+        changePassword = binding.changePassword
+        currUsername = binding.currUsername
+        currEmail = binding.currEmail
         currUsername.isEnabled = false
         currEmail.isEnabled = false
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]

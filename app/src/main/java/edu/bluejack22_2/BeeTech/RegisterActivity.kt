@@ -12,6 +12,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import edu.bluejack22_2.BeeTech.databinding.ActivityLoginBinding
+import edu.bluejack22_2.BeeTech.databinding.ActivityRegisterBinding
 import view_model.EmailRegisterViewModel
 import view_model.GoogleLoginViewModel
 
@@ -25,21 +27,23 @@ class RegisterActivity : AppCompatActivity(),ActivityTemplate {
     lateinit var regisGoogle:Button
     lateinit var googleLoginViewModel: GoogleLoginViewModel
     lateinit var emailRegisterViewModel: EmailRegisterViewModel
+    lateinit var binding : ActivityRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
         init()
         onAction()
+        setContentView(binding.root)
     }
 
     override fun init() {
-        usernameField = findViewById(R.id.usernameField)
-        emailField = findViewById(R.id.emailRegisField)
-        passField = findViewById(R.id.passwordRegisField)
-        confirmField = findViewById(R.id.confirmPassword)
-        loginRedirect = findViewById(R.id.loginRedirect)
-        regisButton = findViewById(R.id.regisButton)
-        regisGoogle = findViewById(R.id.googleSiginup)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        usernameField = binding.usernameField
+        emailField = binding.emailRegisField
+        passField = binding.passwordRegisField
+        confirmField = binding.confirmPassword
+        loginRedirect = binding.loginRedirect
+        regisButton = binding.regisButton
+        regisGoogle = binding.googleSiginup
         loginRedirect.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         googleLoginViewModel = ViewModelProvider(this)[GoogleLoginViewModel::class.java]
         emailRegisterViewModel = ViewModelProvider(this)[EmailRegisterViewModel::class.java]

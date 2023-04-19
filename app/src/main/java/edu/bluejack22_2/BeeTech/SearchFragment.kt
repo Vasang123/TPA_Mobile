@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import edu.bluejack22_2.BeeTech.databinding.FragmentProfileBinding
+import edu.bluejack22_2.BeeTech.databinding.FragmentSearchBinding
 
 import model.Review
 import util.ActivityTemplate
@@ -25,6 +27,7 @@ class SearchFragment : Fragment(),ActivityTemplate {
     lateinit var recyclerView: RecyclerView
     lateinit var searchView: SearchView
     lateinit var searchQuery: String
+    lateinit var binding: FragmentSearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -33,11 +36,8 @@ class SearchFragment : Fragment(),ActivityTemplate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-        recyclerView = view.findViewById(R.id.searchRecycleReview)
-        reviewAdapter = ReviewAdapter(requireContext())
-        setupRecyclerView()
-        return view
+        binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +48,10 @@ class SearchFragment : Fragment(),ActivityTemplate {
     }
 
     override fun init() {
-        searchView = requireView().findViewById(R.id.searchBar)
+        recyclerView = binding.searchRecycleReview
+        reviewAdapter = ReviewAdapter(requireContext())
+        setupRecyclerView()
+        searchView = binding.searchBar
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         Log.e("123",searchQuery)
         if(searchQuery.isNullOrEmpty() || searchQuery == "null"){
