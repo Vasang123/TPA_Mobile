@@ -17,9 +17,12 @@ import edu.bluejack22_2.BeeTech.databinding.FragmentProfileBinding
 import edu.bluejack22_2.BeeTech.databinding.FragmentSearchBinding
 
 import model.Review
+import repository.UserRepository
 import util.ActivityTemplate
+import view_model.FavouriteViewModel
 import view_model.HomeViewModel
 import view_model.SearchViewModel
+import view_model.UserViewModel
 
 class SearchFragment : Fragment(),ActivityTemplate {
     lateinit var searchViewModel: SearchViewModel
@@ -28,6 +31,10 @@ class SearchFragment : Fragment(),ActivityTemplate {
     lateinit var searchView: SearchView
     lateinit var searchQuery: String
     lateinit var binding: FragmentSearchBinding
+    lateinit var favouriteViewModel: FavouriteViewModel
+    lateinit var userViewModel: UserViewModel
+    lateinit var userId : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -43,14 +50,21 @@ class SearchFragment : Fragment(),ActivityTemplate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchQuery = arguments?.getString("searchQuery").toString()
-        init()
-        onAction()
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel.currentUser.observe(requireActivity(), Observer{user->
+            userId = user.id
+            Log.e("USer search", userId)
+
+            favouriteViewModel = FavouriteViewModel()
+            reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+            recyclerView = binding.searchRecycleReview
+            setupRecyclerView()
+            init()
+            onAction()
+        })
     }
 
     override fun init() {
-        recyclerView = binding.searchRecycleReview
-        reviewAdapter = ReviewAdapter(requireContext())
-        setupRecyclerView()
         searchView = binding.searchBar
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         Log.e("123",searchQuery)
@@ -66,7 +80,8 @@ class SearchFragment : Fragment(),ActivityTemplate {
         })
     }
     private fun resetAdapter(newList: List<Review>) {
-        val newAdapter = ReviewAdapter(requireContext())
+        val newAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+        Log.e("user id di reset", userId)
         newAdapter.submitList(newList)
         recyclerView.adapter = newAdapter
     }
