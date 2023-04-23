@@ -16,11 +16,13 @@
     <string name="cancel">Cancel</string>
     <string name="forgot_password_2">Forgot Password</string>
     <string name="change_username">Change Username</string>
+    <string name="change_category">Change Category</string>
     <string name="update_username">Update Username</string>
     <string name="update_password">Update Password</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="update">Update</string>
+    <string name="update_category">Update Category</string>
     <string name="change_password">Change Password</string>
     <string name="choose_image">Choose Image</string>
     <string name="description">Description</string>
