@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/userComment"
+            android:id="@+id/userItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
@@ -44,7 +44,7 @@
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
             <TextView
-                android:id="@+id/titleThumbnail"
+                android:id="@+id/commentContent"
                 android:layout_width="390dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -91,7 +91,7 @@
                 android:text="Created at : dd-mm-yyyy"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/titleThumbnail"
+                app:layout_constraintBottom_toTopOf="@+id/commentContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.024"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -107,7 +107,7 @@
                 android:text="Update At : dd-mm-yyyy"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/titleThumbnail"
+                app:layout_constraintBottom_toTopOf="@+id/commentContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.927"
                 app:layout_constraintStart_toStartOf="parent"

@@ -31,6 +31,8 @@
     <string name="submit">Submit</string>
     <string name="user_list">View Users</string>
     <string name="category_list">View Category</string>
+    <string name="ban">Ban</string>
+    <string name="unban">Unban</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
