@@ -77,8 +77,10 @@
                 android:padding="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/addReview"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleField" />
+                app:layout_constraintTop_toBottomOf="@+id/titleField"
+                app:layout_constraintVertical_bias="1.0" />
 
             <EditText
                 android:id="@+id/titleField"
@@ -95,6 +97,18 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chooseImage" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:background="@drawable/input_spinner_rounded"
+                android:padding="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/descField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleField" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
