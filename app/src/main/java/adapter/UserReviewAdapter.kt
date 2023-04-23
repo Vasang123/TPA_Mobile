@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import model.Review
+import view_model.FavouriteViewModel
 
-class UserReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
+class UserReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
 
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val updateButton: Button = itemView.findViewById(R.id.userUpdateReview)
@@ -29,7 +30,9 @@ class UserReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.
             Glide.with(context)
                 .load(currentItem.imageURL)
                 .into(holder.imageView)
-
+            favouriteViewModel.isReviewFavorited(userId, currentItem.id) { isFavorited ->
+                favouriteViewModel.updateFavoriteIndicator(holder.favorite, isFavorited)
+            }
         }
     }
 

@@ -1,25 +1,25 @@
 package adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import view_model.FavouriteViewModel
-import view_model.UserViewModel
 
-class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.review_thumbnail) {
+class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String) : BaseReviewAdapter(context, R.layout.review_thumbnail) {
 
-    lateinit var favouriteViewModel : FavouriteViewModel
+    private val favoriteStatusMap = mutableMapOf<String, Boolean>()
 
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
-
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val currentItem = reviewList[position]
+
         if (holder is ReviewViewHolder) {
             holder.title.text = currentItem.title
             holder.createdAt.text = currentItem.createdAt.toString()
@@ -28,16 +28,47 @@ class ReviewAdapter(context: Context) : BaseReviewAdapter(context, R.layout.revi
             Glide.with(context)
                 .load(currentItem.imageURL)
                 .into(holder.imageView)
+
+
+            userId?.let { userId ->
+                favouriteViewModel.isReviewFavorited(userId, currentItem.id) { isFavorited ->
+                    favoriteStatusMap[currentItem.id] = isFavorited
+                    favouriteViewModel.updateFavoriteIndicator(holder.favorite, isFavorited)
+                }
+            }
+
+            holder.favorite.setOnClickListener {
+                holder.favorite.isEnabled = false
+
+                val currentStatus = favoriteStatusMap[currentItem.id] ?: false
+
+                val newStatus = !currentStatus
+
+                if (newStatus) {
+                    favouriteViewModel.addReviewToFavorites(userId, currentItem.id)
+                } else {
+                    favouriteViewModel.removeReviewFromFavorites(userId, currentItem.id)
+                }
+
+                favouriteViewModel.updateFavoriteCount(currentItem, newStatus) {
+                    newCount ->  currentItem.totalFavorites = newCount
+                    notifyItemChanged(position)
+                    holder.favorite.isEnabled = true
+                    Log.e("new count", newCount.toString())
+                }
+                favoriteStatusMap[currentItem.id] = newStatus
+                favouriteViewModel.updateFavoriteIndicator(holder.favorite, newStatus)
+            }
+
+
         }
-
-
-//        favouriteViewModel.isReviewFavorited()
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-
         return ReviewViewHolder(itemView)
     }
+
+
 }

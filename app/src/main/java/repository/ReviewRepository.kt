@@ -71,6 +71,8 @@ object ReviewRepository {
                 val reviews = mutableListOf<Review>()
                 for (doc in querySnapshot.documents) {
                     val review = doc.toObject(Review::class.java)!!
+                    review?.id = doc.id
+                    Log.e("reviews fav count", review.totalFavorites.toString())
                     reviews.add(review)
                 }
                 val newLastDocumentSnapshot = if (reviews.size < pageSize) {
@@ -125,6 +127,7 @@ object ReviewRepository {
                 for (doc in querySnapshot.documents) {
                     val review = doc.toObject(Review::class.java)
                     if (review != null) {
+                        review?.id = doc.id
                         reviews.add(review)
                     }
                 }
@@ -154,6 +157,7 @@ object ReviewRepository {
                 for (doc in querySnapshot.documents) {
                     val review = doc.toObject(Review::class.java)
                     if (review != null) {
+                        review?.id = doc.id
                         reviews.add(review)
                     }
                 }
