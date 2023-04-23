@@ -19,6 +19,7 @@
     <string name="change_category">Change Category</string>
     <string name="update_username">Update Username</string>
     <string name="update_password">Update Password</string>
+    <string name="update_comment">Update Comment</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="update">Update</string>
