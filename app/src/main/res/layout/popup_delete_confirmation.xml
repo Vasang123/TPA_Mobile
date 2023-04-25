@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:text="@string/delete_confirmation"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
@@ -39,7 +39,7 @@
 
             <Button
                 android:id="@+id/deleteConfirmationButton"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/primary_button_rounded"
                 android:backgroundTintMode="screen"
@@ -48,18 +48,18 @@
                 android:shadowColor="#090404"
                 android:text="@string/yes"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:translationZ="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.079"
+                app:layout_constraintHorizontal_bias="0.143"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.71" />
 
             <Button
                 android:id="@+id/cancelConfirmationButton"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/cancel_button_rounded"
                 android:backgroundTintMode="screen"
@@ -68,7 +68,7 @@
                 android:shadowColor="#090404"
                 android:text="@string/no"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:translationZ="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

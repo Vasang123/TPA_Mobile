@@ -50,7 +50,7 @@ class CreateReviewViewModel : ViewModel(){
         UserRepository.getLoggedUser(){ user ->
             if(user != null){
                 review.userId = user.id
-                review.username = ""
+                review.username = user.username
                 review.createdAt= Date()
                 review.updatedAt= Date()
                 review.imageURL= imageUrl
