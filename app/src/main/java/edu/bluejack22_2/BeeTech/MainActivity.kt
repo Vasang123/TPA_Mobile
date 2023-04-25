@@ -1,18 +1,18 @@
 package edu.bluejack22_2.BeeTech
 
 
-import adapter.ListViewPagerAdapter
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import navigation_strategy.NavigationMap
 import navigation_strategy.SearchStrategy
+import navigation_strategy.Strategy
 import util.FragmentHelper
 import view_model.UpdatePasswordViewModel
 import view_model.UpdateUsernameViewModel
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var updateUsernameViewModel: UpdateUsernameViewModel
     lateinit var updatePasswordViewModel: UpdatePasswordViewModel
     lateinit var searchQuery: String
-
+    lateinit var strategy : Strategy
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +36,32 @@ class MainActivity : AppCompatActivity(),
         onAction()
         setContentView(binding.root)
     }
-
     override fun init() {
         searchQuery = ""
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         updateUsernameViewModel = ViewModelProvider(this)[UpdateUsernameViewModel::class.java]
         updatePasswordViewModel = ViewModelProvider(this)[UpdatePasswordViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val homeFragment = HomeFragment()
-        homeFragment.setOnSearchQueryListener(this)
-        FragmentHelper.replaceFragment(homeFragment, supportFragmentManager)
+        lateinit var fragment: Fragment
+        userViewModel.currentUser.observe(this, Observer {user->
+            if(user.role == "admin"){
+                fragment = AdminHomeFragment()
+            }else if(user.role == "member"){
+                fragment = HomeFragment()
+                (fragment as HomeFragment).setOnSearchQueryListener(this)
+            }
+            FragmentHelper.replaceFragment(fragment, supportFragmentManager)
+        })
+
     }
-    private fun navigateToScreen(itemId: Int) {
-        val strategy = NavigationMap.map[itemId]
+    private fun navigateToScreen(itemId: Int ) {
+        userViewModel.currentUser.observe(this, Observer {user->
+            if(user.role == "admin"){
+                strategy = NavigationMap.adminMap[itemId]!!
+            }else if(user.role == "member"){
+                strategy = NavigationMap.userMap[itemId]!!
+            }
+        })
         if (itemId == R.id.search_btn && !searchQuery.isNullOrEmpty()) {
             val searchStrategy = SearchStrategy()
             searchStrategy.navigateWithQuery(supportFragmentManager, searchQuery)
