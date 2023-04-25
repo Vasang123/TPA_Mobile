@@ -4,6 +4,7 @@ package edu.bluejack22_2.BeeTech
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
