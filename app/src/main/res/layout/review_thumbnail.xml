@@ -34,6 +34,7 @@
                 android:id="@+id/titleThumbnail"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:maxLines="2"
@@ -43,8 +44,7 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.953"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageThumbnail"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.115" />
 
@@ -52,6 +52,7 @@
                 android:id="@+id/authorThumbnail"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:singleLine="true"
@@ -60,8 +61,8 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.676"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.084"
+                app:layout_constraintStart_toEndOf="@+id/imageThumbnail"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -69,6 +70,7 @@
                 android:id="@+id/dateThumbnail"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:singleLine="true"
@@ -77,10 +79,10 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.676"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.084"
+                app:layout_constraintStart_toEndOf="@+id/imageThumbnail"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.648" />
+                app:layout_constraintVertical_bias="0.68" />
 
             <TextView
                 android:id="@+id/favCount"
