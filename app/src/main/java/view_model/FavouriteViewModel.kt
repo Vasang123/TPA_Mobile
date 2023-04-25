@@ -4,11 +4,13 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import edu.bluejack22_2.BeeTech.R
 import model.Review
 import repository.FavouriteRepository
 
-class FavouriteViewModel {
+class FavouriteViewModel : ViewModel() {
     val favoriteStatus = MutableLiveData<Pair<String, Boolean>>()
     val updatedFavoriteCount = MutableLiveData<Pair<String, Long>>()
     val operationError = MutableLiveData<String>()

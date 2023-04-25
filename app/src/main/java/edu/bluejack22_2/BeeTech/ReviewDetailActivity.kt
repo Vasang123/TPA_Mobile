@@ -8,11 +8,16 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.auth.User
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import edu.bluejack22_2.BeeTech.databinding.ActivityReviewDetailBinding
+import model.Review
 import util.ActivityHelper
 import util.ActivityTemplate
+import view_model.FavouriteViewModel
 import view_model.ReviewDetailViewModel
+import view_model.UserViewModel
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,18 +33,30 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
     lateinit var favorite: ImageView
     lateinit var updateReviewButton: ImageView
     lateinit var deleteReviewButton: ImageView
+    lateinit var closeButton: ImageView
+    lateinit var favouriteViewModel: FavouriteViewModel
+    lateinit var userViewModel: UserViewModel
     lateinit var reviewDetailViewModel: ReviewDetailViewModel
-
+    lateinit var reviewId : Serializable
+    lateinit var userId :String
+    lateinit var currentItem :Review
+    private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init()
-        onAction()
+        binding = ActivityReviewDetailBinding.inflate(layoutInflater)
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel.currentUser.observe(this, Observer{user->
+            userId = user.id
+            init()
+            onAction()
+        })
         setContentView(binding.root)
     }
 
     override fun init() {
-        binding = ActivityReviewDetailBinding.inflate(layoutInflater)
+
         imageView = binding.imageView
+        closeButton = binding.closeDetail
         title = binding.titleDetail
         category = binding.categoryDetail
         description = binding.reviewDetail
@@ -50,13 +67,16 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
         updateReviewButton = binding.updateDetail
         deleteReviewButton = binding.deleteDetail
         reviewDetailViewModel = ViewModelProvider(this)[ReviewDetailViewModel::class.java]
-        val reviewId = intent.getSerializableExtra("review")
+        favouriteViewModel = ViewModelProvider(this)[FavouriteViewModel::class.java]
+        reviewId = intent.getSerializableExtra("review")!!
         reviewDetailViewModel.viewDetail(this,reviewId.toString())
+
     }
 
     override fun onAction() {
         reviewDetailViewModel.review.observe(this, Observer { review->
             if(review != null){
+                currentItem = review
                 Log.e("Review Data", review.title.toString())
                 title.text = review.title
                 description.text = review.description
@@ -71,10 +91,45 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
             }
 
         })
+        closeButton.setOnClickListener{
+            finish()
+            ActivityHelper.changePage(this,MainActivity::class.java)
+        }
+
+        userId?.let { userId ->
+            favouriteViewModel.isReviewFavorited(userId, reviewId.toString()) { isFavorited ->
+                favoriteStatusMap[userId] = isFavorited
+                favouriteViewModel.updateFavoriteIndicator(favorite, isFavorited)
+            }
+        }
+
+        favorite.setOnClickListener {
+            favorite.isEnabled = false
+
+            val currentStatus = favoriteStatusMap[reviewId] ?: false
+
+            val newStatus = !currentStatus
+
+            if (newStatus) {
+                favouriteViewModel.addReviewToFavorites(userId, reviewId.toString())
+            } else {
+                favouriteViewModel.removeReviewFromFavorites(userId, reviewId.toString())
+            }
+
+            favouriteViewModel.updateFavoriteCount(currentItem, newStatus) { newCount ->
+                currentItem.totalFavorites = newCount
+                favCount.text = newCount.toString()
+                favorite.isEnabled = true
+            }
+
+            favoriteStatusMap[reviewId.toString()] = newStatus
+            favouriteViewModel.updateFavoriteIndicator(favorite, newStatus)
+        }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+        ActivityHelper.changePage(this,MainActivity::class.java)
     }
 }

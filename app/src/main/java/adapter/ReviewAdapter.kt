@@ -1,5 +1,6 @@
 package adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -36,6 +37,7 @@ class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteV
                 .into(holder.imageView)
 
             holder.imageView.setOnClickListener{
+                (context as Activity).finish()
                 ActivityHelper.changePage(context, ReviewDetailActivity::class.java, currentItem.id)
             }
             userId?.let { userId ->
