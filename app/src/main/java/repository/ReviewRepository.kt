@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import model.Review
@@ -139,7 +140,25 @@ object ReviewRepository {
             }
     }
 
+    fun getReviewById(
+        onSuccess: (Review?) -> Unit,
+        onFailure: (String) -> Unit,
+        reviewId : String) {
+        var reviewsRef = db.collection("reviews")
+            .document(reviewId)
 
+        reviewsRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val review = documentSnapshot.toObject<Review>()
+                review?.id = documentSnapshot.id
+                onSuccess(review)
+            }
+        }.addOnFailureListener { e ->
+            onFailure(e.message ?: "Error fetching review detail")
+        }
+
+
+    }
 
     fun getSearchReviews(
         onSuccess: (List<Review>) -> Unit,

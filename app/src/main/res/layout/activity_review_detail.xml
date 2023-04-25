@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/commentCreatedAt2"
+            android:id="@+id/reviewCreatedAt"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -66,6 +66,7 @@
             android:id="@+id/reviewDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="268dp"
             android:ellipsize="end"
             android:fontFamily="@font/poppins"
@@ -99,26 +100,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/commentCreatedAt2"
+            app:layout_constraintTop_toTopOf="@+id/reviewCreatedAt"
             app:layout_constraintVertical_bias="0.038" />
+
 
         <ImageView
             android:id="@+id/closeDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:background="@drawable/close_button_oval"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.978"
+            app:layout_constraintHorizontal_bias="0.968"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009"
+            app:layout_constraintVertical_bias="0.011"
             app:srcCompat="@drawable/ic_baseline_close_24" />
-
 
         <ImageView
             android:id="@+id/updateDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="28dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,26 +131,38 @@
 
         <ImageView
             android:id="@+id/deleteDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.662"
+            app:layout_constraintHorizontal_bias="0.639"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009"
+            app:layout_constraintVertical_bias="0.012"
             app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         <ImageView
+            android:id="@+id/deleteDetail2"
+            android:layout_width="40dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/button_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+        <ImageView
             android:id="@+id/favoriteButtonDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.842"
+            app:layout_constraintHorizontal_bias="0.849"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.025"
+            app:layout_constraintVertical_bias="0.074"
             app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
         <TextView
@@ -157,7 +170,7 @@
             android:layout_width="40dp"
             android:layout_height="30dp"
             android:layout_marginStart="21dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="500dp"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_semibold"
@@ -168,10 +181,10 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.94"
+            app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -182,40 +195,26 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.081"
+            app:layout_constraintVertical_bias="0.079"
             app:srcCompat="@drawable/blank_image" />
-
-        <Button
-            android:id="@+id/addComment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/primary_button_rounded"
-            android:text="@string/submit"
-            android:textColor="@color/main_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
-            app:layout_constraintVertical_bias="0.025" />
 
         <EditText
             android:id="@+id/commentTextField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/input_rectangle"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/black_rectangle"
             android:ems="10"
             android:fontFamily="@font/poppins"
             android:gravity="start|top"
             android:hint="Enter your comment"
             android:inputType="textMultiLine"
-            android:lines="3"
+            android:lines="2"
             android:maxLines="3"
             android:padding="5dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/addComment"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintEnd_toStartOf="@+id/deleteDetail2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
             app:layout_constraintVertical_bias="0.0" />
@@ -223,14 +222,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commentRecycleView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/commentTextField"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.155" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
