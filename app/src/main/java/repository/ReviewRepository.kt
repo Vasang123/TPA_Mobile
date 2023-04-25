@@ -11,6 +11,8 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import model.Review
 import model.User
+import java.sql.Time
+import java.sql.Timestamp
 import java.util.*
 
 
@@ -212,6 +214,32 @@ object ReviewRepository {
             }
         }.addOnFailureListener { exception ->
             completion(exception.localizedMessage)
+        }
+    }
+    fun updateReview(
+        review: Review,
+        completion: (String?) -> Unit
+    ) {
+        val documentRef = db.collection("reviews").document(review.id)
+        documentRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                documentRef.update(
+                    "title", review.title,
+                    "description", review.description,
+                    "categoryId", review.categoryId,
+                    "categoryName", review.categoryName,
+                    "imageURL", review.imageURL,
+                    "updatedAt", Date()
+                ).addOnSuccessListener {
+                    completion("Success")
+                }.addOnFailureListener { exception ->
+                    completion("Failed to update review: ${exception.message}")
+                }
+            } else {
+                completion("Review document with ID '${review.id}' not found")
+            }
+        }.addOnFailureListener {
+            completion("Failed to Update Review")
         }
     }
 }

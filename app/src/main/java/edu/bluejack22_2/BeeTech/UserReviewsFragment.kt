@@ -54,7 +54,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
     override fun init() {
         recyclerView = binding.userReviewRecycleView
         favouriteViewModel = FavouriteViewModel()
-        userReviewAdapter = UserReviewAdapter(activity as MainActivity, requireContext(),favouriteViewModel,userId)
+        userReviewAdapter = UserReviewAdapter(parentFragmentManager, activity as MainActivity, requireContext(),favouriteViewModel,userId)
         setupRecyclerView()
         userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
         userReviewViewModel.loadReviews(requireContext())

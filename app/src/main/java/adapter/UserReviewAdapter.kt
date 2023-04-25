@@ -2,14 +2,17 @@ package adapter
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.MainActivity
 import edu.bluejack22_2.BeeTech.R
 import edu.bluejack22_2.BeeTech.ReviewDetailActivity
@@ -18,6 +21,7 @@ import util.ActivityHelper
 import view_model.FavouriteViewModel
 
 class UserReviewAdapter(
+    private val fragmentManager: FragmentManager,
     private val activity: Activity,
     context: Context,
     private val favouriteViewModel: FavouriteViewModel,
@@ -53,7 +57,7 @@ class UserReviewAdapter(
                 }
             }
             holder.updateButton.setOnClickListener{
-                (activity as MainActivity).showUpdateReview()
+                (activity as MainActivity).showUpdateReview(currentItem.id)
             }
             holder.deleteButton.setOnClickListener{
                 (activity as MainActivity).showDeleteReviewConfirmation(currentItem.id)
