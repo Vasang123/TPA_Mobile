@@ -56,7 +56,7 @@ class UserReviewAdapter(
                 (activity as MainActivity).showUpdateReview()
             }
             holder.deleteButton.setOnClickListener{
-
+                (activity as MainActivity).showDeleteReviewConfirmation()
             }
             holder.favorite.setOnClickListener {
                 holder.favorite.isEnabled = false

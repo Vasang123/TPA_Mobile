@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
+import dialog_fragment.DeleteConfirmationDialog
 import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import navigation_strategy.NavigationMap
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(),
     ChangeUsernameDialog.UpdateUserListener,
     ChangePasswordDialog.UpdatePasswordListener,
     UpdateReviewDialog.UpdateReviewDialogListener,
+    DeleteConfirmationDialog.DeleteDialogListener,
     HomeFragment.OnSearchQueryListener{
     lateinit var binding:ActivityMainBinding
     lateinit var userViewModel: UserViewModel
@@ -88,6 +90,10 @@ class MainActivity : AppCompatActivity(),
         val updateReviewDialog = UpdateReviewDialog()
         updateReviewDialog.show(supportFragmentManager, "ChangeReviewDialogFragment")
     }
+    fun showDeleteReviewConfirmation(){
+        val deleteReviewDialog = DeleteConfirmationDialog()
+        deleteReviewDialog.show(supportFragmentManager, "DeleteDialogFragment")
+    }
     fun showChangeUsernamePopup() {
         val updateUserDialog = ChangeUsernameDialog()
         updateUserDialog.show(supportFragmentManager, "ChangeUsernameDialogFragment")
@@ -112,6 +118,10 @@ class MainActivity : AppCompatActivity(),
 
     }
     override fun onReviewUpdate() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDelete() {
         TODO("Not yet implemented")
     }
 }
