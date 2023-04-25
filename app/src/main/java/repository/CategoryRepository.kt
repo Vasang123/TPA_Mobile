@@ -18,7 +18,6 @@ object CategoryRepository {
                     if (item != null) {
                         item.id = doc.id
                         categories.add(item)
-                        Log.e("Category Id",item.id)
                     }
                 }
                 onSuccess(categories)
