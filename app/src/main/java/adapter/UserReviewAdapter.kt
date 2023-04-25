@@ -10,17 +10,24 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import edu.bluejack22_2.BeeTech.MainActivity
 import edu.bluejack22_2.BeeTech.R
 import edu.bluejack22_2.BeeTech.ReviewDetailActivity
 import model.Review
 import util.ActivityHelper
 import view_model.FavouriteViewModel
 
-class UserReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
+class UserReviewAdapter(
+    private val activity: Activity,
+    context: Context,
+    private val favouriteViewModel: FavouriteViewModel,
+    private val userId : String) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
+
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val updateButton: Button = itemView.findViewById(R.id.userUpdateReview)
         val deleteButton: Button = itemView.findViewById(R.id.userDeleteReview)
+
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -45,7 +52,12 @@ class UserReviewAdapter(context: Context, private val favouriteViewModel: Favour
                     favouriteViewModel.updateFavoriteIndicator(holder.favorite, isFavorited)
                 }
             }
+            holder.updateButton.setOnClickListener{
+                (activity as MainActivity).showUpdateReview()
+            }
+            holder.deleteButton.setOnClickListener{
 
+            }
             holder.favorite.setOnClickListener {
                 holder.favorite.isEnabled = false
 

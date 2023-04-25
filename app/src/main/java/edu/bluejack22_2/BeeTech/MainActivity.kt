@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
+import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import navigation_strategy.NavigationMap
 import navigation_strategy.SearchStrategy
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(),
     ActivityTemplate,
     ChangeUsernameDialog.UpdateUserListener,
     ChangePasswordDialog.UpdatePasswordListener,
+    UpdateReviewDialog.UpdateReviewDialogListener,
     HomeFragment.OnSearchQueryListener{
     lateinit var binding:ActivityMainBinding
     lateinit var userViewModel: UserViewModel
@@ -82,6 +84,10 @@ class MainActivity : AppCompatActivity(),
         })
 
     }
+    fun showUpdateReview(){
+        val updateReviewDialog = UpdateReviewDialog()
+        updateReviewDialog.show(supportFragmentManager, "ChangeReviewDialogFragment")
+    }
     fun showChangeUsernamePopup() {
         val updateUserDialog = ChangeUsernameDialog()
         updateUserDialog.show(supportFragmentManager, "ChangeUsernameDialogFragment")
@@ -104,5 +110,8 @@ class MainActivity : AppCompatActivity(),
             binding.bottomNavigationView.selectedItemId = R.id.search_btn
         }
 
+    }
+    override fun onReviewUpdate() {
+        TODO("Not yet implemented")
     }
 }

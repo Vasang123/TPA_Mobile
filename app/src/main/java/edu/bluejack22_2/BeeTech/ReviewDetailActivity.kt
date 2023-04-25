@@ -54,7 +54,6 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
     }
 
     override fun init() {
-
         imageView = binding.imageView
         closeButton = binding.closeDetail
         title = binding.titleDetail
@@ -102,7 +101,6 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
                 favouriteViewModel.updateFavoriteIndicator(favorite, isFavorited)
             }
         }
-
         favorite.setOnClickListener {
             favorite.isEnabled = false
 
