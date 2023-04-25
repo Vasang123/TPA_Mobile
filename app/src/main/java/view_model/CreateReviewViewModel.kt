@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import model.Category
 import model.Review
 import repository.ReviewRepository
 import repository.UserRepository
@@ -16,7 +17,7 @@ class CreateReviewViewModel : ViewModel(){
     private val _createSuccess = MutableLiveData<Boolean>()
     val createSuccess: LiveData<Boolean> = _createSuccess
 
-    fun validateCreate(file: Uri?, title: String, description: String, context: Context) {
+    fun validateCreate(file: Uri?, title: String, description: String, context: Context, category : Category) {
 
         var msg: String? = when {
             file == null -> "File can't be empty"
@@ -34,7 +35,7 @@ class CreateReviewViewModel : ViewModel(){
         insertImage(file){ res->
             if (res != null) {
                 imageUrl = res
-                insertDB(imageUrl,title,description){res->
+                insertDB(imageUrl,title,description,category){res->
                     Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
                     if(res == "Success"){
                         _createSuccess.postValue(true)
@@ -44,7 +45,7 @@ class CreateReviewViewModel : ViewModel(){
         }
 
     }
-    private fun insertDB(imageUrl: String, title: String, description: String, completion: (String?) -> Unit){
+    private fun insertDB(imageUrl: String, title: String, description: String, category : Category, completion: (String?) -> Unit){
         var review =  Review()
         UserRepository.getLoggedUser(){ user ->
             if(user != null){
@@ -56,6 +57,8 @@ class CreateReviewViewModel : ViewModel(){
                 review.title= title
                 review.description= description
                 review.status = user.status
+                review.categoryId = category.id
+                review.categoryName = category.name
                 ReviewRepository.insertReview(review){ res->
                     if(res !=  null){
                         completion(res)
