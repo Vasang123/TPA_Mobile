@@ -2,9 +2,13 @@ package edu.bluejack22_2.BeeTech
 
 
 import adapter.UserReviewAdapter
+import android.app.Dialog
+import android.content.Context
+import android.net.Uri
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,14 +18,12 @@ import dialog_fragment.ChangeUsernameDialog
 import dialog_fragment.DeleteConfirmationDialog
 import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
+import model.Category
 import navigation_strategy.NavigationMap
 import navigation_strategy.SearchStrategy
 import navigation_strategy.Strategy
 import util.FragmentHelper
-import view_model.DeleteReviewViewModel
-import view_model.UpdatePasswordViewModel
-import view_model.UpdateUsernameViewModel
-import view_model.UserViewModel
+import view_model.*
 
 class MainActivity : AppCompatActivity(),
     ActivityTemplate,
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var updateUsernameViewModel: UpdateUsernameViewModel
     lateinit var updatePasswordViewModel: UpdatePasswordViewModel
     lateinit var deleteReviewViewModel: DeleteReviewViewModel
+    lateinit var updateReviewViewModel: UpdateReviewViewModel
     lateinit var searchQuery: String
     lateinit var strategy : Strategy
     lateinit var itemId : String
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(),
         updateUsernameViewModel = ViewModelProvider(this)[UpdateUsernameViewModel::class.java]
         updatePasswordViewModel = ViewModelProvider(this)[UpdatePasswordViewModel::class.java]
         deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
+        updateReviewViewModel = ViewModelProvider(this)[UpdateReviewViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         lateinit var fragment: Fragment
         userViewModel.currentUser.observe(this, Observer {user->
@@ -92,10 +96,15 @@ class MainActivity : AppCompatActivity(),
         deleteReviewViewModel.success.observe(this, Observer { res->
             FragmentHelper.replaceFragment(ListFragment(),supportFragmentManager)
         })
+        updateReviewViewModel.updateSuccess.observe(this, Observer { res->
+            if(res){
+                FragmentHelper.replaceFragment(ListFragment(),supportFragmentManager)
+            }
+        })
     }
-    fun showUpdateReview(){
-        val updateReviewDialog = UpdateReviewDialog()
-        updateReviewDialog.show(supportFragmentManager, "ChangeReviewDialogFragment")
+    fun showUpdateReview(itemId:String){
+        val updateReviewDialog = UpdateReviewDialog.newInstance(itemId)
+        updateReviewDialog.show(supportFragmentManager, "UpdateReviewDialog")
     }
     fun showDeleteReviewConfirmation(reviewId: String){
         val deleteReviewDialog = DeleteConfirmationDialog()
@@ -125,12 +134,32 @@ class MainActivity : AppCompatActivity(),
         }
 
     }
-    override fun onReviewUpdate() {
 
-    }
 
     override fun onDelete() {
         deleteReviewViewModel.deleteReview(this, itemId)
+    }
 
+    override fun onReviewUpdate(
+        file: Uri?,
+        title: String,
+        description: String,
+        context: Context,
+        category: Category,
+        currId : String,
+        dialog: Dialog,
+        selectedImage : ImageView,
+        imageUrl : String
+    ) {
+        updateReviewViewModel.validateUpdate(
+            file,
+            title,
+            description,
+            context,
+            category,
+            currId,
+            dialog,
+            selectedImage,
+            imageUrl)
     }
 }
