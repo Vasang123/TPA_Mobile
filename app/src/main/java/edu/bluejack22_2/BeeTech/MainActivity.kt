@@ -1,6 +1,7 @@
 package edu.bluejack22_2.BeeTech
 
 
+import adapter.UserReviewAdapter
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ import navigation_strategy.NavigationMap
 import navigation_strategy.SearchStrategy
 import navigation_strategy.Strategy
 import util.FragmentHelper
+import view_model.DeleteReviewViewModel
 import view_model.UpdatePasswordViewModel
 import view_model.UpdateUsernameViewModel
 import view_model.UserViewModel
@@ -32,9 +34,10 @@ class MainActivity : AppCompatActivity(),
     lateinit var userViewModel: UserViewModel
     lateinit var updateUsernameViewModel: UpdateUsernameViewModel
     lateinit var updatePasswordViewModel: UpdatePasswordViewModel
+    lateinit var deleteReviewViewModel: DeleteReviewViewModel
     lateinit var searchQuery: String
     lateinit var strategy : Strategy
-
+    lateinit var itemId : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity(),
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         updateUsernameViewModel = ViewModelProvider(this)[UpdateUsernameViewModel::class.java]
         updatePasswordViewModel = ViewModelProvider(this)[UpdatePasswordViewModel::class.java]
+        deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         lateinit var fragment: Fragment
         userViewModel.currentUser.observe(this, Observer {user->
@@ -57,6 +61,7 @@ class MainActivity : AppCompatActivity(),
             }
             FragmentHelper.replaceFragment(fragment, supportFragmentManager)
         })
+
 
     }
     private fun navigateToScreen(itemId: Int ) {
@@ -84,15 +89,18 @@ class MainActivity : AppCompatActivity(),
                 FragmentHelper.replaceFragment(ProfileFragment(),supportFragmentManager)
             }
         })
-
+        deleteReviewViewModel.success.observe(this, Observer { res->
+            FragmentHelper.replaceFragment(ListFragment(),supportFragmentManager)
+        })
     }
     fun showUpdateReview(){
         val updateReviewDialog = UpdateReviewDialog()
         updateReviewDialog.show(supportFragmentManager, "ChangeReviewDialogFragment")
     }
-    fun showDeleteReviewConfirmation(){
+    fun showDeleteReviewConfirmation(reviewId: String){
         val deleteReviewDialog = DeleteConfirmationDialog()
         deleteReviewDialog.show(supportFragmentManager, "DeleteDialogFragment")
+        itemId = reviewId
     }
     fun showChangeUsernamePopup() {
         val updateUserDialog = ChangeUsernameDialog()
@@ -118,10 +126,11 @@ class MainActivity : AppCompatActivity(),
 
     }
     override fun onReviewUpdate() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onDelete() {
-        TODO("Not yet implemented")
+        deleteReviewViewModel.deleteReview(this, itemId)
+
     }
 }

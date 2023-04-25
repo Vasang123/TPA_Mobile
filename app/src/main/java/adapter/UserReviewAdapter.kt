@@ -56,7 +56,7 @@ class UserReviewAdapter(
                 (activity as MainActivity).showUpdateReview()
             }
             holder.deleteButton.setOnClickListener{
-                (activity as MainActivity).showDeleteReviewConfirmation()
+                (activity as MainActivity).showDeleteReviewConfirmation(currentItem.id)
             }
             holder.favorite.setOnClickListener {
                 holder.favorite.isEnabled = false
@@ -70,7 +70,6 @@ class UserReviewAdapter(
                 } else {
                     favouriteViewModel.removeReviewFromFavorites(userId, currentItem.id)
                 }
-
                 favouriteViewModel.updateFavoriteCount(currentItem, newStatus) {
                         newCount ->  currentItem.totalFavorites = newCount
                     notifyItemChanged(position)

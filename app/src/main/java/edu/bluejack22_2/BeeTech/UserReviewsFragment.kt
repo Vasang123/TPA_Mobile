@@ -107,9 +107,4 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
             }
         }
     }
-
-
-
-
-
 }

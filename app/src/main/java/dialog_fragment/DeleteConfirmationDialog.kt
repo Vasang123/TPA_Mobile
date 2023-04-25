@@ -37,7 +37,7 @@ class DeleteConfirmationDialog : BaseDialogFragment() {
         try {
             deleteDialogListener = context as DeleteDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement DeleteDialog")
+            throw ClassCastException("Error Confirmation: " + e.toString())
         }
     }
 }

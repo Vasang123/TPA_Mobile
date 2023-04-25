@@ -51,7 +51,17 @@ object ReviewRepository {
             }
 
     }
+    fun deleteReview(reviewId:String,completion: (String?) -> Unit){
+        val reviewRef = db.collection("reviews").document(reviewId)
+        reviewRef.delete()
+            .addOnSuccessListener {
+                completion("Success")
+            }
+            .addOnFailureListener {
+                completion("Failed to delete review")
+            }
 
+    }
     fun fetchReviews(
         configureQuery: (Query) -> Query,
         onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
