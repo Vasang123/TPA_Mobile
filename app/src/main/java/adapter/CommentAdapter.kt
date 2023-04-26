@@ -33,7 +33,7 @@ class CommentAdapter(
         holder.updatedAt.text = "Updated At: " +sdf.format(currentComment.updatedAt)
         holder.content.text = currentComment.content
         holder.updateButton.setOnClickListener{
-
+            (context as ReviewDetailActivity).showUpdateComment(currentComment.id)
         }
         holder.deleteButton.setOnClickListener{
             (context as ReviewDetailActivity).showDeleteCommentConfirmation(currentComment.id)

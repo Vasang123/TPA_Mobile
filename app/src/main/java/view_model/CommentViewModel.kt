@@ -3,9 +3,15 @@ package view_model
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import model.Category
+import model.Comment
 import repository.CommentRepository
 
 class CommentViewModel : BaseCommentViewModel() {
+    private val _comment = MutableLiveData<Comment>()
+    val comment: LiveData<Comment> = _comment
     override fun loadComments(reviewId: String,context: Context) {
         CommentRepository.getComments(reviewId, { commentList, newLastDocumentSnapshot, isEndOfList ->
             _commentList.value = commentList
@@ -30,6 +36,13 @@ class CommentViewModel : BaseCommentViewModel() {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 loading.value = false
             }, lastDoc)
+        }
+    }
+    fun getCommentById(commentId : String){
+        CommentRepository.getCommentById(commentId){ res ->
+            if(res != null){
+                _comment.postValue(res)
+            }
         }
     }
 }

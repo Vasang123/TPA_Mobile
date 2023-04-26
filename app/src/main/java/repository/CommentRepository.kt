@@ -4,8 +4,10 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import model.Comment
 import model.Review
+import model.User
 import java.util.*
 
 object CommentRepository {
@@ -87,5 +89,40 @@ object CommentRepository {
                 completion("Failed to delete review")
             }
 
+    }
+    fun getCommentById(commentId:String, completion: (Comment?) -> Unit) {
+        val query = db.collection("comments").document(commentId)
+        query.get().addOnSuccessListener { documentSnapshot ->
+            val comment = documentSnapshot.toObject(Comment::class.java)
+            if (comment != null) {
+                comment.id = documentSnapshot.id
+                completion(comment)
+            }
+        }.addOnFailureListener {
+            completion(null)
+        }
+    }
+    fun updateComment(
+        content: String,
+        commentId: String,
+        completion: (String?) -> Unit
+    ) {
+        val documentRef = db.collection("comments").document(commentId)
+        documentRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                documentRef.update(
+                    "content", content,
+                    "updatedAt", Date()
+                ).addOnSuccessListener {
+                    completion("Success")
+                }.addOnFailureListener { exception ->
+                    completion("Failed to update comment: ${exception.message}")
+                }
+            } else {
+                completion("Review document with ID '${commentId}' not found")
+            }
+        }.addOnFailureListener {
+            completion("Failed to Update Review")
+        }
     }
 }

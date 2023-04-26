@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dialog_fragment.DeleteCommentDialog
 import dialog_fragment.DeleteReviewDialog
+import dialog_fragment.UpdateCommentDialog
 import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityReviewDetailBinding
 import model.Category
@@ -35,6 +36,7 @@ class ReviewDetailActivity :
     ActivityTemplate,
     UpdateReviewDialog.UpdateReviewDialogListener,
     DeleteReviewDialog.DeleteReviewDialogListener,
+    UpdateCommentDialog.UpdateCommentListener,
     DeleteCommentDialog.DeleteCommentDialogListener{
     lateinit var binding: ActivityReviewDetailBinding
     lateinit var imageView: ImageView
@@ -65,6 +67,7 @@ class ReviewDetailActivity :
     lateinit var deleteReviewViewModel: DeleteReviewViewModel
     lateinit var deleteCommentViewModel: DeleteCommentViewModel
     lateinit var updateReviewViewModel: UpdateReviewViewModel
+    lateinit var updateCommentViewModel: UpdateCommentViewModel
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +103,7 @@ class ReviewDetailActivity :
         deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
         deleteCommentViewModel = ViewModelProvider(this)[DeleteCommentViewModel::class.java]
         updateReviewViewModel = ViewModelProvider(this)[UpdateReviewViewModel::class.java]
+        updateCommentViewModel = ViewModelProvider(this)[UpdateCommentViewModel::class.java]
         reviewId = intent.getSerializableExtra("review")!!
         reviewOwner = intent.getSerializableExtra("reviewOwner")!!
         reviewDetailViewModel.viewDetail(this,reviewId.toString())
@@ -124,6 +128,11 @@ class ReviewDetailActivity :
     fun showDeleteCommentConfirmation(commentId: String){
         val deleteCommentDialog = DeleteCommentDialog()
         deleteCommentDialog.show(supportFragmentManager, "DeleteCommentFragment")
+        this.commentId = commentId
+    }
+    fun showUpdateComment(commentId: String){
+        val updateCommentDialog = UpdateCommentDialog.newInstance(commentId)
+        updateCommentDialog.show(supportFragmentManager, "UpdateCommentFragment")
         this.commentId = commentId
     }
     override fun onAction() {
@@ -221,6 +230,12 @@ class ReviewDetailActivity :
                 ActivityHelper.changePage(this,ReviewDetailActivity::class.java,reviewId.toString(),reviewOwner.toString())
             }
         })
+        updateCommentViewModel.updateSuccess.observe(this, Observer { res->
+            if(res){
+                finish()
+                ActivityHelper.changePage(this,ReviewDetailActivity::class.java,reviewId.toString(),reviewOwner.toString())
+            }
+        })
     }
     class InfiniteScrollListener(
         private val layoutManager: LinearLayoutManager,
@@ -278,5 +293,9 @@ class ReviewDetailActivity :
 
     override fun onCommentDelete() {
         deleteCommentViewModel.deleteComment(this, commentId)
+    }
+
+    override fun onCommentUpdate(dialog: Dialog, content: String) {
+        updateCommentViewModel.validateUpdate(content,commentId,this)
     }
 }
