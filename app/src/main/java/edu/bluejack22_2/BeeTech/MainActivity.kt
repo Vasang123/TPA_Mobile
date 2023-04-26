@@ -1,7 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
 
-import adapter.UserReviewAdapter
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
@@ -9,13 +8,12 @@ import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dialog_fragment.ChangePasswordDialog
 import dialog_fragment.ChangeUsernameDialog
-import dialog_fragment.DeleteConfirmationDialog
+import dialog_fragment.DeleteReviewDialog
 import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import model.Category
@@ -30,7 +28,7 @@ class MainActivity : AppCompatActivity(),
     ChangeUsernameDialog.UpdateUserListener,
     ChangePasswordDialog.UpdatePasswordListener,
     UpdateReviewDialog.UpdateReviewDialogListener,
-    DeleteConfirmationDialog.DeleteDialogListener,
+    DeleteReviewDialog.DeleteReviewDialogListener,
     HomeFragment.OnSearchQueryListener{
     lateinit var binding:ActivityMainBinding
     lateinit var userViewModel: UserViewModel
@@ -107,7 +105,7 @@ class MainActivity : AppCompatActivity(),
         updateReviewDialog.show(supportFragmentManager, "UpdateReviewDialog")
     }
     fun showDeleteReviewConfirmation(reviewId: String){
-        val deleteReviewDialog = DeleteConfirmationDialog()
+        val deleteReviewDialog = DeleteReviewDialog()
         deleteReviewDialog.show(supportFragmentManager, "DeleteDialogFragment")
         itemId = reviewId
     }
@@ -136,7 +134,7 @@ class MainActivity : AppCompatActivity(),
     }
 
 
-    override fun onDelete() {
+    override fun onReviewDelete() {
         deleteReviewViewModel.deleteReview(this, itemId)
     }
 

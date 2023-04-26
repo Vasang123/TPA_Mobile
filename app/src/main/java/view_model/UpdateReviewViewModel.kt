@@ -77,10 +77,6 @@ class UpdateReviewViewModel : ViewModel() {
         }else{
             Toast.makeText(context, "File can't be empty", Toast.LENGTH_SHORT).show()
         }
-
-
-
-
     }
     private fun insertDB(imageUrl: String, title: String, description: String, category : Category, currId: String, completion: (String?) -> Unit){
         var review =  Review()

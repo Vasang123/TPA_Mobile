@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import edu.bluejack22_2.BeeTech.R
 
-class DeleteConfirmationDialog : BaseDialogFragment() {
-    interface DeleteDialogListener {
-        fun onDelete()
+class DeleteReviewDialog : BaseDialogFragment() {
+    interface DeleteReviewDialogListener {
+        fun onReviewDelete()
     }
 
-    lateinit var deleteDialogListener: DeleteDialogListener
+    lateinit var deleteDialogListener: DeleteReviewDialogListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -23,7 +22,7 @@ class DeleteConfirmationDialog : BaseDialogFragment() {
         val cancelButton = view.findViewById<Button>(R.id.cancelConfirmationButton)
         val accButton = view.findViewById<Button>(R.id.deleteConfirmationButton)
         accButton.setOnClickListener {
-            deleteDialogListener.onDelete()
+            deleteDialogListener.onReviewDelete()
             dismiss()
         }
         cancelButton.setOnClickListener {
@@ -35,7 +34,7 @@ class DeleteConfirmationDialog : BaseDialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            deleteDialogListener = context as DeleteDialogListener
+            deleteDialogListener = context as DeleteReviewDialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException("Error Confirmation: " + e.toString())
         }
