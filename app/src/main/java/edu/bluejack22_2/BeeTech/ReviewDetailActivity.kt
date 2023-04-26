@@ -26,6 +26,7 @@ import model.Category
 import model.Review
 import util.ActivityHelper
 import util.ActivityTemplate
+import util.FragmentHelper
 import view_model.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -61,6 +62,8 @@ class ReviewDetailActivity :
     lateinit var commentViewModel: CommentViewModel
     lateinit var commentAdapter: CommentAdapter
     lateinit var recyclerView: RecyclerView
+    lateinit var deleteReviewViewModel: DeleteReviewViewModel
+    lateinit var updateReviewViewModel: UpdateReviewViewModel
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +80,7 @@ class ReviewDetailActivity :
     override fun init() {
         imageView = binding.imageView
         commentBox = binding.commentTextField
-        sendComment = binding.sendComment
+        sendComment = binding.sendButton
         closeButton = binding.closeDetail
         title = binding.titleDetail
         category = binding.categoryDetail
@@ -93,6 +96,8 @@ class ReviewDetailActivity :
         favouriteViewModel = ViewModelProvider(this)[FavouriteViewModel::class.java]
         createCommentViewModel = ViewModelProvider(this)[CreateCommentViewModel::class.java]
         commentViewModel = ViewModelProvider(this)[CommentViewModel::class.java]
+        deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
+        updateReviewViewModel = ViewModelProvider(this)[UpdateReviewViewModel::class.java]
         reviewId = intent.getSerializableExtra("review")!!
         reviewOwner = intent.getSerializableExtra("reviewOwner")!!
         reviewDetailViewModel.viewDetail(this,reviewId.toString())
@@ -193,6 +198,16 @@ class ReviewDetailActivity :
                 { commentViewModel.isLoading.value == true }
             )
         )
+        deleteReviewViewModel.success.observe(this, Observer { res->
+            finish()
+            ActivityHelper.changePage(this,MainActivity::class.java)
+        })
+        updateReviewViewModel.updateSuccess.observe(this, Observer { res->
+            if(res){
+                finish()
+                ActivityHelper.changePage(this,ReviewDetailActivity::class.java,reviewId.toString(),reviewOwner.toString())
+            }
+        })
     }
     class InfiniteScrollListener(
         private val layoutManager: LinearLayoutManager,
@@ -222,7 +237,7 @@ class ReviewDetailActivity :
     }
 
     override fun onDelete() {
-
+        deleteReviewViewModel.deleteReview(this, reviewId.toString())
     }
 
     override fun onReviewUpdate(
@@ -236,6 +251,15 @@ class ReviewDetailActivity :
         selectedImage: ImageView,
         imageUrl: String
     ) {
-
+        updateReviewViewModel.validateUpdate(
+            file,
+            title,
+            description,
+            context,
+            category,
+            currId,
+            dialog,
+            selectedImage,
+            imageUrl)
     }
 }
