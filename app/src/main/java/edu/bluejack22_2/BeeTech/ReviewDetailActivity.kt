@@ -1,7 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
 import adapter.CommentAdapter
-import adapter.ReviewAdapter
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
@@ -17,16 +16,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.auth.User
-import dialog_fragment.DeleteConfirmationDialog
+import dialog_fragment.DeleteCommentDialog
+import dialog_fragment.DeleteReviewDialog
 import dialog_fragment.UpdateReviewDialog
-import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import edu.bluejack22_2.BeeTech.databinding.ActivityReviewDetailBinding
 import model.Category
+import model.Comment
 import model.Review
 import util.ActivityHelper
 import util.ActivityTemplate
-import util.FragmentHelper
 import view_model.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -36,7 +34,8 @@ class ReviewDetailActivity :
     AppCompatActivity(),
     ActivityTemplate,
     UpdateReviewDialog.UpdateReviewDialogListener,
-    DeleteConfirmationDialog.DeleteDialogListener {
+    DeleteReviewDialog.DeleteReviewDialogListener,
+    DeleteCommentDialog.DeleteCommentDialogListener{
     lateinit var binding: ActivityReviewDetailBinding
     lateinit var imageView: ImageView
     lateinit var title: TextView
@@ -53,6 +52,7 @@ class ReviewDetailActivity :
     lateinit var userViewModel: UserViewModel
     lateinit var reviewDetailViewModel: ReviewDetailViewModel
     lateinit var reviewId : Serializable
+    lateinit var commentId : String
     lateinit var reviewOwner : Serializable
     lateinit var userId :String
     lateinit var commentBox : EditText
@@ -63,6 +63,7 @@ class ReviewDetailActivity :
     lateinit var commentAdapter: CommentAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var deleteReviewViewModel: DeleteReviewViewModel
+    lateinit var deleteCommentViewModel: DeleteCommentViewModel
     lateinit var updateReviewViewModel: UpdateReviewViewModel
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,11 +98,12 @@ class ReviewDetailActivity :
         createCommentViewModel = ViewModelProvider(this)[CreateCommentViewModel::class.java]
         commentViewModel = ViewModelProvider(this)[CommentViewModel::class.java]
         deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
+        deleteCommentViewModel = ViewModelProvider(this)[DeleteCommentViewModel::class.java]
         updateReviewViewModel = ViewModelProvider(this)[UpdateReviewViewModel::class.java]
         reviewId = intent.getSerializableExtra("review")!!
         reviewOwner = intent.getSerializableExtra("reviewOwner")!!
         reviewDetailViewModel.viewDetail(this,reviewId.toString())
-        commentAdapter = CommentAdapter(this)
+        commentAdapter = CommentAdapter( userId,this)
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager =  layoutManager
         recyclerView.adapter = commentAdapter
@@ -115,9 +117,14 @@ class ReviewDetailActivity :
         updateReviewDialog.show(supportFragmentManager, "UpdateReviewDialog")
     }
     fun showDeleteReviewConfirmation(reviewId: String){
-        val deleteReviewDialog = DeleteConfirmationDialog()
+        val deleteReviewDialog = DeleteReviewDialog()
         deleteReviewDialog.show(supportFragmentManager, "DeleteDialogFragment")
         this.reviewId = reviewId
+    }
+    fun showDeleteCommentConfirmation(commentId: String){
+        val deleteCommentDialog = DeleteCommentDialog()
+        deleteCommentDialog.show(supportFragmentManager, "DeleteCommentFragment")
+        this.commentId = commentId
     }
     override fun onAction() {
         reviewDetailViewModel.review.observe(this, Observer { review->
@@ -202,6 +209,12 @@ class ReviewDetailActivity :
             finish()
             ActivityHelper.changePage(this,MainActivity::class.java)
         })
+        deleteCommentViewModel.success.observe(this, Observer { res->
+            if(res == "Success"){
+                finish()
+                ActivityHelper.changePage(this,ReviewDetailActivity::class.java,reviewId.toString(),reviewOwner.toString())
+            }
+        })
         updateReviewViewModel.updateSuccess.observe(this, Observer { res->
             if(res){
                 finish()
@@ -236,7 +249,7 @@ class ReviewDetailActivity :
         ActivityHelper.changePage(this,MainActivity::class.java)
     }
 
-    override fun onDelete() {
+    override fun onReviewDelete() {
         deleteReviewViewModel.deleteReview(this, reviewId.toString())
     }
 
@@ -261,5 +274,9 @@ class ReviewDetailActivity :
             dialog,
             selectedImage,
             imageUrl)
+    }
+
+    override fun onCommentDelete() {
+        deleteCommentViewModel.deleteComment(this, commentId)
     }
 }

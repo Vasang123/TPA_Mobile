@@ -1,5 +1,6 @@
 package adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.bluejack22_2.BeeTech.R
+import edu.bluejack22_2.BeeTech.ReviewDetailActivity
 import model.Comment
 import model.Review
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CommentAdapter(val context: Context):
+class CommentAdapter(
+    val currUser: String,
+    val context: Context):
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
     protected var commentList = emptyList<Comment>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): CommentViewHolder {
@@ -28,6 +32,16 @@ class CommentAdapter(val context: Context):
         holder.createdAt.text = "Created At: " + sdf.format(currentComment.createdAt)
         holder.updatedAt.text = "Updated At: " +sdf.format(currentComment.updatedAt)
         holder.content.text = currentComment.content
+        holder.updateButton.setOnClickListener{
+
+        }
+        holder.deleteButton.setOnClickListener{
+            (context as ReviewDetailActivity).showDeleteCommentConfirmation(currentComment.id)
+        }
+        if(currUser != currentComment.userId){
+            holder.deleteButton.visibility = View.INVISIBLE
+            holder.updateButton.visibility = View.INVISIBLE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -44,8 +58,9 @@ class CommentAdapter(val context: Context):
         val createdAt: TextView = itemView.findViewById(R.id.commentCreatedAt)
         val updatedAt: TextView = itemView.findViewById(R.id.commentUpdatedAt)
         val content: TextView = itemView.findViewById(R.id.commentContent)
-//        val updateButton: ImageView = itemView.findViewById(R.id.updateCommentButton)
-//        val deleteButton: ImageView = itemView.findViewById(R.id.deleteComment)
+        val updateButton: ImageView = itemView.findViewById(R.id.updateComment)
+        val deleteButton: ImageView = itemView.findViewById(R.id.deleteComment)
+
         init {
 
         }

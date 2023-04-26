@@ -77,4 +77,15 @@ object CommentRepository {
         )
 
     }
+    fun deleteComment(commentId:String,completion: (String?) -> Unit){
+        val commentRef = db.collection("comments").document(commentId)
+        commentRef.delete()
+            .addOnSuccessListener {
+                completion("Success")
+            }
+            .addOnFailureListener {
+                completion("Failed to delete review")
+            }
+
+    }
 }
