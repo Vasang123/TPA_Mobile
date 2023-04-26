@@ -38,7 +38,7 @@ class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteV
 
             holder.imageView.setOnClickListener{
                 (context as Activity).finish()
-                ActivityHelper.changePage(context, ReviewDetailActivity::class.java, currentItem.id)
+                ActivityHelper.changePage(context, ReviewDetailActivity::class.java, currentItem.id, currentItem.userId)
             }
             userId?.let { userId ->
                 favouriteViewModel.isReviewFavorited(userId, currentItem.id) { isFavorited ->
