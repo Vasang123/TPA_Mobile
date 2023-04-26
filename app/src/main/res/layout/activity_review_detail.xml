@@ -49,6 +49,7 @@
             android:id="@+id/categoryDetail"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_semibold"
             android:singleLine="true"
@@ -95,7 +96,7 @@
             android:singleLine="false"
             android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd   adasd  a das a a as das das"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -120,13 +121,13 @@
         <ImageView
             android:id="@+id/updateDetail"
             android:layout_width="28dp"
-            android:layout_height="wrap_content"
+            android:layout_height="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.535"
+            app:layout_constraintHorizontal_bias="0.537"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009"
+            app:layout_constraintVertical_bias="0.012"
             app:srcCompat="@drawable/ic_baseline_edit_24" />
 
         <ImageView
@@ -142,7 +143,7 @@
             app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         <ImageView
-            android:id="@+id/deleteDetail2"
+            android:id="@+id/sendComment"
             android:layout_width="40dp"
             android:layout_height="55dp"
             android:layout_marginTop="10dp"
@@ -189,6 +190,8 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -213,7 +216,7 @@
             android:padding="5dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/deleteDetail2"
+            app:layout_constraintEnd_toStartOf="@+id/sendComment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
             app:layout_constraintVertical_bias="0.0" />

@@ -1,12 +1,17 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.CommentAdapter
+import adapter.ReviewAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.auth.User
 import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
@@ -14,9 +19,7 @@ import edu.bluejack22_2.BeeTech.databinding.ActivityReviewDetailBinding
 import model.Review
 import util.ActivityHelper
 import util.ActivityTemplate
-import view_model.FavouriteViewModel
-import view_model.ReviewDetailViewModel
-import view_model.UserViewModel
+import view_model.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -39,7 +42,13 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
     lateinit var reviewDetailViewModel: ReviewDetailViewModel
     lateinit var reviewId : Serializable
     lateinit var userId :String
+    lateinit var commentBox : EditText
+    lateinit var sendComment : ImageView
     lateinit var currentItem :Review
+    lateinit var createCommentViewModel: CreateCommentViewModel
+    lateinit var commentViewModel: CommentViewModel
+    lateinit var commentAdapter: CommentAdapter
+    lateinit var recyclerView: RecyclerView
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +64,8 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
 
     override fun init() {
         imageView = binding.imageView
+        commentBox = binding.commentTextField
+        sendComment = binding.sendComment
         closeButton = binding.closeDetail
         title = binding.titleDetail
         category = binding.categoryDetail
@@ -65,11 +76,17 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
         favorite = binding.favoriteButtonDetail
         updateReviewButton = binding.updateDetail
         deleteReviewButton = binding.deleteDetail
+        recyclerView = binding.commentRecycleView
         reviewDetailViewModel = ViewModelProvider(this)[ReviewDetailViewModel::class.java]
         favouriteViewModel = ViewModelProvider(this)[FavouriteViewModel::class.java]
+        createCommentViewModel = ViewModelProvider(this)[CreateCommentViewModel::class.java]
+        commentViewModel = ViewModelProvider(this)[CommentViewModel::class.java]
         reviewId = intent.getSerializableExtra("review")!!
         reviewDetailViewModel.viewDetail(this,reviewId.toString())
-
+        commentAdapter = CommentAdapter(this)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager =  layoutManager
+        recyclerView.adapter = commentAdapter
     }
 
     override fun onAction() {
@@ -88,8 +105,16 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
                     .load(review.imageURL)
                     .into(imageView)
             }
-
         })
+        createCommentViewModel.createSuccess.observe(this, Observer { res ->
+            if(res){
+                ActivityHelper.changePage(this,ReviewDetailActivity::class.java,reviewId.toString())
+            }
+        })
+        sendComment.setOnClickListener{
+            createCommentViewModel.validateCreate(commentBox.text.toString(), reviewId.toString(),this)
+            commentBox.setText("")
+        }
         closeButton.setOnClickListener{
             finish()
             ActivityHelper.changePage(this,MainActivity::class.java)
@@ -123,8 +148,42 @@ class ReviewDetailActivity : AppCompatActivity(), ActivityTemplate {
             favoriteStatusMap[reviewId.toString()] = newStatus
             favouriteViewModel.updateFavoriteIndicator(favorite, newStatus)
         }
+        commentViewModel.loadComments(reviewId.toString(), this)
+        commentViewModel.commentList.observe(this, Observer { list ->
+            if (list.isNotEmpty()) {
+                commentAdapter.submitList(list)
+            }
+        })
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.addOnScrollListener(
+            InfiniteScrollListener(
+                layoutManager,
+                { commentViewModel.loadMoreReviewComments(reviewId.toString(),this) },
+                { commentViewModel.isLoading.value == true }
+            )
+        )
     }
+    class InfiniteScrollListener(
+        private val layoutManager: LinearLayoutManager,
+        private val loadMore: () -> Unit,
+        private val isLoading: () -> Boolean
+    ) : RecyclerView.OnScrollListener() {
+        private val threshold = 5
 
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (isLoading()) return
+
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+            if (firstVisibleItemPosition + visibleItemCount + threshold >= totalItemCount) {
+                loadMore()
+            }
+        }
+    }
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
