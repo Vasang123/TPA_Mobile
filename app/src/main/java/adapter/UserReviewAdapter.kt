@@ -2,30 +2,23 @@ package adapter
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import dialog_fragment.UpdateReviewDialog
 import edu.bluejack22_2.BeeTech.MainActivity
 import edu.bluejack22_2.BeeTech.R
 import edu.bluejack22_2.BeeTech.ReviewDetailActivity
-import model.Review
 import util.ActivityHelper
 import view_model.FavouriteViewModel
 
 class UserReviewAdapter(
-    private val fragmentManager: FragmentManager,
     private val activity: Activity,
     context: Context,
     private val favouriteViewModel: FavouriteViewModel,
-    private val userId : String) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
+    private val userId: String
+) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
 
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -68,10 +69,11 @@ object ReviewRepository {
         configureQuery: (Query) -> Query,
         onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
         onFailure: (String) -> Unit,
-        lastDocumentSnapshot: DocumentSnapshot? = null
+        lastDocumentSnapshot: DocumentSnapshot? = null,
+        ref : String = "reviews"
     ) {
         val pageSize: Long = 5
-        var reviewsRef = db.collection("reviews")
+        var reviewsRef = db.collection(ref)
             .whereEqualTo("status", "active")
         reviewsRef = configureQuery(reviewsRef)
 
@@ -171,6 +173,55 @@ object ReviewRepository {
 
 
     }
+
+    fun fetchFavoriteReviews(
+        userId: String,
+        lastTimestamp: Long? = null,
+        onSuccess: (List<Review>, Long?) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val pageSize = 5
+        Log.e("User Id inside fetchFavoriteReviews ", userId)
+
+        var favoritesRef: Query = db.collection("users").document(userId).collection("favorites")
+
+        if (lastTimestamp != null) {
+            favoritesRef = favoritesRef.whereGreaterThan("timestamp", lastTimestamp)
+        }
+
+        favoritesRef.orderBy("timestamp").limit(pageSize.toLong()).get()
+            .addOnSuccessListener { favoritesSnapshot ->
+                val reviewIds = favoritesSnapshot.documents.map { it.id }
+                Log.e("Review Ids inside fetchFavoriteReviews", reviewIds.toString())
+
+                // If there are no more favorite reviews, call onSuccess with an empty list and null for the last review ID
+                if (reviewIds.isEmpty()) {
+                    onSuccess(listOf(), null)
+                    return@addOnSuccessListener
+                }
+
+                val reviewsRef = db.collection("reviews")
+
+                reviewsRef.whereIn(FieldPath.documentId(), reviewIds).get()
+                    .addOnSuccessListener { reviewsSnapshot ->
+                        val reviews = reviewsSnapshot.documents.mapNotNull { document ->
+                            val review = document.toObject(Review::class.java)
+                            review?.id = document.id
+                            review
+                        }
+                        val newLastTimestamp = favoritesSnapshot.documents.lastOrNull()?.getLong("timestamp")
+                        onSuccess(reviews, newLastTimestamp)
+                    }
+                    .addOnFailureListener { e ->
+                        onFailure(e.message ?: "Error fetching reviews")
+                    }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching favorite reviews")
+            }
+    }
+
+
 
     fun getSearchReviews(
         onSuccess: (List<Review>) -> Unit,

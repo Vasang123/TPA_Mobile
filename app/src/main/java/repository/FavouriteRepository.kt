@@ -11,88 +11,49 @@ object FavouriteRepository {
     fun addReviewToFavorites(userId: String, reviewId: String,
                              onSuccess: () -> Unit,
                              onFailure: (String) -> Unit) {
-        val favoriteRef = db.collection("favorites").document(userId)
-        favoriteRef.get()
-            .addOnSuccessListener { document ->
-                val currentFavorites = document.data?.toMutableMap() ?: mutableMapOf()
-                currentFavorites[reviewId] = true
-                favoriteRef.set(currentFavorites)
-                    .addOnSuccessListener {
-                        onSuccess()
-                    }
-                    .addOnFailureListener { e ->
-                        onFailure(e.message ?: "Error adding review to favorites")
-                    }
+        val favoriteRef = db.collection("users").document(userId).collection("favorites").document(reviewId)
+        val currentTime = System.currentTimeMillis()
+        favoriteRef.set(hashMapOf("id" to reviewId, "timestamp" to currentTime))
+            .addOnSuccessListener {
+                onSuccess()
             }
             .addOnFailureListener { e ->
-                onFailure(e.message ?: "Error fetching favorites")
+                onFailure(e.message ?: "Error adding review to favorites")
             }
     }
 
     fun removeReviewFromFavorites(userId: String, reviewId: String,
                                   onSuccess: () -> Unit,
                                   onFailure: (String) -> Unit) {
-        val favoriteRef = db.collection("favorites").document(userId)
-        favoriteRef.get()
-            .addOnSuccessListener { document ->
-                val currentFavorites = document.data?.toMutableMap() ?: mutableMapOf()
-                currentFavorites.remove(reviewId)
-                favoriteRef.set(currentFavorites)
-                    .addOnSuccessListener {
-                        onSuccess()
-                    }
-                    .addOnFailureListener { e ->
-                        onFailure(e.message ?: "Error removing review from favorites")
-                    }
+        val favoriteRef = db.collection("users").document(userId).collection("favorites").document(reviewId)
+        favoriteRef.delete()
+            .addOnSuccessListener {
+                onSuccess()
             }
             .addOnFailureListener { e ->
-                onFailure(e.message ?: "Error fetching favorites")
+                onFailure(e.message ?: "Error removing review from favorites")
             }
     }
 
-    fun isReviewFavorite(userId: String, reviewId: String, onSuccess: (Boolean) -> Unit, onFailure: (String) -> Unit) {
-        val favoriteRef = db.collection("favorites").document(userId)
+    fun isReviewFavorite(userId: String, reviewId: String?, onSuccess: (Boolean) -> Unit, onFailure: (String) -> Unit) {
+        if(reviewId.isNullOrEmpty()) {
+            onFailure("ReviewId is null or empty")
+            return
+        }
+
+//        Log.e("User Id  in isReviewFavorite", userId)
+//        Log.e("Review Id  in isReviewFavorite", reviewId)
+
+        val favoriteRef = db.collection("users").document(userId).collection("favorites").document(reviewId)
         favoriteRef.get()
             .addOnSuccessListener { document ->
-                val currentFavorites = document.data ?: mapOf<String, Any>()
-                onSuccess(currentFavorites.containsKey(reviewId))
+                onSuccess(document.exists())
             }
             .addOnFailureListener { e ->
                 onFailure(e.message ?: "Error checking favorite status")
             }
     }
 
-
-    fun getFavoriteReviews(userId: String, onSuccess: (List<Review>) -> Unit, onFailure: (String) -> Unit) {
-        val favoriteRef = db.collection("favorites").document(userId)
-        favoriteRef.get()
-            .addOnSuccessListener { document ->
-                val favoriteIds = document.data?.keys ?: emptySet<String>()
-                val reviews = mutableListOf<Review>()
-                val countDownLatch = CountDownLatch(favoriteIds.size)
-
-                favoriteIds.forEach { reviewId ->
-                    db.collection("reviews").document(reviewId).get()
-                        .addOnSuccessListener { reviewDoc ->
-                            val review = reviewDoc.toObject(Review::class.java)
-                            if (review != null) {
-                                reviews.add(review)
-                            }
-                            countDownLatch.countDown()
-                        }
-                        .addOnFailureListener { e ->
-                            onFailure(e.message ?: "Error fetching favorite reviews")
-                            countDownLatch.countDown()
-                        }
-                }
-
-                countDownLatch.await()
-                onSuccess(reviews)
-            }
-            .addOnFailureListener { e ->
-                onFailure(e.message ?: "Error fetching favorites")
-            }
-    }
 
     fun updateCount(review : Review, increment : Boolean, onSuccess: (Long) -> Unit){
         val favoriteRef = db.collection("reviews").document(review.id)

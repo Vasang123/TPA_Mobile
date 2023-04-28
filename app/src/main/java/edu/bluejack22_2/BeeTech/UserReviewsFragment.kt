@@ -1,6 +1,5 @@
 package edu.bluejack22_2.BeeTech
 
-import adapter.ReviewAdapter
 import adapter.UserReviewAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -54,7 +53,12 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
     override fun init() {
         recyclerView = binding.userReviewRecycleView
         favouriteViewModel = FavouriteViewModel()
-        userReviewAdapter = UserReviewAdapter(parentFragmentManager, activity as MainActivity, requireContext(),favouriteViewModel,userId)
+        userReviewAdapter = UserReviewAdapter(
+            activity as MainActivity,
+            requireContext(),
+            favouriteViewModel,
+            userId
+        )
         setupRecyclerView()
         userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
         userReviewViewModel.loadReviews(requireContext())
