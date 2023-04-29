@@ -1,5 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.BaseReviewAdapter
 import adapter.ReviewAdapter
 import android.os.Bundle
 import android.util.Log
@@ -12,19 +13,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import edu.bluejack22_2.BeeTech.databinding.FragmentProfileBinding
 import edu.bluejack22_2.BeeTech.databinding.FragmentSearchBinding
 
 import model.Review
-import repository.UserRepository
 import util.ActivityTemplate
 import view_model.FavouriteViewModel
-import view_model.HomeViewModel
 import view_model.SearchViewModel
 import view_model.UserViewModel
 
-class SearchFragment : Fragment(),ActivityTemplate {
+class SearchFragment : Fragment(),ActivityTemplate,BaseReviewAdapter.OnFavoriteClickListener {
     lateinit var searchViewModel: SearchViewModel
     lateinit var reviewAdapter: ReviewAdapter
     lateinit var recyclerView: RecyclerView
@@ -42,7 +39,7 @@ class SearchFragment : Fragment(),ActivityTemplate {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -51,36 +48,36 @@ class SearchFragment : Fragment(),ActivityTemplate {
         super.onViewCreated(view, savedInstanceState)
         searchQuery = arguments?.getString("searchQuery").toString()
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.currentUser.observe(requireActivity(), Observer{user->
+        userViewModel.currentUser.observe(requireActivity()) { user ->
             userId = user.id
             Log.e("USer search", userId)
 
             favouriteViewModel = FavouriteViewModel()
-            reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+            reviewAdapter = ReviewAdapter(requireContext(), favouriteViewModel, userId, this)
             recyclerView = binding.searchRecycleReview
             setupRecyclerView()
             init()
             onAction()
-        })
+        }
     }
 
     override fun init() {
         searchView = binding.searchBar
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         Log.e("123",searchQuery)
-        if(searchQuery.isNullOrEmpty() || searchQuery == "null"){
+        if(searchQuery.isEmpty() || searchQuery == "null"){
             searchViewModel.loadReviews(requireContext(),"")
         }else{
             searchViewModel.loadReviews(requireContext(),searchQuery)
         }
-        searchViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
+        searchViewModel.reviewList.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 reviewAdapter.submitList(list)
             }
-        })
+        }
     }
     private fun resetAdapter(newList: List<Review>) {
-        val newAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+        val newAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId,this)
         Log.e("user id di reset", userId)
         newAdapter.submitList(newList)
         recyclerView.adapter = newAdapter
@@ -100,16 +97,20 @@ class SearchFragment : Fragment(),ActivityTemplate {
             }
 
         })
-        searchViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
+        searchViewModel.reviewList.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 resetAdapter(list)
             }
-        })
+        }
     }
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager =  layoutManager
         recyclerView.adapter = reviewAdapter
+    }
+
+    override fun onFavoriteClick() {
+
     }
 }
