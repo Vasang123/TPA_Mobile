@@ -1,5 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.BaseReviewAdapter
 import adapter.UserReviewAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,12 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.bluejack22_2.BeeTech.databinding.FragmentUserReviewBinding
+import util.ActivityHelper
 import util.ActivityTemplate
+import util.FragmentHelper
 import view_model.FavouriteViewModel
 import view_model.UserReviewViewModel
 import view_model.UserViewModel
 
-class UserReviewsFragment : Fragment(), ActivityTemplate {
+class UserReviewsFragment : Fragment(), ActivityTemplate, BaseReviewAdapter.OnFavoriteClickListener {
 
     lateinit var userReviewViewModel: UserReviewViewModel
     lateinit var userReviewAdapter: UserReviewAdapter
@@ -57,7 +60,8 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
             activity as MainActivity,
             requireContext(),
             favouriteViewModel,
-            userId
+            userId,
+            this
         )
         setupRecyclerView()
         userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
@@ -82,6 +86,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
     override fun onAction() {
 
     }
+
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
@@ -110,5 +115,11 @@ class UserReviewsFragment : Fragment(), ActivityTemplate {
                 loadMore()
             }
         }
+    }
+
+    override fun onFavoriteClick() {
+       FragmentHelper.replaceFragment(ListFragment(),parentFragmentManager)
+
+
     }
 }

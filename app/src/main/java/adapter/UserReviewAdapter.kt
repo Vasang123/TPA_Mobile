@@ -17,8 +17,9 @@ class UserReviewAdapter(
     private val activity: Activity,
     context: Context,
     private val favouriteViewModel: FavouriteViewModel,
-    private val userId: String
-) : BaseReviewAdapter(context, R.layout.user_review_thumbnail) {
+    private val userId: String,
+    onFavoriteClickListener: OnFavoriteClickListener
+) : BaseReviewAdapter(context, R.layout.user_review_thumbnail, onFavoriteClickListener) {
 
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     inner class ReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
@@ -74,6 +75,7 @@ class UserReviewAdapter(
                 }
                 favoriteStatusMap[currentItem.id] = newStatus
                 favouriteViewModel.updateFavoriteIndicator(holder.favorite, newStatus)
+                onFavoriteClickListener.onFavoriteClick()
             }
         }
     }

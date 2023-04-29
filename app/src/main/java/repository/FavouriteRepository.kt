@@ -3,7 +3,6 @@ package repository
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import model.Review
-import java.util.concurrent.CountDownLatch
 
 object FavouriteRepository {
     val db = FirebaseFirestore.getInstance()
@@ -50,7 +49,7 @@ object FavouriteRepository {
                 onSuccess(document.exists())
             }
             .addOnFailureListener { e ->
-                onFailure(e.message ?: "Error checking favorite status")
+                    onFailure(e.message ?: "Error checking favorite status")
             }
     }
 
@@ -65,7 +64,7 @@ object FavouriteRepository {
                 newFavoriteCount = if (increment) {
                     currentReview.totalFavorites + 1
                 } else {
-                    currentReview.totalFavorites - 1
+                    maxOf(0, currentReview.totalFavorites - 1)
                 }
                 transaction.update(favoriteRef, "totalFavorites", newFavoriteCount)
 

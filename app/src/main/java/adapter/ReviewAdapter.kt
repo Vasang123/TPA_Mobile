@@ -2,21 +2,16 @@ package adapter
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.bluejack22_2.BeeTech.R
 import edu.bluejack22_2.BeeTech.ReviewDetailActivity
 import util.ActivityHelper
 import view_model.FavouriteViewModel
 
-class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String) : BaseReviewAdapter(context, R.layout.review_thumbnail) {
+class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String, onFavoriteClickListener: OnFavoriteClickListener) : BaseReviewAdapter(context, R.layout.review_thumbnail,onFavoriteClickListener) {
 
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
 
@@ -40,7 +35,7 @@ class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteV
                 (context as Activity).finish()
                 ActivityHelper.changePage(context, ReviewDetailActivity::class.java, currentItem.id, currentItem.userId)
             }
-            userId?.let { userId ->
+            userId.let { userId ->
                 favouriteViewModel.isReviewFavorited(userId, currentItem.id) { isFavorited ->
                     favoriteStatusMap[currentItem.id] = isFavorited
                     favouriteViewModel.updateFavoriteIndicator(holder.favorite, isFavorited)
@@ -67,6 +62,7 @@ class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteV
                 }
                 favoriteStatusMap[currentItem.id] = newStatus
                 favouriteViewModel.updateFavoriteIndicator(holder.favorite, newStatus)
+                onFavoriteClickListener.onFavoriteClick()
             }
 
 

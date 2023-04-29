@@ -1,23 +1,22 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.BaseReviewAdapter
 import adapter.ReviewAdapter
-import adapter.UserReviewAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.bluejack22_2.BeeTech.databinding.FragmentFavouriteListBinding
-import edu.bluejack22_2.BeeTech.databinding.FragmentUserReviewBinding
+import util.FragmentHelper
 import view_model.FavouriteViewModel
 import view_model.UserReviewViewModel
 import view_model.UserViewModel
 
-class FavouriteListFragment : Fragment() {
+class FavouriteListFragment : Fragment(), BaseReviewAdapter.OnFavoriteClickListener {
 
     lateinit var userReviewViewModel: UserReviewViewModel
     lateinit var reviewAdapter : ReviewAdapter
@@ -37,7 +36,7 @@ class FavouriteListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentFavouriteListBinding.inflate(layoutInflater,container,false)
         return binding.root
@@ -46,28 +45,28 @@ class FavouriteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.currentUser.observe(requireActivity(), Observer{user->
+        userViewModel.currentUser.observe(requireActivity()) { user ->
             userId = user.id
             init()
-        })
+        }
     }
 
     fun init() {
         recyclerView = binding.userFavReviewRecycleView
         favouriteViewModel = FavouriteViewModel()
-        reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+        reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId,this)
         setupRecyclerView()
         userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
         userReviewViewModel.loadFavoritedReviews(requireContext())
-        userReviewViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
+        userReviewViewModel.reviewList.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 reviewAdapter.submitList(list)
             }
-        })
+        }
 
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addOnScrollListener(
-            FavouriteListFragment.InfiniteScrollListener(
+            InfiniteScrollListener(
                 layoutManager,
                 { userReviewViewModel.loadMoreFavoritedReviews(requireContext()) },
                 { userReviewViewModel.isLoading.value == true }
@@ -81,9 +80,6 @@ class FavouriteListFragment : Fragment() {
         recyclerView.adapter = reviewAdapter
 
     }
-
-
-
 
 
     class InfiniteScrollListener(
@@ -108,6 +104,10 @@ class FavouriteListFragment : Fragment() {
         }
     }
 
+    override fun onFavoriteClick() {
+        FragmentHelper.replaceFragment(ListFragment(),parentFragmentManager)
+
+    }
 
 
 }

@@ -1,10 +1,9 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.BaseReviewAdapter
 import adapter.ReviewAdapter
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,17 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import edu.bluejack22_2.BeeTech.databinding.ActivityMainBinding
 import edu.bluejack22_2.BeeTech.databinding.FragmentHomeBinding
-import navigation_strategy.SearchStrategy
-import repository.UserRepository
 import util.ActivityTemplate
 import view_model.FavouriteViewModel
 import view_model.HomeViewModel
 import view_model.UserViewModel
 
 
-class HomeFragment : Fragment(),ActivityTemplate {
+class HomeFragment : Fragment(),ActivityTemplate,BaseReviewAdapter.OnFavoriteClickListener {
 
     lateinit var homeViewModel: HomeViewModel
     lateinit var reviewAdapter: ReviewAdapter
@@ -44,7 +40,7 @@ class HomeFragment : Fragment(),ActivityTemplate {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -52,26 +48,26 @@ class HomeFragment : Fragment(),ActivityTemplate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.currentUser.observe(requireActivity(), Observer{user->
+        userViewModel.currentUser.observe(requireActivity()) { user ->
             userId = user.id
             init()
             onAction()
-        })
+        }
     }
 
     override fun init() {
         recyclerView = binding.homeRecyclerView
         favouriteViewModel = FavouriteViewModel()
-        reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId)
+        reviewAdapter = ReviewAdapter(requireContext(),favouriteViewModel,userId,this)
         setupRecyclerView()
-        searchView = binding.homeSearch ?: SearchView(requireContext())
+        searchView = binding.homeSearch
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.loadReviews(requireContext())
-        homeViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
+        homeViewModel.reviewList.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 reviewAdapter.submitList(list)
             }
-        })
+        }
 
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addOnScrollListener(
@@ -149,6 +145,9 @@ class HomeFragment : Fragment(),ActivityTemplate {
         onSearchQueryListener = null
     }
 
+    override fun onFavoriteClick() {
+
+    }
 
 
 }
