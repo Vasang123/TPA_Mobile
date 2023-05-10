@@ -310,4 +310,29 @@ object ReviewRepository {
             completion("Failed to Update Review")
         }
     }
+
+    fun getAllReviewsByUsername(
+        username : String,
+        onSuccess: (List<Review>) -> Unit,
+        onFailure: (String) -> Unit) {
+
+        var reviewsRef = db.collection("reviews")
+            .whereEqualTo("username", username)
+        reviewsRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val reviews = mutableListOf<Review>()
+                for (doc in querySnapshot.documents) {
+                    val review = doc.toObject(Review::class.java)
+                    if (review != null) {
+                        review?.id = doc.id
+                        reviews.add(review)
+                    }
+                }
+                onSuccess(reviews)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching reviews")
+            }
+    }
+
 }

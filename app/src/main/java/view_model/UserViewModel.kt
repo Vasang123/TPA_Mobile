@@ -65,5 +65,14 @@ class UserViewModel : ViewModel() {
             lastDocumentSnapshot = lastDocumentSnapshot.value
         )
     }
+
+    fun banUser(userID : String){
+        UserRepository.updateUserStatus(userID,"banned", onSuccess = {}, onFailure = {})
+    }
+
+    fun unbanUser(userID : String){
+        UserRepository.updateUserStatus(userID,"active", onSuccess = {}, onFailure = {})
+    }
+
 }
 

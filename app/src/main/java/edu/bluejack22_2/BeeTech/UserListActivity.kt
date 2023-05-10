@@ -31,7 +31,7 @@ class UserListActivity : AppCompatActivity() {
     fun init(){
         recyclerView = binding.userListRecycleView
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userAdapter = UserAdapter(this)
+        userAdapter = UserAdapter(this,userViewModel)
         setupRecyclerView()
 
         userViewModel.loadUser()
