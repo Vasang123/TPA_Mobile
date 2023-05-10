@@ -11,7 +11,8 @@ import edu.bluejack22_2.BeeTech.ReviewDetailActivity
 import util.ActivityHelper
 import view_model.FavouriteViewModel
 
-class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String, onFavoriteClickListener: OnFavoriteClickListener) : BaseReviewAdapter(context, R.layout.review_thumbnail,onFavoriteClickListener) {
+class ReviewAdapter(context: Context, private val favouriteViewModel: FavouriteViewModel, private val userId : String, onFavoriteClickListener: OnFavoriteClickListener) :
+    BaseReviewAdapter(context, R.layout.review_thumbnail,onFavoriteClickListener) {
 
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
 

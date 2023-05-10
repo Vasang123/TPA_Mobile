@@ -105,9 +105,13 @@ object UserRepository {
         }
     }
 
-    fun updateUserStatus(userId: String, status: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+    fun updateUserStatus(userId: String, status: String, onFailure: (String) -> Unit) {
         db.collection("users").document(userId).update("status", status)
-            .addOnSuccessListener { onSuccess() }
+            .addOnSuccessListener {
+                ReviewRepository.updateReviewStatus(userId,status){
+
+                }
+            }
             .addOnFailureListener { e -> onFailure(e.message ?: "An error occurred") }
     }
 

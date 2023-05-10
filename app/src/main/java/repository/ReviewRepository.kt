@@ -116,6 +116,60 @@ object ReviewRepository {
             lastDocumentSnapshot = lastDocumentSnapshot
         )
     }
+    fun fetchUserSpesificReviews(
+        configureQuery: (Query) -> Query,
+        onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
+        onFailure: (String) -> Unit,
+        lastDocumentSnapshot: DocumentSnapshot? = null,
+        ref : String = "reviews",
+        userId: String
+    ) {
+        val pageSize: Long = 5
+        var reviewsRef = db.collection(ref)
+            .whereEqualTo("status", "active")
+            .whereEqualTo("userId", userId)
+        reviewsRef = configureQuery(reviewsRef)
+
+        if (lastDocumentSnapshot != null) {
+            reviewsRef = reviewsRef.startAfter(lastDocumentSnapshot)
+        }
+
+        reviewsRef.limit(pageSize).get()
+            .addOnSuccessListener { querySnapshot ->
+                val reviews = mutableListOf<Review>()
+                for (doc in querySnapshot.documents) {
+                    val review = doc.toObject(Review::class.java)!!
+                    review?.id = doc.id
+                    Log.e("reviews fav count", review.totalFavorites.toString())
+                    reviews.add(review)
+                }
+                val newLastDocumentSnapshot = if (reviews.size < pageSize) {
+                    null
+                } else {
+                    querySnapshot.documents.last()
+                }
+
+                val isEndOfList = reviews.size < pageSize
+                onSuccess(reviews, newLastDocumentSnapshot, isEndOfList)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching reviews")
+            }
+    }
+    fun getUserSpesficReviews(onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
+                       onFailure: (String) -> Unit,
+                       lastDocumentSnapshot: DocumentSnapshot? = null,
+                        userId: String) {
+        fetchUserSpesificReviews(
+            configureQuery = { query ->
+                query.orderBy("createdAt", Query.Direction.DESCENDING)
+            },
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+            lastDocumentSnapshot = lastDocumentSnapshot,
+            userId = userId
+        )
+    }
     fun getUserReviews(userId: String, onSuccess: (List<Review>, DocumentSnapshot?, Boolean) -> Unit,
                        onFailure: (String) -> Unit,
                        lastDocumentSnapshot: DocumentSnapshot? = null, ) {
@@ -274,6 +328,23 @@ object ReviewRepository {
             for (doc in querySnapshot.documents) {
                 val reviewRef = db.collection("reviews").document(doc.id)
                 batch.update(reviewRef, "categoryName", data)
+            }
+            batch.commit().addOnSuccessListener {
+                completion("Done")
+            }.addOnFailureListener { exception ->
+                completion(exception.localizedMessage)
+            }
+        }.addOnFailureListener { exception ->
+            completion(exception.localizedMessage)
+        }
+    }
+    fun updateReviewStatus(userId: String, data: String, completion: (String?) -> Unit) {
+        val reviewsRef = db.collection("reviews").whereEqualTo("userId", userId)
+        reviewsRef.get().addOnSuccessListener { querySnapshot ->
+            val batch = db.batch()
+            for (doc in querySnapshot.documents) {
+                val reviewRef = db.collection("reviews").document(doc.id)
+                batch.update(reviewRef, "status", data)
             }
             batch.commit().addOnSuccessListener {
                 completion("Done")

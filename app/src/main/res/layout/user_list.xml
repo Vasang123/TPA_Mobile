@@ -21,10 +21,9 @@
 
             <TextView
                 android:id="@+id/usernameList"
-                android:layout_width="200dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:singleLine="true"
@@ -34,12 +33,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.024"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.41" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/emailList"
-                android:layout_width="200dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:ellipsize="end"
@@ -58,7 +56,7 @@
                 android:id="@+id/banButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="212dp"
+                android:layout_marginStart="192dp"
                 android:background="@drawable/cancel_button_rounded"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/ban"
@@ -66,7 +64,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.75" />
+                app:layout_constraintVertical_bias="0.656" />
 
             <Button
                 android:id="@+id/unbanButton"

@@ -27,6 +27,7 @@ class UserReviewViewModel : BaseReviewViewModel() {
     }
 
     fun loadMoreUserReviews(context: Context) {
+
         if (isLoading.value == true || isLastPage.value == true) {
             return
         }
@@ -42,12 +43,12 @@ class UserReviewViewModel : BaseReviewViewModel() {
                         newLastDoc.value = moreLastDoc
                         loading.value = false
                         isEnd.value = isEndOfList
+
                     }, { errorMessage ->
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                         loading.value = false
                     }, lastDoc)
-                } else {
-                    loading.value = false
+
                 }
             }
         }
