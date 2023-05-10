@@ -15,8 +15,8 @@
             android:id="@+id/userItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:background="@drawable/black_rectangle"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="20dp"
             android:paddingVertical="12dp"
             tools:ignore="ExtraText">
 
@@ -24,30 +24,32 @@
                 android:id="@+id/updateCategory"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.652"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.6"
+                app:layout_constraintTop_toBottomOf="@+id/view"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <ImageView
                 android:id="@+id/deleteCategory"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.832"
+                app:layout_constraintHorizontal_bias="0.83"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.48"
+                app:layout_constraintTop_toBottomOf="@+id/view"
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
             <TextView
                 android:id="@+id/categoryName"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:singleLine="true"
@@ -56,11 +58,17 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.066"
+                app:layout_constraintHorizontal_bias="0.075"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.551" />
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#23000000"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
