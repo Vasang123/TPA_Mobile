@@ -24,6 +24,8 @@
     <string name="new_password">New Password</string>
     <string name="update">Update</string>
     <string name="update_category">Update Category</string>
+    <string name="create_category">Create Category</string>
+    <string name="insert">Insert</string>
     <string name="change_password">Change Password</string>
     <string name="choose_image">Choose Image</string>
     <string name="description">Description</string>

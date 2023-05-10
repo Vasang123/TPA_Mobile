@@ -267,6 +267,23 @@ object ReviewRepository {
             completion(exception.localizedMessage)
         }
     }
+    fun updateReviewCategory(categoryId: String, data: String, completion: (String?) -> Unit) {
+        val reviewsRef = db.collection("reviews").whereEqualTo("categoryId", categoryId)
+        reviewsRef.get().addOnSuccessListener { querySnapshot ->
+            val batch = db.batch()
+            for (doc in querySnapshot.documents) {
+                val reviewRef = db.collection("reviews").document(doc.id)
+                batch.update(reviewRef, "categoryName", data)
+            }
+            batch.commit().addOnSuccessListener {
+                completion("Done")
+            }.addOnFailureListener { exception ->
+                completion(exception.localizedMessage)
+            }
+        }.addOnFailureListener { exception ->
+            completion(exception.localizedMessage)
+        }
+    }
     fun updateReview(
         review: Review,
         completion: (String?) -> Unit
