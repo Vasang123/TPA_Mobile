@@ -48,7 +48,9 @@ class UserAdapter(val context:Context) : RecyclerView.Adapter<UserAdapter.ViewHo
 //        }
 
         //Redirect to user's review list
-        holder.usernameTV.setOnClickListener(){}
+        holder.usernameTV.setOnClickListener(){
+
+        }
 
     }
 
