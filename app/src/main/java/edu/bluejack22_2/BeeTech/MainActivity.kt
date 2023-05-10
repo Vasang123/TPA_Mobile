@@ -13,6 +13,7 @@ import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,6 +29,9 @@ import model.Category
 import navigation_strategy.NavigationMap
 import navigation_strategy.SearchStrategy
 import navigation_strategy.Strategy
+import repository.AuthenticationRepository
+import repository.UserRepository
+import util.ActivityHelper
 import util.FragmentHelper
 import view_model.*
 
@@ -64,6 +68,12 @@ class MainActivity : AppCompatActivity(),
         binding = ActivityMainBinding.inflate(layoutInflater)
         lateinit var fragment: Fragment
         userViewModel.currentUser.observe(this, Observer {user->
+            if(user.status =="banned"){
+                finish()
+                AuthenticationRepository.signOut(this)
+                ActivityHelper.changePage(this, LoginActivity::class.java)
+                Toast.makeText(this,"Your Account Is Banned!", Toast.LENGTH_LONG).show()
+            }
             if(user.role == "admin"){
                 fragment = AdminHomeFragment()
             }else if(user.role == "member"){
