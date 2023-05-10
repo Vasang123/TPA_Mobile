@@ -1,6 +1,7 @@
 package view_model
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import repository.ReviewRepository
@@ -95,6 +96,14 @@ class UserReviewViewModel : BaseReviewViewModel() {
                 isLoading.value = false
             }
         }
+    }
+
+    fun loadAllUserReview(username:String){
+        ReviewRepository.getAllReviewsByUsername(username, onSuccess = { list ->
+            _reviewList.value = list
+        }, onFailure = {errorMessage ->
+            Log.e("Load failed", errorMessage)
+        })
     }
 
 

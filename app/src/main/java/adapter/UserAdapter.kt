@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import model.Review
+import edu.bluejack22_2.BeeTech.UserReviewActivity
 import model.User
+import util.ActivityHelper
 import view_model.UserViewModel
 
 class UserAdapter(val context:Context, private val userViewModel : UserViewModel?) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
@@ -59,9 +59,10 @@ class UserAdapter(val context:Context, private val userViewModel : UserViewModel
             holder.itemView.setBackgroundColor(Color.GRAY)
         }
 
-
         //Redirect to user's review list
-        holder.usernameTV.setOnClickListener(){}
+        holder.usernameTV.setOnClickListener(){
+            ActivityHelper.changePage(context,UserReviewActivity::class.java,currentUser.id)
+        }
 
     }
 

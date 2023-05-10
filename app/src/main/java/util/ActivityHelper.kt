@@ -16,4 +16,12 @@ object ActivityHelper {
         intent.putExtra("reviewOwner", reviewOwner)
         context.startActivity(intent)
     }
+
+    fun changePage(context: Context, targetActivity: Class<out  Activity>, userID : String) {
+        val intent = Intent(context, targetActivity)
+        intent.putExtra("userid", userID)
+        context.startActivity(intent)
+    }
+
+
 }
