@@ -12,8 +12,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import model.Review
 import model.User
+import view_model.UserViewModel
 
-class UserAdapter(val context:Context) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter(val context:Context, private val userViewModel : UserViewModel?) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
     protected  var userList = emptyList<User>()
 
     override fun onCreateViewHolder(
@@ -38,14 +39,26 @@ class UserAdapter(val context:Context) : RecyclerView.Adapter<UserAdapter.ViewHo
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentUser = userList[position]
+
         if(holder is ViewHolder){
             holder.usernameTV.text = currentUser.username
             holder.emailTV.text = currentUser.email
         }
 
-//        holder.banBtn.setOnClickListener(){
-//
-//        }
+        if(currentUser.status == "banned"){
+            holder.itemView.setBackgroundColor(Color.RED)
+        }
+
+        holder.banBtn.setOnClickListener(){
+            userViewModel?.banUser(userID = currentUser.id)
+            holder.itemView.setBackgroundColor(Color.RED)
+        }
+
+        holder.unbanBtn.setOnClickListener(){
+            userViewModel?.unbanUser(userID = currentUser.id)
+            holder.itemView.setBackgroundColor(Color.GRAY)
+        }
+
 
         //Redirect to user's review list
         holder.usernameTV.setOnClickListener(){}
