@@ -72,6 +72,7 @@ class UserViewModel : ViewModel() {
 
     fun unbanUser(userID : String){
         UserRepository.updateUserStatus(userID,"active", onFailure = {})
+        
     }
 
 }

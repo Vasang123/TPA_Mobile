@@ -57,6 +57,7 @@ class UserAdapter(val context:Context, private val userViewModel : UserViewModel
 
         holder.banBtn.setOnClickListener(){
             userViewModel?.banUser(userID = currentUser.id)
+
             (context as UserListActivity).finish()
             ActivityHelper.changePage(context,UserListActivity::class.java)
         }

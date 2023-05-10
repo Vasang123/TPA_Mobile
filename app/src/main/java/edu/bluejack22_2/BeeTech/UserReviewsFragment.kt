@@ -19,11 +19,12 @@ import util.ActivityTemplate
 import util.FragmentHelper
 import view_model.FavouriteViewModel
 import view_model.UserReviewViewModel
+import view_model.UserSpesificViewModel
 import view_model.UserViewModel
 
 class UserReviewsFragment : Fragment(), ActivityTemplate, BaseReviewAdapter.OnFavoriteClickListener {
 
-    lateinit var userReviewViewModel: UserReviewViewModel
+    lateinit var userReviewViewModel: UserSpesificViewModel
     lateinit var userReviewAdapter: UserReviewAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var binding : FragmentUserReviewBinding
@@ -65,8 +66,8 @@ class UserReviewsFragment : Fragment(), ActivityTemplate, BaseReviewAdapter.OnFa
             this
         )
         setupRecyclerView()
-        userReviewViewModel = ViewModelProvider(this)[UserReviewViewModel::class.java]
-        userReviewViewModel.loadReviews(requireContext())
+        userReviewViewModel = ViewModelProvider(this)[UserSpesificViewModel::class.java]
+        userReviewViewModel.loadReviews(requireContext(), userId)
         userReviewViewModel.reviewList.observe(viewLifecycleOwner, Observer { list ->
             if (list.isNotEmpty()) {
                 userReviewAdapter.submitList(list)
@@ -77,7 +78,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate, BaseReviewAdapter.OnFa
         recyclerView.addOnScrollListener(
             InfiniteScrollListener(
                 layoutManager,
-                { userReviewViewModel.loadMoreUserReviews(requireContext()) },
+                { userReviewViewModel.loadMoreUserSpesificReviews(requireContext(), userId) },
                 { userReviewViewModel.isLoading.value == true }
             )
         )

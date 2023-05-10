@@ -23,9 +23,10 @@ class EmailLoginViewModel : ViewModel(){
         }
         AuthenticationRepository.login(email,password){ result ->
             var msg = result ?: ""
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             if(msg.toString() == "Success"){
                 _signInSuccess.postValue(true)
+            } else {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
     }
