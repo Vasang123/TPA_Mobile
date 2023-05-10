@@ -43,16 +43,37 @@ class UserListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.addOnScrollListener(
-            object : UserReviewsFragment.InfiniteScrollListener(
+            InfiniteScrollListener(
                 layoutManager,
                 { userViewModel.loadMoreUser() },
                 { userViewModel.isLoading.value == true }
-            ) {}
+            )
         )
 
 
     }
+    class InfiniteScrollListener(
+        private val layoutManager: LinearLayoutManager,
+        private val loadMore: () -> Unit,
+        private val isLoading: () -> Boolean
+    ) : RecyclerView.OnScrollListener() {
+        private val threshold = 5
 
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (isLoading()) return
+
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+            if (firstVisibleItemPosition + visibleItemCount + threshold >= totalItemCount) {
+
+                loadMore()
+            }
+        }
+    }
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager =  layoutManager

@@ -2,6 +2,7 @@ package adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import edu.bluejack22_2.BeeTech.R
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import edu.bluejack22_2.BeeTech.UserListActivity
 import edu.bluejack22_2.BeeTech.UserReviewActivity
+import edu.bluejack22_2.BeeTech.UserSpesificReview
 import model.User
 import util.ActivityHelper
 import view_model.UserViewModel
@@ -46,22 +49,27 @@ class UserAdapter(val context:Context, private val userViewModel : UserViewModel
         }
 
         if(currentUser.status == "banned"){
+            Log.e("User Data", currentUser.username)
             holder.itemView.setBackgroundColor(Color.RED)
+        } else {
+            holder.itemView.setBackgroundColor(Color.WHITE)
         }
+
 
         holder.banBtn.setOnClickListener(){
             userViewModel?.banUser(userID = currentUser.id)
-            holder.itemView.setBackgroundColor(Color.RED)
+            (context as UserListActivity).finish()
+            ActivityHelper.changePage(context,UserListActivity::class.java)
         }
 
         holder.unbanBtn.setOnClickListener(){
             userViewModel?.unbanUser(userID = currentUser.id)
-            holder.itemView.setBackgroundColor(Color.GRAY)
+            (context as UserListActivity).finish()
+            ActivityHelper.changePage(context,UserListActivity::class.java)
         }
 
-        //Redirect to user's review list
         holder.usernameTV.setOnClickListener(){
-            ActivityHelper.changePage(context,UserReviewActivity::class.java,currentUser.id)
+            ActivityHelper.changePage(context,UserSpesificReview::class.java,currentUser.id)
         }
 
     }
