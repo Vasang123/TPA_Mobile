@@ -15,7 +15,6 @@
             android:id="@+id/userItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
             android:background="@drawable/black_rectangle"
             android:paddingVertical="12dp"
             tools:ignore="ExtraText">

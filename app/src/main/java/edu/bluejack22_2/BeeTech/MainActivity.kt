@@ -1,13 +1,21 @@
 package edu.bluejack22_2.BeeTech
 
 
+import android.Manifest
 import android.app.Dialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import util.ActivityTemplate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +52,7 @@ class MainActivity : AppCompatActivity(),
         init()
         onAction()
         setContentView(binding.root)
+        createNotificationChannel()
     }
     override fun init() {
         searchQuery = ""
@@ -64,8 +73,24 @@ class MainActivity : AppCompatActivity(),
             FragmentHelper.replaceFragment(fragment, supportFragmentManager)
         })
 
-
     }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "usernameSuccess"
+            val descriptionText = "usernameSuccessDesc"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("usernameSuccessID", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
     private fun navigateToScreen(itemId: Int ) {
         userViewModel.currentUser.observe(this, Observer {user->
             if(user.role == "admin"){
@@ -81,6 +106,33 @@ class MainActivity : AppCompatActivity(),
             strategy?.navigate(supportFragmentManager)
         }
     }
+
+    private fun sendNotification(message: String) {
+        val notificationBuilder = NotificationCompat.Builder(this, "usernameSuccessID")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        val notificationManager = NotificationManagerCompat.from(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        notificationManager.notify(1, notificationBuilder.build())
+    }
+
+
     override fun onAction() {
         binding.bottomNavigationView.setOnItemSelectedListener{item ->
             navigateToScreen(item.itemId)
@@ -89,6 +141,7 @@ class MainActivity : AppCompatActivity(),
         updateUsernameViewModel.updateResult.observe(this, Observer { result->
             if (result) {
                 FragmentHelper.replaceFragment(ProfileFragment(),supportFragmentManager)
+                sendNotification("Sucessfully Changed Username")
             }
         })
         deleteReviewViewModel.success.observe(this, Observer { res->

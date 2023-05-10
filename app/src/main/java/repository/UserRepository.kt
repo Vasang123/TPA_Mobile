@@ -2,7 +2,10 @@ package repository
 
 
 import android.util.Log
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import model.User
 import java.util.*
@@ -38,6 +41,41 @@ object UserRepository {
             completion(null)
         }
     }
+
+    fun fetchUsers(
+        onSuccess: (List<User>, DocumentSnapshot?, Boolean) -> Unit,
+        onFailure: (String) -> Unit,
+        lastDocumentSnapshot: DocumentSnapshot? = null
+    ) {
+        val pageSize: Long = 5
+        var usersRef = db.collection("users").orderBy("status", Query.Direction.DESCENDING)
+
+        if (lastDocumentSnapshot != null) {
+            usersRef = usersRef.startAfter(lastDocumentSnapshot)
+        }
+
+        usersRef.limit(pageSize).get()
+            .addOnSuccessListener { querySnapshot ->
+                val users = mutableListOf<User>()
+                for (doc in querySnapshot.documents) {
+                    val user = doc.toObject(User::class.java)!!
+                    user.id = doc.id
+                    users.add(user)
+                }
+                val newLastDocumentSnapshot = if (users.size < pageSize) {
+                    null
+                } else {
+                    querySnapshot.documents.last()
+                }
+
+                val isEndOfList = users.size < pageSize
+                onSuccess(users, newLastDocumentSnapshot, isEndOfList)
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error fetching users")
+            }
+    }
+
     fun updateUser(
         userId:String,
         data: String,
