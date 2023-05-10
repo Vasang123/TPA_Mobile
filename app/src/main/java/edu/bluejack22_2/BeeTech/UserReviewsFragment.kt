@@ -95,7 +95,7 @@ class UserReviewsFragment : Fragment(), ActivityTemplate, BaseReviewAdapter.OnFa
 
     }
 
-    class InfiniteScrollListener(
+    open class InfiniteScrollListener(
         private val layoutManager: LinearLayoutManager,
         private val loadMore: () -> Unit,
         private val isLoading: () -> Boolean

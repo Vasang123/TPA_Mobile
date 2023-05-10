@@ -27,4 +27,12 @@ object CategoryRepository {
             }
     }
 
+
+    fun addCategory(){
+
+    }
+
+
+
+
 }
