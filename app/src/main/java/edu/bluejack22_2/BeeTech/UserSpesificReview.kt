@@ -1,5 +1,6 @@
 package edu.bluejack22_2.BeeTech
 
+import adapter.AdminReviewAdapter
 import adapter.BaseReviewAdapter
 import adapter.ReviewAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,10 @@ import view_model.*
 class UserSpesificReview : AppCompatActivity(), ActivityTemplate, BaseReviewAdapter.OnFavoriteClickListener {
     lateinit var binding : ActivityUserSpesificReviewBinding
     lateinit var recyclerView: RecyclerView
-    lateinit var reviewAdapter: ReviewAdapter
+    lateinit var reviewAdapter: AdminReviewAdapter
     lateinit var userSpesificViewModel: UserSpesificViewModel
     lateinit var favouriteViewModel: FavouriteViewModel
+    lateinit var deleteReviewViewModel: DeleteReviewViewModel
     lateinit var userViewModel: UserViewModel
     lateinit var userId : String
     lateinit var targetId : String
@@ -39,7 +41,8 @@ class UserSpesificReview : AppCompatActivity(), ActivityTemplate, BaseReviewAdap
         recyclerView = binding.userSpesificRecycleView
         favouriteViewModel = FavouriteViewModel()
         userSpesificViewModel = ViewModelProvider(this)[UserSpesificViewModel::class.java]
-        reviewAdapter = ReviewAdapter(this,favouriteViewModel,userId,this)
+        deleteReviewViewModel = ViewModelProvider(this)[DeleteReviewViewModel::class.java]
+        reviewAdapter = AdminReviewAdapter(targetId,deleteReviewViewModel,this,this)
         setupRecyclerView()
         userSpesificViewModel.loadReviews(this,targetId)
         userSpesificViewModel.reviewList.observe(this) { list ->

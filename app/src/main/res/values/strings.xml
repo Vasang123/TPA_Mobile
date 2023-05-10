@@ -33,6 +33,7 @@
     <string name="my_profile">My Profile</string>
     <string name="add_review">Add Review</string>
     <string name="delete">Delete</string>
+    <string name="delete_review">Delete User Review</string>
     <string name="submit">Submit</string>
     <string name="user_list">View Users</string>
     <string name="category_list">View Category</string>

@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.bluejack22_2.BeeTech.UserListActivity
-import edu.bluejack22_2.BeeTech.UserReviewActivity
 import edu.bluejack22_2.BeeTech.UserSpesificReview
 import model.User
 import util.ActivityHelper
