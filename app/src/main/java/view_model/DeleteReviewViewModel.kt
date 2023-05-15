@@ -13,7 +13,7 @@ class DeleteReviewViewModel : ViewModel() {
     private val _success = MutableLiveData<String>()
     public val success: LiveData<String> = _success
     fun deleteReview(context: Context, reviewId: String) {
-        ReviewRepository.deleteReview(reviewId){ res ->
+        ReviewRepository.deleteReview(reviewId, context){ res ->
             Toast.makeText(context, res,Toast.LENGTH_SHORT).show()
             _success.value = res
         }

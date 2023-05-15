@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import edu.bluejack22_2.BeeTech.UserListActivity
 import edu.bluejack22_2.BeeTech.UserSpesificReview
@@ -49,7 +50,8 @@ class UserAdapter(val context:Context, private val userViewModel : UserViewModel
 
         if(currentUser.status == "banned"){
             Log.e("User Data", currentUser.username)
-            holder.itemView.setBackgroundColor(Color.RED)
+            val color = ContextCompat.getColor(context, R.color.banned)
+            holder.itemView.setBackgroundColor(color)
         } else {
             holder.itemView.setBackgroundColor(Color.WHITE)
         }

@@ -2,6 +2,7 @@ package dialog_fragment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 
@@ -12,5 +13,10 @@ open class BaseDialogFragment : DialogFragment() {
         dialog?.setCancelable(false)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+
+        val layoutParams = window?.attributes
+        layoutParams?.gravity = Gravity.BOTTOM
+        window?.attributes = layoutParams
     }
 }

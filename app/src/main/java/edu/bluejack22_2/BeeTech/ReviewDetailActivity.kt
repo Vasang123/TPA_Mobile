@@ -6,11 +6,14 @@ import android.content.Context
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +71,8 @@ class ReviewDetailActivity :
     lateinit var deleteCommentViewModel: DeleteCommentViewModel
     lateinit var updateReviewViewModel: UpdateReviewViewModel
     lateinit var updateCommentViewModel: UpdateCommentViewModel
+    lateinit var  progressBar: ProgressBar
+    private lateinit var contentView2: View
     private val favoriteStatusMap = mutableMapOf<String, Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +80,15 @@ class ReviewDetailActivity :
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         userViewModel.currentUser.observe(this, Observer{user->
             userId = user.id
+//            hideLoadingProgress()
             init()
             onAction()
         })
         setContentView(binding.root)
+        progressBar = binding.progressBar
+        contentView2 = binding.main
+        showLoadingProgress()
+
     }
 
     override fun init() {
@@ -150,6 +160,7 @@ class ReviewDetailActivity :
                 Glide.with(this)
                     .load(review.imageURL)
                     .into(imageView)
+                showContent()
             }
         })
         createCommentViewModel.createSuccess.observe(this, Observer { res ->
@@ -297,5 +308,15 @@ class ReviewDetailActivity :
 
     override fun onCommentUpdate(dialog: Dialog, content: String) {
         updateCommentViewModel.validateUpdate(content,commentId,this)
+    }
+    private fun showLoadingProgress() {
+        contentView2.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+    }
+
+
+    private fun showContent() {
+        contentView2.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 }

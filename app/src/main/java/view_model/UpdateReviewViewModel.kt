@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.bluejack22_2.BeeTech.R
 import model.Category
 import model.Review
 import repository.ReviewRepository
@@ -20,14 +21,15 @@ class UpdateReviewViewModel : ViewModel() {
     fun checkImage(
                 file: Uri?,
                 selectedImage : ImageView,
-                oldUrl: String) : String{
+                oldUrl: String,
+                context: Context) : String{
         if((file == null || file == Uri.EMPTY || file.path.isNullOrEmpty() ) ){
             if(selectedImage != null){
-                return "Success"
+                return context.getString(R.string.success)
             }
-            return "Failed"
+            return context.getString(R.string.failed)
         }else{
-            return "Success"
+            return context.getString(R.string.success)
         }
 
     }
@@ -40,10 +42,10 @@ class UpdateReviewViewModel : ViewModel() {
                        dialog: Dialog,
                        selectedImage : ImageView,
                        oldUrl: String) {
-        if(checkImage(file, selectedImage, oldUrl) == "Success"){
+        if(checkImage(file, selectedImage, oldUrl, context) == context.getString(R.string.success)){
             var msg: String? = when {
-                title.isEmpty() -> "Title can't be empty"
-                description.isEmpty() -> "Description can't be empty"
+                title.isEmpty() -> context.getString(R.string.title_empty)
+                description.isEmpty() -> context.getString(R.string.description_empty)
                 else -> null
             }
             if (msg != null) {
@@ -53,7 +55,7 @@ class UpdateReviewViewModel : ViewModel() {
             if(file == null){
                 insertDB(oldUrl,title,description,category, currId){res->
                     Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-                    if(res == "Success"){
+                    if(res == context.getString(R.string.success)){
                         dialog.dismiss()
                         _updateSuccess.postValue(true)
                     }
@@ -65,7 +67,7 @@ class UpdateReviewViewModel : ViewModel() {
                         imageUrl = res
                         insertDB(imageUrl,title,description,category, currId){res->
                             Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-                            if(res == "Success"){
+                            if(res == context.getString(R.string.success)){
                                 dialog.dismiss()
                                 _updateSuccess.postValue(true)
                             }
@@ -75,7 +77,7 @@ class UpdateReviewViewModel : ViewModel() {
             }
 
         }else{
-            Toast.makeText(context, "File can't be empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.file_empty), Toast.LENGTH_SHORT).show()
         }
     }
     private fun insertDB(imageUrl: String, title: String, description: String, category : Category, currId: String, completion: (String?) -> Unit){

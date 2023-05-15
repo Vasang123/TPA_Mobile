@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.bluejack22_2.BeeTech.R
 import repository.AuthenticationRepository
 
 class UpdatePasswordViewModel : ViewModel() {
@@ -12,9 +13,9 @@ class UpdatePasswordViewModel : ViewModel() {
     val updateResult: LiveData<Boolean> = _updateResult
     fun validateUpdatePassword(oldPass:String, newPass:String, context:Context){
         var msg:String? = when {
-            oldPass.isEmpty() -> "Old Password can't be empty"
-            newPass.isEmpty() -> "New Password can't be empty"
-            newPass.length < 6 -> "New Password must be at least 6 characters"
+            oldPass.isEmpty() -> context.getString(R.string.old_password_empty)
+            newPass.isEmpty() -> context.getString(R.string.new_password_empty)
+            newPass.length < 6 -> context.getString(R.string.new_password_must_be_6)
             else -> null
         }
         if(msg != null){
@@ -28,12 +29,15 @@ class UpdatePasswordViewModel : ViewModel() {
             if(res == true){
                 updatePass(newPass,context)
             }else{
-                Toast.makeText(context, "Incorret Password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show()
             }
         }
     }
     fun updatePass(newPass: String,context: Context){
-        AuthenticationRepository.updatePassword(newPass){ res->
+        AuthenticationRepository.updatePassword(
+            newPass,
+            context
+        ) { res->
             Toast.makeText(context,res,Toast.LENGTH_SHORT).show()
         }
     }
