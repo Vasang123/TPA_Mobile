@@ -14,7 +14,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/userItem"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="200dp"
+            android:layout_marginVertical="12dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#23000000" />
 
             <ImageView
                 android:id="@+id/favorite"
@@ -78,21 +84,24 @@
 
             <TextView
                 android:id="@+id/titleThumbnail"
-                android:layout_width="240dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_semibold"
                 android:maxLines="2"
                 android:singleLine="false"
-                android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                android:text="Title Here"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/dateThumbnail"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.142"
                 app:layout_constraintStart_toEndOf="@+id/imageThumbnail"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.115" />
+                app:layout_constraintVertical_bias="0.473" />
 
             <TextView
                 android:id="@+id/authorThumbnail"
@@ -134,9 +143,8 @@
                 android:id="@+id/imageThumbnail"
                 android:layout_width="130dp"
                 android:layout_height="118dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.056"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.219"

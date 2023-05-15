@@ -10,221 +10,247 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/reviewCreatedAt"
-            android:layout_width="190dp"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:text="Created at : dd-mm-yyyy"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/titleThumbnail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.072"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoryDetail" />
-
-        <TextView
-            android:id="@+id/authorDetail"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:text="Author Here"
-            android:textColor="@color/button_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.511" />
-
-        <TextView
-            android:id="@+id/categoryDetail"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:text="Category Here"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="50dp"
+            android:foregroundGravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.032" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/reviewDetail"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="268dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins"
-            android:maxLines="12"
-            android:paddingHorizontal="20dp"
-            android:singleLine="false"
-            android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd   adasd  a das a a as das das"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleDetail"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/titleDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_semibold"
-            android:maxLines="3"
-            android:paddingHorizontal="20dp"
-            android:singleLine="false"
-            android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd   adasd  a das a a as das das"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/reviewCreatedAt"
-            app:layout_constraintVertical_bias="0.038" />
+            tools:layout_editor_absoluteY="0dp">
+
+            <TextView
+                android:id="@+id/reviewCreatedAt"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:text="Created at : dd-mm-yyyy"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/titleThumbnail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.072"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categoryDetail" />
+
+            <TextView
+                android:id="@+id/authorDetail"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:text="Author Here"
+                android:textColor="@color/button_color"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.066"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.511" />
+
+            <TextView
+                android:id="@+id/categoryDetail"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:text="Category Here"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.066"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.032" />
+
+            <TextView
+                android:id="@+id/reviewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="268dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins"
+                android:maxLines="12"
+                android:paddingHorizontal="20dp"
+                android:singleLine="false"
+                android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd   adasd  a das a a as das das"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleDetail"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/titleDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:maxLines="3"
+                android:paddingHorizontal="20dp"
+                android:singleLine="false"
+                android:text="Title Here asdddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd   adasd  a das a a as das das"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/reviewCreatedAt"
+                app:layout_constraintVertical_bias="0.038" />
+
+            <ImageView
+                android:id="@+id/closeDetail"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/close_button_oval"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.968"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
+
+            <ImageView
+                android:id="@+id/updateDetail"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.535"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+            <ImageView
+                android:id="@+id/deleteDetail"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.639"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+            <ImageView
+                android:id="@+id/sendButton"
+                android:layout_width="40dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/button_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+            <ImageView
+                android:id="@+id/favoriteButtonDetail"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.849"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.002"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+            <TextView
+                android:id="@+id/favCountDetail"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="40dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="1000"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/favoriteButtonDetail"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.002" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/blank_image" />
+
+            <EditText
+                android:id="@+id/commentTextField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/black_rectangle"
+                android:ems="10"
+                android:fontFamily="@font/poppins"
+                android:gravity="start|top"
+                android:hint="Enter your comment"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:maxLines="3"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sendButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/commentTextField"
+                app:layout_constraintVertical_bias="0.155" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <ImageView
-            android:id="@+id/closeDetail"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/close_button_oval"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.968"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
-
-        <ImageView
-            android:id="@+id/updateDetail"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.535"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-        <ImageView
-            android:id="@+id/deleteDetail"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.639"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
-
-        <ImageView
-            android:id="@+id/sendButton"
-            android:layout_width="40dp"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/button_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
-
-        <ImageView
-            android:id="@+id/favoriteButtonDetail"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.849"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.002"
-            app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
-        <TextView
-            android:id="@+id/favCountDetail"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="40dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="1000"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/favoriteButtonDetail"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="70dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/blank_image" />
-
-        <EditText
-            android:id="@+id/commentTextField"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/black_rectangle"
-            android:ems="10"
-            android:fontFamily="@font/poppins"
-            android:gravity="start|top"
-            android:hint="Enter your comment"
-            android:inputType="textMultiLine"
-            android:lines="2"
-            android:maxLines="3"
-            android:padding="5dp"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sendButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewDetail"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRecycleView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentTextField"
-            app:layout_constraintVertical_bias="0.155" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.bluejack22_2.BeeTech.R
 import model.Category
 import model.Review
 import repository.ReviewRepository
@@ -20,11 +21,11 @@ class CreateReviewViewModel : ViewModel(){
     fun validateCreate(file: Uri?, title: String, description: String, context: Context, category : Category) {
 
         var msg: String? = when {
-            file == null -> "File can't be empty"
-            file == Uri.EMPTY -> "No file selected"
-            file.path.isNullOrEmpty() -> "Invalid file path"
-            title.isEmpty() -> "Title can't be empty"
-            description.isEmpty() -> "Description can't be empty"
+            file == null -> context.getString(R.string.file_empty)
+            file == Uri.EMPTY -> context.getString(R.string.file_empty)
+            file.path.isNullOrEmpty() -> context.getString(R.string.invalid_path)
+            title.isEmpty() -> context.getString(R.string.title_empty)
+            description.isEmpty() -> context.getString(R.string.description_empty)
             else -> null
         }
         if (msg != null) {
@@ -35,9 +36,9 @@ class CreateReviewViewModel : ViewModel(){
         insertImage(file){ res->
             if (res != null) {
                 imageUrl = res
-                insertDB(imageUrl,title,description,category){res->
+                insertDB(imageUrl,title,description,category,context){res->
                     Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-                    if(res == "Success"){
+                    if(res == context.getString(R.string.success)){
                         _createSuccess.postValue(true)
                     }
                 }
@@ -45,7 +46,7 @@ class CreateReviewViewModel : ViewModel(){
         }
 
     }
-    private fun insertDB(imageUrl: String, title: String, description: String, category : Category, completion: (String?) -> Unit){
+    private fun insertDB(imageUrl: String, title: String, description: String, category : Category, context: Context, completion: (String?) -> Unit){
         var review =  Review()
         UserRepository.getLoggedUser(){ user ->
             if(user != null){
@@ -59,7 +60,11 @@ class CreateReviewViewModel : ViewModel(){
                 review.status = user.status
                 review.categoryId = category.id
                 review.categoryName = category.name
-                ReviewRepository.insertReview(review){ res->
+                ReviewRepository.insertReview(
+                    review,
+                    context
+
+                ) { res->
                     if(res !=  null){
                         completion(res)
                     }

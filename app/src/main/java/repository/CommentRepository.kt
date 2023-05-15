@@ -1,26 +1,25 @@
 package repository
 
+import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObject
+import edu.bluejack22_2.BeeTech.R
 import model.Comment
-import model.Review
-import model.User
 import java.util.*
 
 object CommentRepository {
     val db = FirebaseFirestore.getInstance()
-    fun insertComment(comment: Comment, completion: (String?) -> Unit){
+    fun insertComment(comment: Comment, context: Context, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
         val reviewRef = db.collection("comments").document(uid)
         reviewRef.set(comment)
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Error creating comment in database")
+                completion(context.getString(R.string.error_creating_comment))
             }
     }
     fun fetchComments(
@@ -79,14 +78,14 @@ object CommentRepository {
         )
 
     }
-    fun deleteComment(commentId:String,completion: (String?) -> Unit){
+    fun deleteComment(commentId: String, context: Context, completion: (String?) -> Unit){
         val commentRef = db.collection("comments").document(commentId)
         commentRef.delete()
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Failed to delete review")
+                completion(context.getString(R.string.failed_to_delete_comment))
             }
 
     }
@@ -105,6 +104,7 @@ object CommentRepository {
     fun updateComment(
         content: String,
         commentId: String,
+        context: Context,
         completion: (String?) -> Unit
     ) {
         val documentRef = db.collection("comments").document(commentId)
@@ -114,7 +114,7 @@ object CommentRepository {
                     "content", content,
                     "updatedAt", Date()
                 ).addOnSuccessListener {
-                    completion("Success")
+                    completion(context.getString(R.string.success))
                 }.addOnFailureListener { exception ->
                     completion("Failed to update comment: ${exception.message}")
                 }
@@ -122,7 +122,7 @@ object CommentRepository {
                 completion("Review document with ID '${commentId}' not found")
             }
         }.addOnFailureListener {
-            completion("Failed to Update Review")
+            completion(context.getString(R.string.failed_to_update_comment))
         }
     }
 }

@@ -1,16 +1,13 @@
 package view_model
 
 import android.content.Context
-import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import model.Category
+import edu.bluejack22_2.BeeTech.R
 import model.Comment
-import model.Review
 import repository.CommentRepository
-import repository.ReviewRepository
 import repository.UserRepository
 import java.util.*
 
@@ -19,22 +16,22 @@ class CreateCommentViewModel : ViewModel() {
     val createSuccess: LiveData<Boolean> = _createSuccess
     fun validateCreate(content : String, reviewId : String, context: Context) {
         var msg: String? = when {
-            content.isEmpty() -> "Comment can't be empty"
+            content.isEmpty() -> context.getString(R.string.comment_empty)
             else -> null
         }
         if (msg != null) {
             Toast.makeText(context, msg.toString(), Toast.LENGTH_SHORT).show()
             return
         }
-        insertDB(content, reviewId){res->
+        insertDB(content, reviewId, context){res->
             Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-            if(res == "Success"){
+            if(res == context.getString(R.string.success)){
                 _createSuccess.postValue(true)
             }
         }
 
     }
-    private fun insertDB(content: String, reviewId : String, completion: (String?) -> Unit){
+    private fun insertDB(content: String, reviewId : String, context: Context, completion: (String?) -> Unit){
         var comment =  Comment()
         UserRepository.getLoggedUser(){ user ->
             if(user != null){
@@ -45,7 +42,10 @@ class CreateCommentViewModel : ViewModel() {
                 comment.updatedAt= Date()
                 comment.content = content
                 comment.reviewId = reviewId
-                CommentRepository.insertComment(comment){ res->
+                CommentRepository.insertComment(
+                    comment,
+                    context
+                ){ res->
                     if(res !=  null){
                         completion(res)
                     }

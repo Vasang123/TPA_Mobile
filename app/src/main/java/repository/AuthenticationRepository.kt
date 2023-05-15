@@ -11,19 +11,20 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import edu.bluejack22_2.BeeTech.MainActivity
+import edu.bluejack22_2.BeeTech.R
 import model.User
 import util.ActivityHelper
 import java.util.*
 
 object AuthenticationRepository {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    fun login(email: String, password: String, completion: (String?) -> Unit) {
+    fun login(email: String, password: String, context: Context, completion: (String?) -> Unit) {
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener{res ->
                 if(res.isSuccessful){
-                    completion("Success")
+                    completion(context.getString(R.string.success))
                 }else{
-                    completion("Login Error")
+                    completion(context.getString(R.string.login_error))
                 }
             }
     }
@@ -38,14 +39,14 @@ object AuthenticationRepository {
             }
         }
     }
-    fun updatePassword(newPass: String, completion: (String?) -> Unit){
+    fun updatePassword(newPass: String, context: Context, completion: (String?) -> Unit){
         val  user = auth.currentUser
         user?.updatePassword(newPass)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    completion("Success")
+                    completion(context.getString(R.string.success))
                 } else {
-                    completion("Failed to update password")
+                    completion(context.getString(R.string.failed_to_update_password))
                 }
             }
 
@@ -64,7 +65,7 @@ object AuthenticationRepository {
                     query.get()
                         .addOnSuccessListener { documents ->
                             if (documents.isEmpty) {
-                                UserRepository.insertUserData(user = User(username,email)){ res ->
+                                UserRepository.insertUserData(user = User(username,email), context){ res ->
                                     Toast.makeText(context,res,Toast.LENGTH_SHORT).show()
                                 }
                             } else {
@@ -82,11 +83,11 @@ object AuthenticationRepository {
             }
     }
 
-    fun createAccount(username: String, email: String, password: String, completion: (String?) -> Unit) {
+    fun createAccount(username: String, email: String, password: String, context: Context, completion: (String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { res ->
                 if (res.isSuccessful) {
-                    UserRepository.insertUserData(user = User(username,email)){ res ->
+                    UserRepository.insertUserData(user = User(username,email), context ){ res ->
                         completion(res)
                     }
                 }else {
@@ -100,13 +101,13 @@ object AuthenticationRepository {
         val gsc = GoogleSignIn.getClient(activity, GoogleSignInOptions.DEFAULT_SIGN_IN)
         gsc.signOut()
     }
-    fun resetPassword(email:String, completion: (String?) -> Unit){
+    fun resetPassword(email: String, context: Context, completion: (String?) -> Unit){
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    completion("Email Successfuly Sent")
+                    completion(context.getString(R.string.success_sending_email))
                 } else {
-                    completion("Error Sending Email")
+                    completion(context.getString(R.string.error_sending_email))
                 }
             }
     }

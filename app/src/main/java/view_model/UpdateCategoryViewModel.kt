@@ -5,33 +5,33 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import model.Category
-import model.Comment
+import edu.bluejack22_2.BeeTech.R
 import repository.CategoryRepository
-import repository.CommentRepository
 
 class UpdateCategoryViewModel : ViewModel() {
     private val _updateSuccess = MutableLiveData<Boolean>()
     val updateSuccess: LiveData<Boolean> = _updateSuccess
     fun validateUpdate(content : String, categoryId : String, context: Context) {
         var msg: String? = when {
-            content.isEmpty() -> "Category can't be empty"
+            content.isEmpty() -> context.getString(R.string.category_empty)
             else -> null
         }
         if (msg != null) {
             Toast.makeText(context, msg.toString(), Toast.LENGTH_SHORT).show()
             return
         }
-        insertDB(content, categoryId){res->
+        insertDB(content, categoryId, context){res->
             Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
-            if(res == "Success"){
+            if(res == context.getString(R.string.success)){
                 _updateSuccess.postValue(true)
             }
         }
 
     }
-    private fun insertDB(content: String, categoryId: String, completion: (String?) -> Unit){
-        CategoryRepository.updateCategory(content,categoryId){ res->
+    private fun insertDB(content: String, categoryId: String, context: Context, completion: (String?) -> Unit){
+        CategoryRepository.updateCategory(
+            content, categoryId, context
+        ){ res->
             if(res !=  null){
                 completion(res)
             }

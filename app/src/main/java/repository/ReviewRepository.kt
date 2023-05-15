@@ -1,19 +1,16 @@
 package repository
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.tasks.await
+import edu.bluejack22_2.BeeTech.R
 import model.Review
-import model.User
-import java.sql.Time
-import java.sql.Timestamp
 import java.util.*
 
 
@@ -42,26 +39,26 @@ object ReviewRepository {
             }
         }
     }
-    fun insertReview(review:Review,completion: (String?) -> Unit){
+    fun insertReview(review: Review,  context: Context, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
         val reviewRef = db.collection("reviews").document(uid)
         reviewRef.set(review)
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Error creating review record in database")
+                completion(context.getString(R.string.error_creating_review))
             }
 
     }
-    fun deleteReview(reviewId:String,completion: (String?) -> Unit){
+    fun deleteReview(reviewId:String, context: Context, completion: (String?) -> Unit){
         val reviewRef = db.collection("reviews").document(reviewId)
         reviewRef.delete()
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Failed to delete review")
+                completion(context.getString(R.string.failed_to_delete_review))
             }
 
     }

@@ -1,13 +1,11 @@
 package repository
 
-import android.util.Log
+import android.content.Context
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import edu.bluejack22_2.BeeTech.R
 import model.Category
-import model.Comment
-import model.Review
-import model.User
 import java.util.*
 
 object CategoryRepository {
@@ -45,30 +43,30 @@ object CategoryRepository {
                 onFailure(e.message ?: "Error fetching category")
             }
     }
-    fun addCategory(category: Category, completion: (String?) -> Unit){
+    fun addCategory(category: Category, context: Context, completion: (String?) -> Unit){
         val uid = UUID.randomUUID().toString()
         val categoryRef = db.collection("categories").document(uid)
         categoryRef.set(category)
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Error creating review record in database")
+                completion(context.getString(R.string.error_creating_review))
             }
 
     }
 
-    fun deleteCategory(categoryId:String,completion: (String?) -> Unit){
+    fun deleteCategory(categoryId: String, context: Context, completion: (String?) -> Unit){
         val reviewRef = db.collection("categories").document(categoryId)
         reviewRef.delete()
             .addOnSuccessListener {
-                completion("Success")
+                completion(context.getString(R.string.success))
             }
             .addOnFailureListener {
-                completion("Failed to delete category")
+                completion(context.getString(R.string.failed_to_delete_category))
             }
     }
-    fun updateCategory( name: String, id : String, completion: (String?) -> Unit) {
+    fun updateCategory(name: String, id: String, context: Context, completion: (String?) -> Unit) {
         val documentRef = db.collection("categories").document(id)
         documentRef.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
@@ -86,7 +84,7 @@ object CategoryRepository {
                 completion("Category document with ID '${id}' not found")
             }
         }.addOnFailureListener {
-            completion("Failed to Update Category")
+            completion(context.getString(R.string.failed_to_update_category))
         }
     }
     fun getCategoryById(categoyId:String, completion: (Category?) -> Unit) {
